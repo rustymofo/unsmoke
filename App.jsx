@@ -1034,7 +1034,7 @@ export default function App(){
           <div style={{width:"100%",maxWidth:420,padding:"28px 22px"}}>
             {brandHeader}
             <div style={{textAlign:"center",marginBottom:28}}>
-              <div style={{fontSize:18,fontWeight:800,marginBottom:8}}>Start your smoke-free journey</div>
+              <div style={{fontSize:18,fontWeight:800,marginBottom:8}}>✓ Updated — Start your smoke-free journey</div>
               <div style={{color:C.sub,fontSize:13,lineHeight:1.7}}>Join thousands quitting with Saksham proven method. Track every second. Every rupee saved. Every milestone earned.</div>
             </div>
             <button onClick={()=>{setIsSignIn(true);setAuthStep("phone");}} style={{width:"100%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:13,padding:15,color:"#F5F0E8",fontWeight:800,fontSize:16,cursor:"pointer",marginBottom:10,marginTop:12,boxShadow:"0 4px 20px rgba(201,168,76,0.25)"}}>
