@@ -128,31 +128,31 @@ function AIChat({systemPrompt,welcomeMsg,avatar,name,subtitle,onClose}){
     setLoading(false);
   }
   return (
-    <div style={{position:"absolute",inset:0,zIndex:999,background:"#07081A",display:"flex",flexDirection:"column"}}>
-      <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #1C2040",display:"flex",alignItems:"center",gap:12,flexShrink:0}}>
+    <div style={{position:"absolute",inset:0,zIndex:999,background:C.bg,display:"flex",flexDirection:"column"}}>
+      <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #E8DDD0",display:"flex",alignItems:"center",gap:12,flexShrink:0}}>
         <div style={{width:40,height:40,borderRadius:"50%",background:"linear-gradient(135deg,#FF6534,#8B5CF6)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0}}>{avatar}</div>
-        <div style={{flex:1}}><div style={{fontWeight:800,fontSize:15,color:"#F0EDF8"}}>{name}</div><div style={{fontSize:11,color:"#00D9AA",marginTop:1}}>{subtitle}</div></div>
-        <button onClick={onClose} style={{background:"#141730",border:"1px solid #1C2040",borderRadius:20,padding:"6px 14px",color:"#8090B0",fontSize:12,fontWeight:700,cursor:"pointer"}}>Close</button>
+        <div style={{flex:1}}><div style={{fontWeight:800,fontSize:15,color:"#1A1208"}}>{name}</div><div style={{fontSize:11,color:"#00D9AA",marginTop:1}}>{subtitle}</div></div>
+        <button onClick={onClose} style={{background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:20,padding:"6px 14px",color:"#786858",fontSize:12,fontWeight:700,cursor:"pointer"}}>Close</button>
       </div>
       <div style={{flex:1,overflowY:"auto",padding:16}}>
         {messages.map((msg,i)=>(
           <div key={i} style={{display:"flex",justifyContent:msg.role==="user"?"flex-end":"flex-start",marginBottom:12}}>
             {msg.role==="assistant"&&<div style={{width:28,height:28,borderRadius:"50%",background:"linear-gradient(135deg,#FF6534,#8B5CF6)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,marginRight:8,flexShrink:0,alignSelf:"flex-end"}}>{avatar}</div>}
-            <div style={{maxWidth:"78%",padding:"11px 14px",borderRadius:msg.role==="user"?"14px 14px 4px 14px":"14px 14px 14px 4px",background:msg.role==="user"?"#FF6534":"#0E1128",color:"#F0EDF8",fontSize:13,lineHeight:1.65,border:msg.role==="user"?"none":"1px solid #1C2040"}}>{msg.content}</div>
+            <div style={{maxWidth:"78%",padding:"11px 14px",borderRadius:msg.role==="user"?"14px 14px 4px 14px":"14px 14px 14px 4px",background:msg.role==="user"?"#FF6534":"#FFFFFF",color:"#1A1208",fontSize:13,lineHeight:1.65,border:msg.role==="user"?"none":"1px solid #E8DDD0"}}>{msg.content}</div>
           </div>
         ))}
         {loading&&<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}>
           <div style={{width:28,height:28,borderRadius:"50%",background:"linear-gradient(135deg,#FF6534,#8B5CF6)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13}}>🤖</div>
-          <div style={{padding:"11px 14px",borderRadius:"14px 14px 14px 4px",background:"#0E1128",border:"1px solid #1C2040"}}>
+          <div style={{padding:"11px 14px",borderRadius:"14px 14px 14px 4px",background:"#FFFFFF",border:"1px solid #E8DDD0"}}>
             <div style={{display:"flex",gap:4}}>
-              {[0,1,2].map(i=><div key={i} style={{width:6,height:6,borderRadius:"50%",background:"#8090B0",animation:"bounce 1s "+i*0.2+"s infinite"}}/>)}
+              {[0,1,2].map(i=><div key={i} style={{width:6,height:6,borderRadius:"50%",background:"#786858",animation:"bounce 1s "+i*0.2+"s infinite"}}/>)}
             </div>
           </div>
         </div>}
         <div ref={endRef}/>
       </div>
-      <div style={{padding:"12px 16px",borderTop:"1px solid #1C2040",display:"flex",gap:8,flexShrink:0}}>
-        <input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&send()} placeholder="Type a message..." style={{flex:1,background:"#141730",border:"1px solid #1C2040",borderRadius:22,padding:"11px 16px",color:"#F0EDF8",fontSize:14,outline:"none"}}/>
+      <div style={{padding:"12px 16px",borderTop:"1px solid #E8DDD0",display:"flex",gap:8,flexShrink:0}}>
+        <input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&send()} placeholder="Type a message..." style={{flex:1,background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:22,padding:"11px 16px",color:"#1A1208",fontSize:14,outline:"none"}}/>
         <button onClick={send} disabled={loading||!input.trim()} style={{background:"#FF6534",border:"none",borderRadius:"50%",width:44,height:44,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",opacity:loading||!input.trim()?0.5:1,flexShrink:0,color:"#fff",fontSize:18}}>up</button>
       </div>
       <style>{"@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}"}</style>
@@ -240,14 +240,14 @@ function VoiceCall({person,systemPrompt,avatar,onClose}){
   const pad2=n=>String(n).padStart(2,"0");
 
   return (
-    <div style={{position:"fixed",inset:0,zIndex:1002,background:"#030408",display:"flex",flexDirection:"column",alignItems:"center"}}>
+    <div style={{position:"fixed",inset:0,zIndex:1002,background:"#F5F0E8",display:"flex",flexDirection:"column",alignItems:"center"}}>
       <div style={{width:"100%",padding:"16px 20px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
         <div style={{display:"flex",gap:6}}>
           {[["en-IN","EN-IN"],["hi-IN","हिंदी"]].map(([l,label])=>(
-            <button key={l} onClick={()=>setLang(l)} style={{background:lang===l?"rgba(0,217,170,0.15)":"transparent",border:"1px solid "+(lang===l?"#00D9AA":"#8090B0"),borderRadius:20,padding:"4px 10px",color:lang===l?"#00D9AA":"#8090B0",fontSize:10,fontWeight:700,cursor:"pointer"}}>{label}</button>
+            <button key={l} onClick={()=>setLang(l)} style={{background:lang===l?"rgba(0,217,170,0.15)":"transparent",border:"1px solid "+(lang===l?"#00D9AA":"#786858"),borderRadius:20,padding:"4px 10px",color:lang===l?"#00D9AA":"#786858",fontSize:10,fontWeight:700,cursor:"pointer"}}>{label}</button>
           ))}
         </div>
-        <div style={{fontSize:12,color:"#8090B0",fontVariantNumeric:"tabular-nums"}}>{pad2(mins)}:{pad2(secs)}</div>
+        <div style={{fontSize:12,color:"#786858",fontVariantNumeric:"tabular-nums"}}>{pad2(mins)}:{pad2(secs)}</div>
       </div>
       <div style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:20,width:"100%"}}>
         <div style={{position:"relative",width:140,height:140,display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -257,8 +257,8 @@ function VoiceCall({person,systemPrompt,avatar,onClose}){
           <div style={{width:140,height:140,borderRadius:"50%",background:"linear-gradient(135deg,#FF6534,#8B5CF6)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:56,zIndex:1}}>{avatar}</div>
         </div>
         <div style={{textAlign:"center"}}>
-          <div style={{fontWeight:900,fontSize:22,color:"#F0EDF8",marginBottom:4}}>{person==="saksham"?"Saksham":"AI Coach"}</div>
-          <div style={{fontSize:13,fontWeight:600,color:ended?"#8090B0":callState==="connecting"?"#FFB800":aiState==="listening"?"#FF6534":aiState==="thinking"?"#FFB800":aiState==="speaking"?"#00D9AA":"rgba(0,217,170,0.4)"}}>
+          <div style={{fontWeight:900,fontSize:22,color:"#1A1208",marginBottom:4}}>{person==="saksham"?"Saksham":"AI Coach"}</div>
+          <div style={{fontSize:13,fontWeight:600,color:ended?"#786858":callState==="connecting"?"#FFB800":aiState==="listening"?"#FF6534":aiState==="thinking"?"#FFB800":aiState==="speaking"?"#00D9AA":"rgba(0,217,170,0.4)"}}>
             {ended?"Call ended":callState==="connecting"?"Connecting...":aiState==="listening"?"Listening...":aiState==="thinking"?"Thinking...":aiState==="speaking"?"Speaking...":"Ready"}
           </div>
         </div>
@@ -266,7 +266,7 @@ function VoiceCall({person,systemPrompt,avatar,onClose}){
           <div style={{width:"100%",maxWidth:320,maxHeight:100,overflowY:"auto",padding:"0 20px"}}>
             {transcript.slice(-2).map((msg,i)=>(
               <div key={i} style={{marginBottom:6,textAlign:msg.role==="user"?"right":"left"}}>
-                <span style={{display:"inline-block",background:msg.role==="user"?"#FF6534":"#0E1128",border:msg.role==="assistant"?"1px solid #1C2040":"none",borderRadius:10,padding:"6px 12px",fontSize:12,color:"#F0EDF8",maxWidth:"85%",lineHeight:1.4}}>{msg.text}</span>
+                <span style={{display:"inline-block",background:msg.role==="user"?"#FF6534":"#FFFFFF",border:msg.role==="assistant"?"1px solid #E8DDD0":"none",borderRadius:10,padding:"6px 12px",fontSize:12,color:"#1A1208",maxWidth:"85%",lineHeight:1.4}}>{msg.text}</span>
               </div>
             ))}
           </div>
@@ -275,7 +275,7 @@ function VoiceCall({person,systemPrompt,avatar,onClose}){
       <div style={{width:"100%",padding:"0 24px 40px"}}>
         {ended?(
           <div style={{textAlign:"center"}}>
-            <div style={{fontSize:13,color:"#8090B0",marginBottom:16}}>{pad2(mins)}:{pad2(secs)} - {transcript.filter(t=>t.role==="user").length} exchanges</div>
+            <div style={{fontSize:13,color:"#786858",marginBottom:16}}>{pad2(mins)}:{pad2(secs)} - {transcript.filter(t=>t.role==="user").length} exchanges</div>
             <button onClick={onClose} style={{background:"#FF6534",border:"none",borderRadius:12,padding:"14px 40px",color:"#fff",fontWeight:700,fontSize:15,cursor:"pointer"}}>Done</button>
           </div>
         ):(
@@ -285,22 +285,22 @@ function VoiceCall({person,systemPrompt,avatar,onClose}){
                 {speechOK?(
                   <button onMouseDown={startRec} onTouchStart={startRec} onMouseUp={stopRec} onTouchEnd={stopRec}
                     disabled={aiState==="speaking"||aiState==="thinking"||callState==="connecting"}
-                    style={{width:72,height:72,borderRadius:"50%",background:isRecording?"#FF6534":"rgba(255,101,52,0.2)",border:"2px solid "+(isRecording?"#FF6534":"#8090B0"),display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,cursor:"pointer",opacity:aiState==="speaking"||aiState==="thinking"?0.4:1}}>
+                    style={{width:72,height:72,borderRadius:"50%",background:isRecording?"#FF6534":"rgba(255,101,52,0.2)",border:"2px solid "+(isRecording?"#FF6534":"#786858"),display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,cursor:"pointer",opacity:aiState==="speaking"||aiState==="thinking"?0.4:1}}>
                     🎤
                   </button>
                 ):(
                   <button onClick={()=>setUseText(true)} style={{background:"rgba(0,217,170,0.15)",border:"1px solid #00D9AA",borderRadius:12,padding:"12px 24px",color:"#00D9AA",fontWeight:700,fontSize:13,cursor:"pointer"}}>Use text input</button>
                 )}
-                <div style={{fontSize:11,color:"#363D5C"}}>{isRecording?"Release to send":"Hold mic to speak"}</div>
-                <button onClick={()=>setUseText(true)} style={{background:"none",border:"none",color:"#363D5C",fontSize:11,cursor:"pointer",textDecoration:"underline"}}>Type instead</button>
+                <div style={{fontSize:11,color:"#C8B8A8"}}>{isRecording?"Release to send":"Hold mic to speak"}</div>
+                <button onClick={()=>setUseText(true)} style={{background:"none",border:"none",color:"#C8B8A8",fontSize:11,cursor:"pointer",textDecoration:"underline"}}>Type instead</button>
               </div>
             ):(
               <div style={{marginBottom:16}}>
                 <div style={{display:"flex",gap:8,marginBottom:8}}>
-                  <input value={inputText} onChange={e=>setInputText(e.target.value)} onKeyDown={e=>e.key==="Enter"&&sendText()} placeholder="Type your message..." disabled={aiState==="speaking"||aiState==="thinking"} style={{flex:1,background:"#141730",border:"1px solid #1C2040",borderRadius:22,padding:"11px 16px",color:"#F0EDF8",fontSize:13,outline:"none"}}/>
+                  <input value={inputText} onChange={e=>setInputText(e.target.value)} onKeyDown={e=>e.key==="Enter"&&sendText()} placeholder="Type your message..." disabled={aiState==="speaking"||aiState==="thinking"} style={{flex:1,background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:22,padding:"11px 16px",color:"#1A1208",fontSize:13,outline:"none"}}/>
                   <button onClick={sendText} disabled={!inputText.trim()||aiState==="speaking"||aiState==="thinking"} style={{background:"#FF6534",border:"none",borderRadius:"50%",width:44,height:44,color:"#fff",fontSize:18,cursor:"pointer",flexShrink:0,opacity:!inputText.trim()?0.5:1}}>up</button>
                 </div>
-                {speechOK&&<button onClick={()=>setUseText(false)} style={{background:"none",border:"none",color:"#363D5C",fontSize:11,cursor:"pointer",textDecoration:"underline"}}>Use voice instead</button>}
+                {speechOK&&<button onClick={()=>setUseText(false)} style={{background:"none",border:"none",color:"#C8B8A8",fontSize:11,cursor:"pointer",textDecoration:"underline"}}>Use voice instead</button>}
               </div>
             )}
             <button onClick={endCall} style={{width:"100%",background:"#FF3B30",border:"none",borderRadius:12,padding:14,color:"#fff",fontWeight:700,fontSize:15,cursor:"pointer",marginTop:8}}>End Call</button>
@@ -393,32 +393,32 @@ function SakshamChat({userPhone, userName, d, healthScore, onClose}){
   };
 
   return (
-    <div style={{position:"fixed",inset:0,zIndex:999,background:"#07080F",display:"flex",flexDirection:"column",overflow:"hidden"}}>
-      <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #1A2035",display:"flex",alignItems:"center",gap:12,flexShrink:0,background:"linear-gradient(180deg,#131825,#07080F)"}}>
-        <div style={{width:42,height:42,borderRadius:"50%",background:"linear-gradient(135deg,#C9A84C,#E8A020)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0,fontWeight:900,color:"#07080F",boxShadow:"0 4px 12px rgba(201,168,76,0.3)"}}>S</div>
+    <div style={{position:"fixed",inset:0,zIndex:999,background:"#F5F0E8",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+      <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #E8DDD0",display:"flex",alignItems:"center",gap:12,flexShrink:0,background:"linear-gradient(180deg,#FAF7F2,#F5F0E8)"}}>
+        <div style={{width:42,height:42,borderRadius:"50%",background:"linear-gradient(135deg,#C9A84C,#E8A020)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0,fontWeight:900,color:"#F5F0E8",boxShadow:"0 4px 12px rgba(201,168,76,0.3)"}}>S</div>
         <div style={{flex:1}}>
-          <div style={{fontWeight:800,fontSize:15,color:"#EDF1FF"}}>Saksham</div>
+          <div style={{fontWeight:800,fontSize:15,color:"#1A1208"}}>Saksham</div>
           <div style={{fontSize:11,color:"#10C9A0",marginTop:1}}>Founder - Will respond soon</div>
         </div>
-        <button onClick={onClose} style={{background:"#131825",border:"1px solid #1A2035",borderRadius:20,padding:"6px 14px",color:"#68788A",fontSize:12,fontWeight:600,cursor:"pointer"}}>Close</button>
+        <button onClick={onClose} style={{background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:20,padding:"6px 14px",color:"#68788A",fontSize:12,fontWeight:600,cursor:"pointer"}}>Close</button>
       </div>
       <div style={{flex:1,overflowY:"auto",padding:"16px 16px"}}>
         {messages.map(msg=>(
           <div key={msg.id} style={{display:"flex",justifyContent:msg.role==="user"?"flex-end":"flex-start",marginBottom:14}}>
-            {msg.role==="saksham"&&<div style={{width:30,height:30,borderRadius:"50%",background:"linear-gradient(135deg,#C9A84C,#E8A020)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,marginRight:8,flexShrink:0,alignSelf:"flex-end",color:"#07080F",fontWeight:900}}>S</div>}
+            {msg.role==="saksham"&&<div style={{width:30,height:30,borderRadius:"50%",background:"linear-gradient(135deg,#C9A84C,#E8A020)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,marginRight:8,flexShrink:0,alignSelf:"flex-end",color:"#F5F0E8",fontWeight:900}}>S</div>}
             <div style={{maxWidth:"78%"}}>
-              <div style={{padding:"12px 16px",borderRadius:msg.role==="user"?"18px 18px 4px 18px":"18px 18px 18px 4px",background:msg.role==="user"?"linear-gradient(135deg,#C9A84C,#E8A020)":"#131825",color:msg.role==="user"?"#07080F":"#EDF1FF",fontSize:13,lineHeight:1.7,border:msg.role==="user"?"none":"1px solid #1A2035",boxShadow:msg.role==="user"?"0 4px 16px rgba(201,168,76,0.2)":"none"}}>{msg.text}</div>
-              {msg.ts>1000&&<div style={{fontSize:10,color:"#2A3455",marginTop:4,textAlign:msg.role==="user"?"right":"left"}}>{timeStr(msg.ts)}</div>}
+              <div style={{padding:"12px 16px",borderRadius:msg.role==="user"?"18px 18px 4px 18px":"18px 18px 18px 4px",background:msg.role==="user"?"linear-gradient(135deg,#C9A84C,#E8A020)":"#FAF7F2",color:msg.role==="user"?"#F5F0E8":"#1A1208",fontSize:13,lineHeight:1.7,border:msg.role==="user"?"none":"1px solid #E8DDD0",boxShadow:msg.role==="user"?"0 4px 16px rgba(201,168,76,0.2)":"none"}}>{msg.text}</div>
+              {msg.ts>1000&&<div style={{fontSize:10,color:"#C8B8A8",marginTop:4,textAlign:msg.role==="user"?"right":"left"}}>{timeStr(msg.ts)}</div>}
             </div>
           </div>
         ))}
         {sending&&<div style={{textAlign:"left",padding:"8px 16px",fontSize:12,color:"#68788A"}}>Sending...</div>}
         <div ref={endRef}/>
       </div>
-      <div style={{padding:"12px 16px",paddingBottom:"calc(env(safe-area-inset-bottom, 0px) + 12px)",borderTop:"1px solid #1A2035",display:"flex",gap:10,flexShrink:0,background:"#131825"}}>
-        <input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&send()} placeholder="Message Saksham..." style={{flex:1,minWidth:0,background:"#0D1018",border:"1px solid #1A2035",borderRadius:24,padding:"12px 16px",color:"#EDF1FF",fontSize:14,outline:"none"}}/>
+      <div style={{padding:"12px 16px",paddingBottom:"calc(env(safe-area-inset-bottom, 0px) + 12px)",borderTop:"1px solid #E8DDD0",display:"flex",gap:10,flexShrink:0,background:"#FAF7F2"}}>
+        <input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&send()} placeholder="Message Saksham..." style={{flex:1,minWidth:0,background:"#FFFFFF",border:"1px solid #E8DDD0",borderRadius:24,padding:"12px 16px",color:"#1A1208",fontSize:14,outline:"none"}}/>
         <button onClick={send} disabled={sending||!input.trim()} style={{background:"linear-gradient(135deg,#C9A84C,#E8A020)",border:"none",borderRadius:"50%",width:46,height:46,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",opacity:sending||!input.trim()?0.4:1,flexShrink:0,boxShadow:"0 4px 12px rgba(201,168,76,0.3)"}}>
-          <span style={{color:"#07080F",fontSize:16,fontWeight:900}}>up</span>
+          <span style={{color:"#F5F0E8",fontSize:16,fontWeight:900}}>up</span>
         </button>
       </div>
     </div>
@@ -463,7 +463,7 @@ export default function App(){
   const [isPremium,setIsPremium]=useState(false);
   const [myStreaks,setMyStreaks]=useState([]);
   const [showPremium,setShowPremium]=useState(false);
-  const [challengeDone,setChallengeDone]=useState(false);
+  const [challengeDone,setChallengeDone]=useState(()=>localStorage.getItem('cd_'+new Date().toDateString())==='1');
   const [showHomePrompt,setShowHomePrompt]=useState(false);
   const [premiumScreen,setPremiumScreen]=useState(null);
   const [showFounderStory,setShowFounderStory]=useState(false);
@@ -541,7 +541,7 @@ export default function App(){
   useEffect(()=>{
     const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
     const isStandalone=window.navigator.standalone;
-    if(isIOS&&!isStandalone)setShowHomePrompt(true);
+    if(isIOS&&!isStandalone&&!localStorage.getItem('prompted'))setShowHomePrompt(true);
   },[]);
   useEffect(()=>{
     (async()=>{
@@ -942,7 +942,7 @@ export default function App(){
               <div style={{fontSize:18,fontWeight:800,marginBottom:8}}>Start your smoke-free journey</div>
               <div style={{color:C.sub,fontSize:13,lineHeight:1.7}}>Join thousands quitting with Saksham proven method. Track every second. Every rupee saved. Every milestone earned.</div>
             </div>
-            <button onClick={()=>{setIsSignIn(false);setAuthStep("phone");}} style={{width:"100%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:13,padding:15,color:"#07080F",fontWeight:800,fontSize:16,cursor:"pointer",marginBottom:10,marginTop:12,boxShadow:"0 4px 20px rgba(201,168,76,0.25)"}}>
+            <button onClick={()=>{setIsSignIn(false);setAuthStep("phone");}} style={{width:"100%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:13,padding:15,color:"#F5F0E8",fontWeight:800,fontSize:16,cursor:"pointer",marginBottom:10,marginTop:12,boxShadow:"0 4px 20px rgba(201,168,76,0.25)"}}>
               Create Account
             </button>
             <button onClick={()=>{setIsSignIn(true);setAuthStep("phone");}} style={{width:"100%",background:"transparent",border:"1.5px solid "+C.gold+"55",borderRadius:13,padding:14,color:C.gold,fontWeight:700,fontSize:15,cursor:"pointer",marginBottom:14}}>
@@ -1008,7 +1008,7 @@ export default function App(){
               ))}
             </div>
             {authError&&<div style={{color:C.accent,fontSize:12,marginBottom:10,fontWeight:600,textAlign:"center"}}>{authError}</div>}
-            <button onClick={verifyOTP} disabled={!allFilled} style={{width:"100%",background:C.teal,border:"none",borderRadius:13,padding:14,color:"#07081A",fontWeight:800,fontSize:15,cursor:"pointer",marginBottom:12,opacity:allFilled?1:0.5}}>
+            <button onClick={verifyOTP} disabled={!allFilled} style={{width:"100%",background:C.teal,border:"none",borderRadius:13,padding:14,color:"#F5F0E8",fontWeight:800,fontSize:15,cursor:"pointer",marginBottom:12,opacity:allFilled?1:0.5}}>
               Verify and Continue
             </button>
             <div style={{display:"flex",justifyContent:"space-between"}}>
@@ -1171,28 +1171,28 @@ export default function App(){
 
       {/* NRT overlay */}
       {premiumScreen==="nrt"&&(
-        <div style={{position:"absolute",inset:0,zIndex:999,background:"#07081A",display:"flex",flexDirection:"column",overflow:"hidden"}}>
-          <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #1C2040",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
-            <div><div style={{fontWeight:800,fontSize:15,color:"#F0EDF8"}}>NRT Step-Down Plan</div><div style={{fontSize:11,color:"#8090B0"}}>Saksham own protocol</div></div>
-            <button onClick={()=>setPremiumScreen(null)} style={{background:"#141730",border:"1px solid #1C2040",borderRadius:20,padding:"6px 14px",color:"#8090B0",fontSize:12,fontWeight:700,cursor:"pointer"}}>Close</button>
+        <div style={{position:"absolute",inset:0,zIndex:999,background:"#F5F0E8",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+          <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #E8DDD0",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
+            <div><div style={{fontWeight:800,fontSize:15,color:"#1A1208"}}>NRT Step-Down Plan</div><div style={{fontSize:11,color:"#786858"}}>Saksham own protocol</div></div>
+            <button onClick={()=>setPremiumScreen(null)} style={{background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:20,padding:"6px 14px",color:"#786858",fontSize:12,fontWeight:700,cursor:"pointer"}}>Close</button>
           </div>
           <div style={{flex:1,overflowY:"auto",padding:"20px 16px"}}>
             <div style={{background:"rgba(255,184,0,0.1)",border:"1px solid #FFB80033",borderRadius:14,padding:"16px",marginBottom:16}}>
               <div style={{fontSize:12,fontWeight:700,color:"#FFB800",marginBottom:12}}>Your smoking details</div>
-              <label style={{color:"#8090B0",fontSize:10,fontWeight:700,letterSpacing:"0.09em",textTransform:"uppercase",marginBottom:5,display:"block"}}>Cigarettes per day</label>
-              <input type="number" value={nrtCigsLocal} onChange={e=>setNrtCigsLocal(e.target.value)} min="1" max="80" style={{background:"#141730",border:"1px solid #1C2040",borderRadius:9,padding:"12px 13px",color:"#F0EDF8",fontSize:14,width:"100%",boxSizing:"border-box",outline:"none"}}/>
+              <label style={{color:"#786858",fontSize:10,fontWeight:700,letterSpacing:"0.09em",textTransform:"uppercase",marginBottom:5,display:"block"}}>Cigarettes per day</label>
+              <input type="number" value={nrtCigsLocal} onChange={e=>setNrtCigsLocal(e.target.value)} min="1" max="80" style={{background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:9,padding:"12px 13px",color:"#1A1208",fontSize:14,width:"100%",boxSizing:"border-box",outline:"none"}}/>
             </div>
-            <div style={{fontSize:11,color:"#8090B0",textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:12}}>Your personalized plan</div>
+            <div style={{fontSize:11,color:"#786858",textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:12}}>Your personalized plan</div>
             {nrtPlan.map((step,i)=>(
-              <div key={i} style={{background:"#0E1128",border:"1px solid #1C2040",borderRadius:14,padding:"16px 14px",marginBottom:10,borderLeft:"3px solid "+(i===0?"#FF6534":i===1?"#FFB800":"#00D9AA")}}>
-                <div style={{fontSize:10,color:"#363D5C",marginBottom:4}}>{step.week}</div>
+              <div key={i} style={{background:"#FFFFFF",border:"1px solid #E8DDD0",borderRadius:14,padding:"16px 14px",marginBottom:10,borderLeft:"3px solid "+(i===0?"#FF6534":i===1?"#FFB800":"#00D9AA")}}>
+                <div style={{fontSize:10,color:"#C8B8A8",marginBottom:4}}>{step.week}</div>
                 <div style={{fontWeight:800,fontSize:15,color:i===0?"#FF6534":i===1?"#FFB800":"#00D9AA",marginBottom:6}}>{step.patch}</div>
-                <div style={{fontSize:13,color:"#8090B0",lineHeight:1.6}}>{step.desc}</div>
+                <div style={{fontSize:13,color:"#786858",lineHeight:1.6}}>{step.desc}</div>
               </div>
             ))}
             <div style={{background:"rgba(139,92,246,0.1)",border:"1px solid #8B5CF633",borderRadius:14,padding:"16px",marginTop:4}}>
               <div style={{fontSize:12,fontWeight:700,color:"#8B5CF6",marginBottom:6}}>Saksham note</div>
-              <div style={{fontSize:13,color:"#8090B0",lineHeight:1.7}}>The patch does the physical work. Your real job is breaking the habit loops. Saksham went cold turkey from Day 8 - but this is optional. If you feel strong, skip the patch and go cold turkey from Day 1.</div>
+              <div style={{fontSize:13,color:"#786858",lineHeight:1.7}}>The patch does the physical work. Your real job is breaking the habit loops. Saksham went cold turkey from Day 8 - but this is optional. If you feel strong, skip the patch and go cold turkey from Day 1.</div>
             </div>
           </div>
         </div>
@@ -1200,35 +1200,35 @@ export default function App(){
 
       {/* Founder story overlay */}
       {showFounderStory&&(
-        <div style={{position:"fixed",inset:0,zIndex:997,background:"#07081A",display:"flex",flexDirection:"column",overflow:"hidden"}}>
-          <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #1C2040",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
-            <div><div style={{fontWeight:800,fontSize:15,color:"#F0EDF8"}}>Saksham Story</div><div style={{fontSize:11,color:"#8090B0"}}>@ssakshamchauhan</div></div>
-            <button onClick={()=>setShowFounderStory(false)} style={{background:"#141730",border:"1px solid #1C2040",borderRadius:20,padding:"6px 14px",color:"#8090B0",fontSize:12,fontWeight:700,cursor:"pointer"}}>Close</button>
+        <div style={{position:"fixed",inset:0,zIndex:997,background:"#F5F0E8",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+          <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #E8DDD0",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
+            <div><div style={{fontWeight:800,fontSize:15,color:"#1A1208"}}>Saksham Story</div><div style={{fontSize:11,color:"#786858"}}>@ssakshamchauhan</div></div>
+            <button onClick={()=>setShowFounderStory(false)} style={{background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:20,padding:"6px 14px",color:"#786858",fontSize:12,fontWeight:700,cursor:"pointer"}}>Close</button>
           </div>
           <div style={{flex:1,overflowY:"auto",padding:"20px 16px"}}>
             <div style={{background:"linear-gradient(135deg,rgba(255,101,52,0.08),rgba(0,217,170,0.08))",border:"1px solid rgba(0,217,170,0.2)",borderRadius:16,padding:"20px 16px",marginBottom:20}}>
               <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:14}}>
                 <div style={{width:48,height:48,borderRadius:"50%",background:"linear-gradient(135deg,#FF6534,#00D9AA)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>🧑</div>
-                <div><div style={{fontWeight:800,fontSize:15,color:"#F0EDF8"}}>Saksham Singh Chauhan</div><div style={{color:"#8090B0",fontSize:12,marginTop:2}}>Founder - Delhi</div></div>
+                <div><div style={{fontWeight:800,fontSize:15,color:"#1A1208"}}>Saksham Singh Chauhan</div><div style={{color:"#786858",fontSize:12,marginTop:2}}>Founder - Delhi</div></div>
               </div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
                 {[{v:String(founderDays),l:"days quit"},{v:"40",l:"cigs/day before"},{v:"12 yrs",l:"he smoked"}].map(({v,l})=>(
-                  <div key={l} style={{textAlign:"center",background:"#0E1128",borderRadius:10,padding:"10px 6px"}}>
+                  <div key={l} style={{textAlign:"center",background:"#FFFFFF",borderRadius:10,padding:"10px 6px"}}>
                     <div style={{fontSize:16,fontWeight:900,color:"#00D9AA"}}>{v}</div>
-                    <div style={{fontSize:9,color:"#8090B0",marginTop:2}}>{l}</div>
+                    <div style={{fontSize:9,color:"#786858",marginTop:2}}>{l}</div>
                   </div>
                 ))}
               </div>
               <div style={{marginTop:12,padding:"10px 12px",background:"rgba(255,184,0,0.08)",borderRadius:10,borderLeft:"3px solid #FFB800"}}>
                 <div style={{fontSize:12,color:"#FFB800",fontWeight:700}}>Oct 31, 2024 - Last cigarette</div>
-                <div style={{fontSize:11,color:"#8090B0",marginTop:2}}>219K views - 4,381 likes - 1,807 shares</div>
+                <div style={{fontSize:11,color:"#786858",marginTop:2}}>219K views - 4,381 likes - 1,807 shares</div>
               </div>
             </div>
             {FOUNDER_STORY.map((ch,i)=>(
-              <div key={i} style={{background:"#0E1128",border:"1px solid #1C2040",borderRadius:14,padding:"16px 14px",marginBottom:14,borderColor:ch.color+"33"}}>
+              <div key={i} style={{background:"#FFFFFF",border:"1px solid #E8DDD0",borderRadius:14,padding:"16px 14px",marginBottom:14,borderColor:ch.color+"33"}}>
                 <div style={{fontSize:9,fontWeight:800,letterSpacing:"0.1em",color:ch.color,textTransform:"uppercase",marginBottom:8}}>{ch.label}</div>
-                <div style={{fontSize:16,fontWeight:800,color:"#F0EDF8",marginBottom:10,lineHeight:1.4}}>{ch.heading}</div>
-                <div style={{fontSize:13,color:"#8090B0",lineHeight:1.75,whiteSpace:"pre-line"}}>{ch.body}</div>
+                <div style={{fontSize:16,fontWeight:800,color:"#1A1208",marginBottom:10,lineHeight:1.4}}>{ch.heading}</div>
+                <div style={{fontSize:13,color:"#786858",lineHeight:1.75,whiteSpace:"pre-line"}}>{ch.body}</div>
               </div>
             ))}
           </div>
@@ -1259,7 +1259,7 @@ export default function App(){
                 <div style={{fontSize:13,color:C.text}}>Tap <strong>Add</strong> — done. Unsmoke is now on your home screen.</div>
               </div>
             </div>
-            <button onClick={()=>setShowHomePrompt(false)} style={{width:"100%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:14,padding:14,color:"#fff",fontWeight:800,fontSize:15,cursor:"pointer",marginBottom:8}}>Got it!</button>
+            <button onClick={()=>{setShowHomePrompt(false);localStorage.setItem('prompted','1');}} style={{width:"100%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:14,padding:14,color:"#fff",fontWeight:800,fontSize:15,cursor:"pointer",marginBottom:8}}>Got it!</button>
             <button onClick={()=>setShowHomePrompt(false)} style={{width:"100%",background:"none",border:"none",color:C.muted,fontSize:13,cursor:"pointer"}}>Continue in browser</button>
           </div>
         </div>
@@ -1302,8 +1302,8 @@ export default function App(){
       {/* Snap viewer */}
       {viewingSnap&&(
         <div style={{position:"fixed",inset:0,zIndex:1000,background:"#000",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:24}}>
-          <div style={{background:"linear-gradient(160deg,#0E1128,#1A0E28)",border:"1px solid "+C.purple+"44",borderRadius:20,width:"100%",maxWidth:360,overflow:"hidden"}}>
-            {viewingSnap.photo&&<div style={{position:"relative",width:"100%",paddingBottom:"60%",overflow:"hidden"}}><img src={viewingSnap.photo} alt="snap" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}}/><div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom,transparent 50%,#0E1128 100%)"}}/><div style={{position:"absolute",bottom:12,left:0,right:0,textAlign:"center",color:"#fff",fontWeight:800,fontSize:18}}>{viewingSnap.senderName}</div></div>}
+          <div style={{background:"linear-gradient(160deg,#F5F0E8,#EDE5D8)",border:"1px solid "+C.purple+"44",borderRadius:20,width:"100%",maxWidth:360,overflow:"hidden"}}>
+            {viewingSnap.photo&&<div style={{position:"relative",width:"100%",paddingBottom:"60%",overflow:"hidden"}}><img src={viewingSnap.photo} alt="snap" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}}/><div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom,transparent 50%,#F5F0E8 100%)"}}/><div style={{position:"absolute",bottom:12,left:0,right:0,textAlign:"center",color:"#fff",fontWeight:800,fontSize:18}}>{viewingSnap.senderName}</div></div>}
             <div style={{padding:"20px 20px 24px",textAlign:"center"}}>
               {!viewingSnap.photo&&<div style={{fontWeight:800,fontSize:18,marginBottom:16}}>{viewingSnap.senderName}</div>}
               <div style={{fontSize:60,fontWeight:900,color:C.accent,lineHeight:1}}>{viewingSnap.quitDays}</div>
@@ -1317,7 +1317,7 @@ export default function App(){
                 ))}
               </div>
               {viewingSnap.message&&<div style={{fontSize:13,color:C.text,fontStyle:"italic",background:"rgba(255,255,255,0.04)",borderRadius:10,padding:"10px 14px",marginBottom:12}}>{viewingSnap.message}</div>}
-              <button onClick={()=>{handleSnapViewed();setViewingSnap(null);}} style={{background:C.teal,border:"none",borderRadius:11,padding:"12px 32px",fontWeight:700,fontSize:14,cursor:"pointer",color:"#07081A"}}>Done</button>
+              <button onClick={()=>{handleSnapViewed();setViewingSnap(null);}} style={{background:C.teal,border:"none",borderRadius:11,padding:"12px 32px",fontWeight:700,fontSize:14,cursor:"pointer",color:"#F5F0E8"}}>Done</button>
             </div>
           </div>
         </div>
@@ -1356,7 +1356,7 @@ export default function App(){
         </div>
         <div style={{display:"flex",alignItems:"center",gap:6}}>
           <div style={{fontSize:11,fontWeight:700,color:C.teal}}>🔥 {streak}d</div>
-          <button onClick={()=>setShowPremium(true)} style={{background:isPremium?"linear-gradient(135deg,"+C.gold+","+C.amber+")":C.amberFade,border:"1px solid "+C.gold+"44",borderRadius:20,padding:"5px 10px",color:isPremium?"#07081A":C.gold,fontSize:11,fontWeight:800,cursor:"pointer"}}>
+          <button onClick={()=>setShowPremium(true)} style={{background:isPremium?"linear-gradient(135deg,"+C.gold+","+C.amber+")":C.amberFade,border:"1px solid "+C.gold+"44",borderRadius:20,padding:"5px 10px",color:isPremium?"#F5F0E8":C.gold,fontSize:11,fontWeight:800,cursor:"pointer"}}>
             {isPremium?"👑 PRO":"👑"}
           </button>
         </div>
@@ -1367,7 +1367,7 @@ export default function App(){
 
         {tab==="home"&&(
           <div style={{padding:"16px 14px"}}>
-            <div style={crd({marginBottom:12,background:"linear-gradient(160deg,#0E1128,#141830)"})}>
+            <div style={crd({marginBottom:12,background:"linear-gradient(160deg,#F5F0E8,#FAF7F2)"})}>
               <div style={{display:"flex",alignItems:"center",gap:16}}>
                 <ScoreRing score={healthScore}/>
                 <div style={{flex:1}}>
@@ -1564,7 +1564,7 @@ export default function App(){
                 const isDone=elMin>=ms.min,isNext=nextMS===ms;
                 return (
                   <div key={i} style={{display:"flex",gap:12,marginBottom:12,position:"relative"}}>
-                    <div style={{width:40,height:40,borderRadius:"50%",background:isDone?C.teal:C.surface,border:"2px solid "+(isDone?C.teal:C.border),display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,zIndex:1,fontSize:13,color:isDone?"#07081A":"inherit",fontWeight:900}}>{isDone?"v":"o"}</div>
+                    <div style={{width:40,height:40,borderRadius:"50%",background:isDone?C.teal:C.surface,border:"2px solid "+(isDone?C.teal:C.border),display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,zIndex:1,fontSize:13,color:isDone?"#F5F0E8":"inherit",fontWeight:900}}>{isDone?"v":"o"}</div>
                     <div style={crd({flex:1,padding:"11px 13px",borderColor:isNext?C.teal+"55":isDone?C.teal+"22":C.border,background:isNext?"rgba(0,217,170,0.05)":C.surface})}>
                       <div style={{fontWeight:700,fontSize:13,color:isDone?C.text:C.sub}}>{ms.label}</div>
                       <div style={{color:C.muted,fontSize:10,marginTop:2}}>{msLabel(ms.min)}</div>
@@ -1662,90 +1662,7 @@ export default function App(){
           </div>
         )}
 
-        {tab==="friends"&&(
-          <div style={{padding:"16px 14px"}}>
-            <div style={{fontSize:18,fontWeight:800,marginBottom:3}}>Streak Snaps</div>
-            <div style={{color:C.sub,fontSize:13,marginBottom:16}}>Send your smoke-free streak to friends. One-time view. Build a streak together.</div>
-            <div style={crd({marginBottom:12})}>
-              <div style={{fontWeight:700,fontSize:15,marginBottom:4}}>Send a Streak Snap</div>
-              <div style={{color:C.sub,fontSize:12,marginBottom:12}}>Create a one-time snap. Friend opens it once, then it is gone.</div>
-              {mySentSnap&&!mySentSnap.viewed?(
-                <div>
-                  <div style={{background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:12,padding:16,textAlign:"center",marginBottom:10}}>
-                    <div style={{fontSize:11,color:C.sub,marginBottom:6}}>Share this code with a friend</div>
-                    <div style={{fontSize:32,fontWeight:900,color:C.accent,letterSpacing:"0.15em"}}>{mySentSnap.code}</div>
-                  </div>
-                  <button onClick={copyCode} style={{background:copied?C.tealFade:C.accentFade,border:"1px solid "+(copied?C.teal:C.accent),borderRadius:10,padding:12,width:"100%",color:copied?C.teal:C.accent,fontWeight:700,fontSize:13,cursor:"pointer",marginBottom:8}}>
-                    {copied?"Copied! Send it to them":"Copy code and message"}
-                  </button>
-                  <button onClick={async()=>{await FB.del("snaps/"+mySentSnap.code);setMySentSnap(null);saveUD({mySnapCode:null});}} style={{background:"none",border:"none",color:C.muted,fontSize:11,cursor:"pointer",width:"100%"}}>Create new snap instead</button>
-                </div>
-              ):mySentSnap&&mySentSnap.viewed?(
-                <div>
-                  <div style={{background:C.tealFade,border:"1px solid "+C.teal+"44",borderRadius:12,padding:14,textAlign:"center",marginBottom:10}}>
-                    <div style={{fontWeight:700,fontSize:13,color:C.teal}}>{mySentSnap.viewerName||"Your friend"} opened your snap!</div>
-                  </div>
-                  <Btn onClick={()=>{setMySentSnap(null);saveUD({mySnapCode:null});}}>Send another snap</Btn>
-                </div>
-              ):(
-                <div>
-                  {!showCamera&&!snapPhoto&&(
-                    <div style={{marginBottom:12}}>
-                      <button onClick={startCamera} style={{width:"100%",background:C.purpleFade,border:"1px dashed "+C.purple+"55",borderRadius:12,padding:16,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:6}}>
-                        <span style={{fontSize:28}}>📸</span>
-                        <span style={{color:C.text,fontWeight:700,fontSize:13}}>Take a selfie with your snap</span>
-                        <span style={{color:C.muted,fontSize:11}}>Optional</span>
-                      </button>
-                      {cameraErr&&<div style={{fontSize:12,color:C.accent,marginTop:6,textAlign:"center"}}>{cameraErr}</div>}
-                    </div>
-                  )}
-                  {showCamera&&(
-                    <div style={{marginBottom:12}}>
-                      <div style={{position:"relative",width:"100%",paddingBottom:"100%",borderRadius:16,overflow:"hidden",background:"#000"}}>
-                        <video ref={videoRef} autoPlay playsInline muted style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",transform:cameraFacing==="user"?"scaleX(-1)":"none"}}/>
-                        <button onClick={()=>{setCameraFacing(f=>f==="user"?"environment":"user");stopCamera();setTimeout(startCamera,100);}} style={{position:"absolute",top:10,right:50,background:"rgba(0,0,0,0.5)",border:"none",borderRadius:20,padding:"6px 10px",color:"#fff",fontSize:14,cursor:"pointer"}}>flip</button>
-                        <button onClick={stopCamera} style={{position:"absolute",top:10,right:10,background:"rgba(0,0,0,0.5)",border:"none",borderRadius:20,padding:"6px 10px",color:"#fff",fontSize:12,cursor:"pointer"}}>x</button>
-                      </div>
-                      <div style={{display:"flex",gap:8,marginTop:10}}>
-                        <button onClick={capturePhoto} style={{flex:2,background:"linear-gradient(135deg,"+C.accent+","+C.purple+")",border:"none",borderRadius:12,padding:14,color:"#fff",fontWeight:800,fontSize:15,cursor:"pointer"}}>Capture</button>
-                        <button onClick={stopCamera} style={{flex:1,background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:12,padding:14,color:C.sub,fontWeight:700,fontSize:13,cursor:"pointer"}}>Skip</button>
-                      </div>
-                    </div>
-                  )}
-                  {snapPhoto&&(
-                    <div style={{marginBottom:12,position:"relative"}}>
-                      <img src={snapPhoto} alt="snap" style={{width:"100%",borderRadius:12,display:"block"}}/>
-                      <button onClick={()=>setSnapPhoto(null)} style={{position:"absolute",bottom:8,right:8,background:"rgba(0,0,0,0.6)",border:"none",borderRadius:20,padding:"5px 12px",color:"#fff",fontSize:12,fontWeight:700,cursor:"pointer"}}>Retake</button>
-                    </div>
-                  )}
-                  <textarea placeholder="Add a message (optional)" value={snapMsg} onChange={e=>setSnapMsg(e.target.value)} style={Object.assign({},inputStyle,{minHeight:48,resize:"none",marginBottom:10})} maxLength={80}/>
-                  <Btn onClick={sendSnap} disabled={sendingSnap||showCamera}>{sendingSnap?"Creating snap...":"Create Snap"}</Btn>
-                </div>
-              )}
-            </div>
-            <div style={crd({marginBottom:12})}>
-              <div style={{fontWeight:700,fontSize:15,marginBottom:4}}>Open a Snap</div>
-              <div style={{display:"flex",gap:8,marginBottom:8}}>
-                <input style={Object.assign({},inputStyle,{flex:1,textTransform:"uppercase",letterSpacing:"0.12em",fontWeight:700,fontSize:16})} placeholder="ABC123" value={codeInput} onChange={e=>setCodeInput(e.target.value.toUpperCase())} maxLength={8}/>
-                <button onClick={openCode} style={{background:C.accent,color:"#fff",border:"none",borderRadius:11,padding:"12px 18px",fontWeight:700,fontSize:14,cursor:"pointer",flexShrink:0}}>Open</button>
-              </div>
-              {snapStatus&&<div style={{fontSize:12,color:C.teal,fontWeight:600,padding:"8px 0"}}>{snapStatus}</div>}
-            </div>
-            {myStreaks.length>0&&(
-              <div style={crd()}>
-                <div style={{fontSize:11,color:C.sub,textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:12}}>Your streaks</div>
-                {myStreaks.sort((a,b)=>b.count-a.count).map((s,i)=>(
-                  <div key={s.friendPhone||i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 0",borderBottom:i<myStreaks.length-1?"1px solid "+C.border:"none"}}>
-                    <div style={{fontWeight:700,fontSize:14}}>{s.friendName}</div>
-                    <div style={{display:"flex",alignItems:"center",gap:6,background:C.amberFade,border:"1px solid "+C.amber+"44",borderRadius:20,padding:"5px 12px"}}>
-                      <span style={{fontSize:16}}>🔥</span><span style={{fontWeight:900,fontSize:16,color:C.amber}}>{s.count}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
+}
 
       </div>
 
@@ -1760,51 +1677,51 @@ export default function App(){
       </div>
 
       {showPremium&&(
-        <div style={{position:"fixed",inset:0,zIndex:998,background:"#07081A",display:"flex",flexDirection:"column",overflow:"hidden"}}>
-          <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #1C2040",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
-            <div><div style={{fontWeight:900,fontSize:16,color:"#FFD700"}}>👑 Unsmoke Premium</div><div style={{fontSize:11,color:"#8090B0",marginTop:1}}>Rs 299/month</div></div>
-            <button onClick={()=>setShowPremium(false)} style={{background:"#141730",border:"1px solid #1C2040",borderRadius:20,padding:"6px 14px",color:"#8090B0",fontSize:12,fontWeight:700,cursor:"pointer"}}>Close</button>
+        <div style={{position:"fixed",inset:0,zIndex:998,background:"#F5F0E8",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+          <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #E8DDD0",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
+            <div><div style={{fontWeight:900,fontSize:16,color:"#FFD700"}}>👑 Unsmoke Premium</div><div style={{fontSize:11,color:"#786858",marginTop:1}}>Rs 299/month</div></div>
+            <button onClick={()=>setShowPremium(false)} style={{background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:20,padding:"6px 14px",color:"#786858",fontSize:12,fontWeight:700,cursor:"pointer"}}>Close</button>
           </div>
           <div style={{flex:1,overflowY:"auto",padding:"20px 16px"}}>
             <div style={{textAlign:"center",marginBottom:24}}>
               <div style={{fontSize:40,marginBottom:8}}>👑</div>
               <div style={{fontSize:20,fontWeight:900,color:"#FFD700",marginBottom:4}}>Unlock everything.</div>
-              <div style={{fontSize:13,color:"#8090B0",lineHeight:1.6}}>Features no other quit-smoking app offers.</div>
+              <div style={{fontSize:13,color:"#786858",lineHeight:1.6}}>Features no other quit-smoking app offers.</div>
             </div>
             <div style={{fontSize:10,color:"#00D9AA",fontWeight:800,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:10}}>Voice Calls</div>
             <div style={{background:"linear-gradient(135deg,rgba(0,217,170,0.08),rgba(139,92,246,0.08))",border:"1px solid rgba(0,217,170,0.25)",borderRadius:14,padding:"16px 14px",marginBottom:10}}>
-              <div style={{fontWeight:800,fontSize:14,color:"#F0EDF8",marginBottom:4}}>📞 AI Voice Calls</div>
-              <div style={{color:"#8090B0",fontSize:12,marginBottom:12}}>Real phone call UI. Speaks Indian English or Hindi. Powered by Claude. No other quit app offers this.</div>
+              <div style={{fontWeight:800,fontSize:14,color:"#1A1208",marginBottom:4}}>📞 AI Voice Calls</div>
+              <div style={{color:"#786858",fontSize:12,marginBottom:12}}>Real phone call UI. Speaks Indian English or Hindi. Powered by Claude. No other quit app offers this.</div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
                 <a href="tel:+918950695379" style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,background:"rgba(201,168,76,0.15)",border:"1px solid rgba(201,168,76,0.3)",borderRadius:10,padding:"10px 8px",color:"#C9A84C",fontWeight:700,fontSize:12,textDecoration:"none"}}>📞 Call Saksham</a>
               </div>
             </div>
             <div style={{fontSize:10,color:"#00D9AA",fontWeight:800,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:10,marginTop:6}}>Chat</div>
             {[{icon:"🤖",color:"#00D9AA",title:"AI Quit Coach",desc:"24/7 chat that knows your journey. "+d+" days, score "+healthScore+".",screen:"coach"},{icon:"S",color:"#C9A84C",title:"Chat with Saksham",desc:"Message the founder directly. He reads and responds personally.",screen:"saksham"},{icon:"💊",color:"#FFB800",title:"NRT Step-Down Calculator",desc:"Personalized nicotine patch plan based on Saksham own protocol.",screen:"nrt"}].map(({icon,color,title,desc,screen})=>(
-              <div key={title} onClick={()=>{if(isPremium){setShowPremium(false);setPremiumScreen(screen);}}} style={{background:"#0E1128",border:"1px solid #1C2040",borderRadius:14,padding:"16px 14px",marginBottom:10,cursor:isPremium?"pointer":"default"}}>
+              <div key={title} onClick={()=>{if(isPremium){setShowPremium(false);setPremiumScreen(screen);}}} style={{background:"#FFFFFF",border:"1px solid #E8DDD0",borderRadius:14,padding:"16px 14px",marginBottom:10,cursor:isPremium?"pointer":"default"}}>
                 <div style={{display:"flex",alignItems:"center",gap:12}}>
                   <div style={{width:44,height:44,borderRadius:12,background:color+"22",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>{icon}</div>
-                  <div style={{flex:1}}><div style={{fontWeight:800,fontSize:14,color:"#F0EDF8"}}>{title}</div><div style={{color:"#8090B0",fontSize:12,marginTop:2}}>{desc}</div></div>
+                  <div style={{flex:1}}><div style={{fontWeight:800,fontSize:14,color:"#1A1208"}}>{title}</div><div style={{color:"#786858",fontSize:12,marginTop:2}}>{desc}</div></div>
                   {isPremium&&<span style={{color,fontSize:18}}>go</span>}
                 </div>
               </div>
             ))}
-            <div style={{fontSize:10,color:"#363D5C",fontWeight:800,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:10,marginTop:6}}>Coming soon</div>
+            <div style={{fontSize:10,color:"#C8B8A8",fontWeight:800,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:10,marginTop:6}}>Coming soon</div>
             {[{icon:"🔮",title:"Craving Prediction Engine",desc:"AI warns you 30 min before your next high-risk window."},{icon:"🤝",title:"Accountability Partner",desc:"Get paired with a quitter at your exact day count."},{icon:"📜",title:"Milestone Certificates",desc:"Download real smoke-free certificates at 1 week, 1 month, 1 year."},{icon:"🧬",title:"Personalized DNA Recovery",desc:"Maps exactly what your body is repairing, based on how long you smoked."}].map(({icon,title,desc})=>(
-              <div key={title} style={{background:"#0E1128",border:"1px solid #1C2040",borderRadius:14,padding:"14px",marginBottom:8,opacity:0.6,display:"flex",gap:12,alignItems:"flex-start"}}>
+              <div key={title} style={{background:"#FFFFFF",border:"1px solid #E8DDD0",borderRadius:14,padding:"14px",marginBottom:8,opacity:0.6,display:"flex",gap:12,alignItems:"flex-start"}}>
                 <span style={{fontSize:20,flexShrink:0}}>{icon}</span>
-                <div><div style={{display:"flex",alignItems:"center",gap:8,marginBottom:3}}><div style={{fontWeight:700,fontSize:13,color:"#F0EDF8"}}>{title}</div><span style={{fontSize:9,color:"#363D5C",background:"#141730",padding:"2px 7px",borderRadius:20}}>SOON</span></div><div style={{color:"#8090B0",fontSize:12}}>{desc}</div></div>
+                <div><div style={{display:"flex",alignItems:"center",gap:8,marginBottom:3}}><div style={{fontWeight:700,fontSize:13,color:"#1A1208"}}>{title}</div><span style={{fontSize:9,color:"#C8B8A8",background:"#FAF7F2",padding:"2px 7px",borderRadius:20}}>SOON</span></div><div style={{color:"#786858",fontSize:12}}>{desc}</div></div>
               </div>
             ))}
             <div style={{marginTop:12,marginBottom:20}}>
               {!isPremium?(
                 <div>
                   <div style={{background:"rgba(255,184,0,0.1)",border:"1px solid rgba(255,215,0,0.3)",borderRadius:14,padding:"20px 16px",marginBottom:12,textAlign:"center"}}>
-                    <div style={{fontSize:28,fontWeight:900,color:"#FFD700",marginBottom:4}}>Rs 299<span style={{fontSize:14,fontWeight:400,color:"#8090B0"}}>/month</span></div>
-                    <div style={{fontSize:12,color:"#8090B0"}}>or Rs 1,999/year — save 44%</div>
+                    <div style={{fontSize:28,fontWeight:900,color:"#FFD700",marginBottom:4}}>Rs 299<span style={{fontSize:14,fontWeight:400,color:"#786858"}}>/month</span></div>
+                    <div style={{fontSize:12,color:"#786858"}}>or Rs 1,999/year — save 44%</div>
                   </div>
-                  <button onClick={unlockPremium} style={{background:"linear-gradient(135deg,#FFD700,#FFB800)",color:"#07081A",border:"none",borderRadius:12,padding:14,fontWeight:900,fontSize:15,cursor:"pointer",width:"100%",marginBottom:8}}>👑 Unlock Premium</button>
-                  <div style={{textAlign:"center",fontSize:11,color:"#363D5C"}}>Demo mode: tap to unlock all features</div>
+                  <button onClick={unlockPremium} style={{background:"linear-gradient(135deg,#FFD700,#FFB800)",color:"#F5F0E8",border:"none",borderRadius:12,padding:14,fontWeight:900,fontSize:15,cursor:"pointer",width:"100%",marginBottom:8}}>👑 Unlock Premium</button>
+                  <div style={{textAlign:"center",fontSize:11,color:"#C8B8A8"}}>Demo mode: tap to unlock all features</div>
                 </div>
               ):(
                 <div style={{background:"rgba(0,217,170,0.1)",border:"1px solid rgba(0,217,170,0.3)",borderRadius:14,padding:16,textAlign:"center"}}>
