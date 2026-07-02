@@ -1,17 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 
 const C = {
-  bg:"#07080F", surface:"#0D1018", surfaceHi:"#131825",
-  border:"#1A2035", gold:"#C9A84C", goldHi:"#E8C96A",
-  goldFade:"rgba(201,168,76,0.10)",
-  emerald:"#10C9A0", emeraldFade:"rgba(16,201,160,0.08)",
-  ruby:"#E85D75", rubyFade:"rgba(232,93,117,0.08)",
-  orchid:"#9B72CF", orchidFade:"rgba(155,114,207,0.08)",
-  amber:"#E8A020", amberFade:"rgba(232,160,32,0.08)",
-  text:"#EDF1FF", sub:"#68788A", muted:"#1E2840",
-  accent:"#C9A84C", accentFade:"rgba(201,168,76,0.10)",
-  teal:"#10C9A0", tealFade:"rgba(16,201,160,0.08)",
-  purple:"#9B72CF", purpleFade:"rgba(155,114,207,0.08)",
+  bg:"#F5F0E8", surface:"#FFFFFF", surfaceHi:"#FAF7F2",
+  border:"#E8DDD0", gold:"#A0720A", goldHi:"#C9921A",
+  goldFade:"rgba(160,114,10,0.08)",
+  emerald:"#0A8A6A", emeraldFade:"rgba(10,138,106,0.08)",
+  ruby:"#C03050", rubyFade:"rgba(192,48,80,0.08)",
+  orchid:"#7050A8", orchidFade:"rgba(112,80,168,0.08)",
+  amber:"#B87000", amberFade:"rgba(184,112,0,0.08)",
+  text:"#1A1208", sub:"#786858", muted:"#C8B8A8",
+  accent:"#A0720A", accentFade:"rgba(160,114,10,0.08)",
+  teal:"#0A8A6A", tealFade:"rgba(10,138,106,0.08)",
+  purple:"#7050A8", purpleFade:"rgba(112,80,168,0.08)",
 };
 
 const pad = n => String(n).padStart(2,"0");
@@ -463,6 +463,8 @@ export default function App(){
   const [isPremium,setIsPremium]=useState(false);
   const [myStreaks,setMyStreaks]=useState([]);
   const [showPremium,setShowPremium]=useState(false);
+  const [challengeDone,setChallengeDone]=useState(false);
+  const [showHomePrompt,setShowHomePrompt]=useState(false);
   const [premiumScreen,setPremiumScreen]=useState(null);
   const [showFounderStory,setShowFounderStory]=useState(false);
   const [nrtCigsLocal,setNrtCigsLocal]=useState("20");
@@ -536,6 +538,11 @@ export default function App(){
   const QUOTES=["Quitting is not about willpower. It is about changing how you see cigarettes.","Every minute without one is your lungs quietly thanking you.","The urge to smoke is a reflex, not a need. Watch it pass.","You are not giving something up. You are getting everything back.","A craving is proof your brain is rewiring. It is working.","The hardest part is believing it is hard. It gets easier by the hour."];
   const founderDays=Math.floor((now-FOUNDER_QUIT_TS)/86400000);
 
+  useEffect(()=>{
+    const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isStandalone=window.navigator.standalone;
+    if(isIOS&&!isStandalone)setShowHomePrompt(true);
+  },[]);
   useEffect(()=>{
     (async()=>{
       const auth=await session.get("uns9-session");
@@ -831,6 +838,75 @@ export default function App(){
   const nrtPlan=(()=>{const c=parseFloat(nrtCigsLocal)||20,s1=c>=20?21:c>=10?14:7;return [{week:"Week 1-"+Math.ceil(s1/7),patch:c>=20?"21mg patch":c>=10?"14mg patch":"7mg patch",desc:"Full replacement. Match your current nicotine intake."},{week:"Week "+Math.ceil(s1/7+1)+"-"+Math.ceil(s1/7+2),patch:c>=20?"14mg patch":"7mg patch",desc:"Step down. Your baseline need is dropping."},{week:"Week "+Math.ceil(s1/7+3)+"+",patch:c>=20?"7mg patch":"None",desc:c>=20?"Final step. Wean off completely.":"You are done with NRT. Day 8: go cold turkey."}];})();
 
   const outerWrap={background:C.bg,minHeight:"100dvh",display:"flex",justifyContent:"center"};
+
+  const EXERCISES=[
+    {day:"Monday",theme:"Morning Mobility",duration:"15 min",moves:[
+      {name:"Neck Rolls",reps:"10 each side",why:"Releases tension from sleep"},
+      {name:"Shoulder Rolls",reps:"15 circles",why:"Opens chest tightened by smoking"},
+      {name:"Hip Circles",reps:"10 each side",why:"Wakes up core and spine"},
+      {name:"Standing Forward Fold",reps:"Hold 30s x 3",why:"Calms nervous system, reduces craving anxiety"},
+      {name:"Deep Diaphragmatic Breathing",reps:"5 min",why:"Rebuilds lung capacity post-smoking"},
+    ]},
+    {day:"Tuesday",theme:"Cardio Burst",duration:"15 min",moves:[
+      {name:"Jumping Jacks",reps:"3 sets of 30s",why:"Releases endorphins that replace nicotine reward"},
+      {name:"High Knees",reps:"3 sets of 20s",why:"Boosts dopamine naturally"},
+      {name:"Mountain Climbers",reps:"3 sets of 15",why:"Full body activation, burns restlessness"},
+      {name:"Rest Walk in Place",reps:"1 min between sets",why:"Active recovery, keeps momentum"},
+    ]},
+    {day:"Wednesday",theme:"Upper Body",duration:"15 min",moves:[
+      {name:"Push-Ups",reps:"3 sets of 8-12",why:"Builds strength, occupies the hands"},
+      {name:"Tricep Dips on Chair",reps:"3 sets of 10",why:"Arms that held cigarettes now lift weight"},
+      {name:"Arm Circles",reps:"30s forward, 30s back",why:"Shoulder mobility and blood flow"},
+      {name:"Wall Push-Ups",reps:"2 sets of 15",why:"Gentler option, same benefit"},
+    ]},
+    {day:"Thursday",theme:"Core Strength",duration:"15 min",moves:[
+      {name:"Plank Hold",reps:"3 x 20-40 seconds",why:"Core strength improves posture damaged by smoking"},
+      {name:"Crunches",reps:"3 sets of 15",why:"Activates deep breathing muscles"},
+      {name:"Leg Raises",reps:"3 sets of 10",why:"Lower core, stabilizes breathing"},
+      {name:"Bicycle Crunches",reps:"2 sets of 20",why:"Coordination that replaces smoking rituals"},
+    ]},
+    {day:"Friday",theme:"Lower Body",duration:"15 min",moves:[
+      {name:"Squats",reps:"3 sets of 15",why:"Largest muscle group, maximum endorphin release"},
+      {name:"Reverse Lunges",reps:"3 sets of 10 each leg",why:"Balance and focus, counters brain fog"},
+      {name:"Glute Bridges",reps:"3 sets of 15",why:"Activates hip flexors tightened from sitting and smoking"},
+      {name:"Calf Raises",reps:"3 sets of 20",why:"Improves circulation that nicotine had restricted"},
+    ]},
+    {day:"Saturday",theme:"Yoga Flow",duration:"15 min",moves:[
+      {name:"Child Pose",reps:"Hold 1 min",why:"Calms the fight-or-flight craving response"},
+      {name:"Downward Dog",reps:"Hold 30s x 3",why:"Opens lungs, improves oxygen flow"},
+      {name:"Warrior I",reps:"Hold 30s each side",why:"Confidence and groundedness"},
+      {name:"Seated Twist",reps:"Hold 30s each side",why:"Detoxifies organs stressed by smoking"},
+      {name:"Legs Up The Wall",reps:"5 min",why:"Best craving killer, calms the entire nervous system"},
+    ]},
+    {day:"Sunday",theme:"Active Recovery",duration:"15 min",moves:[
+      {name:"Gentle Walk",reps:"10 min easy pace",why:"Fresh air replaces the outdoor smoking ritual"},
+      {name:"Full Body Stretch",reps:"5 min",why:"Recovery and reflection"},
+      {name:"Gratitude Breathing",reps:"10 deep breaths",why:"Acknowledge what your lungs are gaining back"},
+    ]},
+  ];
+  const todayExercise=EXERCISES[new Date().getDay()===0?6:new Date().getDay()-1];
+  const [exDone,setExDone]=useState([]);
+  const [exStarted,setExStarted]=useState(false);
+
+  const VEG_FOODS=[
+    {name:"Raw Carrot Sticks",reason:"Crunching satisfies the oral fixation. The act of biting replaces the hand-to-mouth habit.",emoji:"🥕"},
+    {name:"Sunflower Seeds",reason:"Shelling seeds keeps hands and mouth busy, directly replacing the smoking ritual.",emoji:"🌻"},
+    {name:"Tulsi or Ginger Tea",reason:"Warm beverages replace the ritual comfort of a cigarette. Tulsi calms the nervous system.",emoji:"🍵"},
+    {name:"Orange or Lemon",reason:"Citrus boosts Vitamin C depleted by nicotine. The sharp taste overrides craving signals.",emoji:"🍊"},
+    {name:"Celery with Hummus",reason:"Low calorie, high satiety. The crunch and chewing action is a direct craving disruptor.",emoji:"🥬"},
+    {name:"Dark Chocolate (1 piece)",reason:"Releases dopamine just like nicotine did, but without the harm. One small piece is enough.",emoji:"🍫"},
+    {name:"Almonds or Walnuts",reason:"Healthy fats stabilise blood sugar which spikes during nicotine withdrawal and triggers cravings.",emoji:"🥜"},
+  ];
+  const NONVEG_FOODS=[
+    {name:"Boiled Egg",reason:"High protein stabilises blood sugar, reducing the hunger-like feeling that triggers cravings.",emoji:"🥚"},
+    {name:"Grilled Fish",reason:"Omega-3 fatty acids help repair brain receptors damaged by nicotine over time.",emoji:"🐟"},
+    {name:"Chicken Soup",reason:"Warm, comforting, and nutritious. Replaces the warmth and ritual comfort of smoking.",emoji:"🍲"},
+    {name:"Greek Yogurt",reason:"Probiotic cultures reduce cortisol, the stress hormone that drives most cravings.",emoji:"🥛"},
+    {name:"Tuna with Crackers",reason:"Protein and complex carbs together prevent the blood sugar dips that trigger craving episodes.",emoji:"🐠"},
+  ];
+  const [dietTab,setDietTab]=useState("veg");
+  const [exTab,setExTab]=useState("today");
+
   const wrap={fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif",background:C.bg,color:C.text,height:"100svh",display:"flex",flexDirection:"column",overflow:"hidden",width:"100%",position:"fixed",top:0,left:0,right:0,bottom:0};
   const inputStyle={background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:9,padding:"12px 13px",color:C.text,fontSize:14,width:"100%",boxSizing:"border-box",outline:"none"};
   const lblStyle={color:C.sub,fontSize:10,fontWeight:700,letterSpacing:"0.09em",textTransform:"uppercase",marginBottom:5,display:"block"};
@@ -870,7 +946,7 @@ export default function App(){
               Create Account
             </button>
             <button onClick={()=>{setIsSignIn(true);setAuthStep("phone");}} style={{width:"100%",background:"transparent",border:"1.5px solid "+C.gold+"55",borderRadius:13,padding:14,color:C.gold,fontWeight:700,fontSize:15,cursor:"pointer",marginBottom:14}}>
-              Sign In — I have an account
+              Sign In   I already have an account
             </button>
             <div style={{textAlign:"center",fontSize:11,color:C.muted}}>By continuing you agree to our Terms. We never share your data.</div>
           </div>
@@ -1092,7 +1168,6 @@ export default function App(){
       {/* AI Chat screens */}
       {premiumScreen==="coach"&&<AIChat systemPrompt={coachSystem} welcomeMsg={"Hey! "+d+" days smoke-free with a score of "+healthScore+"/100. Solid. What is on your mind today?"} avatar="🤖" name="AI Quit Coach" subtitle="Powered by Claude - Online" onClose={()=>setPremiumScreen(null)}/>}
       {premiumScreen==="saksham"&&<SakshamChat userPhone={authUser?authUser.phone:authPhone} userName={userName} d={d} healthScore={healthScore} onClose={()=>setPremiumScreen(null)}/>}
-      {premiumScreen==="coach_call"&&<VoiceCall person="coach" systemPrompt={coachSystem} avatar="🤖" onClose={()=>setPremiumScreen(null)}/>}
 
       {/* NRT overlay */}
       {premiumScreen==="nrt"&&(
@@ -1117,7 +1192,7 @@ export default function App(){
             ))}
             <div style={{background:"rgba(139,92,246,0.1)",border:"1px solid #8B5CF633",borderRadius:14,padding:"16px",marginTop:4}}>
               <div style={{fontSize:12,fontWeight:700,color:"#8B5CF6",marginBottom:6}}>Saksham note</div>
-              <div style={{fontSize:13,color:"#8090B0",lineHeight:1.7}}>The patch does the physical work. Your real job is breaking the habit loops. By Day 8, go cold turkey. That is when the real test starts.</div>
+              <div style={{fontSize:13,color:"#8090B0",lineHeight:1.7}}>The patch does the physical work. Your real job is breaking the habit loops. Saksham went cold turkey from Day 8 - but this is optional. If you feel strong, skip the patch and go cold turkey from Day 1.</div>
             </div>
           </div>
         </div>
@@ -1156,6 +1231,36 @@ export default function App(){
                 <div style={{fontSize:13,color:"#8090B0",lineHeight:1.75,whiteSpace:"pre-line"}}>{ch.body}</div>
               </div>
             ))}
+          </div>
+        </div>
+      )}
+
+
+      {showHomePrompt&&(
+        <div style={{position:"fixed",bottom:0,left:0,right:0,zIndex:2000,background:"rgba(0,0,0,0.5)"}} onClick={()=>setShowHomePrompt(false)}>
+          <div style={{background:C.surface,borderRadius:"24px 24px 0 0",padding:"24px 20px 40px",border:"1px solid "+C.border}} onClick={e=>e.stopPropagation()}>
+            <div style={{width:40,height:4,background:C.muted,borderRadius:2,margin:"0 auto 20px"}}/>
+            <div style={{textAlign:"center",marginBottom:16}}>
+              <div style={{fontSize:32,marginBottom:8}}>📲</div>
+              <div style={{fontSize:17,fontWeight:900,color:C.text,marginBottom:8}}>Add to Your Home Screen</div>
+              <div style={{fontSize:13,color:C.sub,lineHeight:1.7}}>For the best experience, install Unsmoke as an app on your phone. It works exactly like a real app.</div>
+            </div>
+            <div style={{background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:14,padding:"14px 16px",marginBottom:16}}>
+              <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
+                <div style={{width:28,height:28,background:C.goldFade,border:"1px solid "+C.gold+"44",borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,flexShrink:0}}>1</div>
+                <div style={{fontSize:13,color:C.text}}>Tap the <strong>Share button</strong> at the bottom of Safari</div>
+              </div>
+              <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
+                <div style={{width:28,height:28,background:C.goldFade,border:"1px solid "+C.gold+"44",borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,flexShrink:0}}>2</div>
+                <div style={{fontSize:13,color:C.text}}>Scroll down and tap <strong>Add to Home Screen</strong></div>
+              </div>
+              <div style={{display:"flex",alignItems:"center",gap:10}}>
+                <div style={{width:28,height:28,background:C.goldFade,border:"1px solid "+C.gold+"44",borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,flexShrink:0}}>3</div>
+                <div style={{fontSize:13,color:C.text}}>Tap <strong>Add</strong> — done. Unsmoke is now on your home screen.</div>
+              </div>
+            </div>
+            <button onClick={()=>setShowHomePrompt(false)} style={{width:"100%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:14,padding:14,color:"#fff",fontWeight:800,fontSize:15,cursor:"pointer",marginBottom:8}}>Got it!</button>
+            <button onClick={()=>setShowHomePrompt(false)} style={{width:"100%",background:"none",border:"none",color:C.muted,fontSize:13,cursor:"pointer"}}>Continue in browser</button>
           </div>
         </div>
       )}
@@ -1316,7 +1421,7 @@ export default function App(){
               <div style={crd({marginTop:8})}>
                 <div style={{fontSize:10,color:C.gold,fontWeight:800,textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:10}}>👑 Premium</div>
                 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-                  {[{label:"📞 Call Coach",screen:"coach_call",c:C.teal},{label:"💬 Chat Coach",screen:"coach",c:C.teal},{label:"💊 NRT Plan",screen:"nrt",c:C.amber}].map(({label,screen,c})=>(
+                  {[{label:"💬 Chat Coach",screen:"coach",c:C.teal},{label:"💊 NRT Plan",screen:"nrt",c:C.amber}].map(({label,screen,c})=>(
                     <button key={screen} onClick={()=>setPremiumScreen(screen)} style={{background:c+"22",border:"1px solid "+c+"44",borderRadius:10,padding:"10px 8px",color:c,fontWeight:700,fontSize:11,cursor:"pointer"}}>{label}</button>
                   ))}
                 </div>
@@ -1364,6 +1469,88 @@ export default function App(){
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+
+        {tab==="wellness"&&(
+          <div style={{padding:"18px 16px"}}>
+            <div style={{fontSize:21,fontWeight:900,marginBottom:4,letterSpacing:"-0.02em",color:C.text}}>Wellness</div>
+            <div style={{color:C.sub,fontSize:13,marginBottom:16}}>Exercise and food — your daily quit toolkit.</div>
+
+            {/* Exercise section */}
+            <div style={{display:"flex",gap:8,marginBottom:14}}>
+              {["today","week"].map(t=>(
+                <button key={t} onClick={()=>setExTab(t)} style={{flex:1,padding:"9px",borderRadius:12,border:"1px solid "+(exTab===t?C.gold+"55":C.border),background:exTab===t?C.goldFade:"transparent",color:exTab===t?C.gold:C.sub,fontWeight:700,fontSize:12,cursor:"pointer",textTransform:"capitalize"}}>{t==="today"?"Today Workout":"Weekly Plan"}</button>
+              ))}
+            </div>
+
+            {exTab==="today"&&(
+              <div style={{...glassCard(null,{marginBottom:14})}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:14}}>
+                  <div>
+                    <div style={{fontSize:9,color:C.emerald,fontWeight:800,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:4}}>{todayExercise.day} — {todayExercise.duration}</div>
+                    <div style={{fontWeight:900,fontSize:18,color:C.text,letterSpacing:"-0.01em"}}>{todayExercise.theme}</div>
+                  </div>
+                  {exDone.length===todayExercise.moves.length&&<span style={{fontSize:22}}>🏆</span>}
+                </div>
+                {todayExercise.moves.map((move,i)=>(
+                  <div key={i} onClick={()=>setExDone(d=>d.includes(i)?d.filter(x=>x!==i):[...d,i])} style={{display:"flex",gap:12,alignItems:"flex-start",padding:"12px 0",borderBottom:i<todayExercise.moves.length-1?"1px solid "+C.border:"none",cursor:"pointer"}}>
+                    <div style={{width:26,height:26,borderRadius:"50%",background:exDone.includes(i)?"linear-gradient(135deg,"+C.gold+","+C.amber+")":C.surfaceHi,border:"1.5px solid "+(exDone.includes(i)?C.gold:C.border),display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:11,fontWeight:900,color:exDone.includes(i)?"#fff":C.muted,marginTop:2}}>{exDone.includes(i)?"✓":i+1}</div>
+                    <div style={{flex:1}}>
+                      <div style={{fontWeight:700,fontSize:14,color:C.text,marginBottom:2,textDecoration:exDone.includes(i)?"line-through":"none",opacity:exDone.includes(i)?0.5:1}}>{move.name}</div>
+                      <div style={{fontSize:11,color:C.gold,fontWeight:600,marginBottom:3}}>{move.reps}</div>
+                      <div style={{fontSize:11,color:C.sub,lineHeight:1.5}}>{move.why}</div>
+                    </div>
+                  </div>
+                ))}
+                <div style={{marginTop:14,padding:"10px 14px",background:C.emeraldFade,borderRadius:12,border:"1px solid "+C.emerald+"33",fontSize:12,color:C.emerald,fontWeight:600}}>
+                  Tip: Any craving that hits during exercise — do 10 more jumping jacks. By the time you finish, it will have passed.
+                </div>
+              </div>
+            )}
+
+            {exTab==="week"&&(
+              <div>
+                {EXERCISES.map((day,i)=>(
+                  <div key={i} style={{...glassCard(null,{marginBottom:10,borderColor:i===new Date().getDay()-1?C.gold+"44":C.border,background:i===new Date().getDay()-1?C.goldFade:"linear-gradient(135deg,"+C.surfaceHi+","+C.surface+")"})}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                      <div>
+                        <div style={{fontSize:10,color:C.sub,marginBottom:2}}>{day.day}</div>
+                        <div style={{fontWeight:800,fontSize:14,color:C.text}}>{day.theme}</div>
+                      </div>
+                      <div style={{fontSize:11,color:C.gold,background:C.goldFade,padding:"4px 10px",borderRadius:20,fontWeight:700}}>{day.duration}</div>
+                    </div>
+                    <div style={{marginTop:8,display:"flex",flexWrap:"wrap",gap:5}}>
+                      {day.moves.slice(0,3).map((m,j)=>(
+                        <span key={j} style={{fontSize:10,color:C.sub,background:C.surfaceHi,padding:"2px 8px",borderRadius:20,border:"1px solid "+C.border}}>{m.name}</span>
+                      ))}
+                      {day.moves.length>3&&<span style={{fontSize:10,color:C.muted}}>+{day.moves.length-3} more</span>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Diet section */}
+            <div style={{fontSize:15,fontWeight:800,color:C.text,marginBottom:4,marginTop:8}}>Eat This When Craving Hits</div>
+            <div style={{color:C.sub,fontSize:12,marginBottom:12}}>These foods actively disrupt craving signals.</div>
+            <div style={{display:"flex",gap:8,marginBottom:12}}>
+              {["veg","nonveg"].map(t=>(
+                <button key={t} onClick={()=>setDietTab(t)} style={{flex:1,padding:"9px",borderRadius:12,border:"1px solid "+(dietTab===t?C.emerald+"55":C.border),background:dietTab===t?C.emeraldFade:"transparent",color:dietTab===t?C.emerald:C.sub,fontWeight:700,fontSize:12,cursor:"pointer"}}>{t==="veg"?"🥦 Vegetarian":"🍗 Non-Veg"}</button>
+              ))}
+            </div>
+            {(dietTab==="veg"?VEG_FOODS:NONVEG_FOODS).map((food,i)=>(
+              <div key={i} style={{...glassCard(null,{marginBottom:10,padding:"14px"})}}>
+                <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
+                  <div style={{fontSize:28,flexShrink:0,marginTop:2}}>{food.emoji}</div>
+                  <div>
+                    <div style={{fontWeight:800,fontSize:14,color:C.text,marginBottom:5}}>{food.name}</div>
+                    <div style={{fontSize:12,color:C.sub,lineHeight:1.65}}>{food.reason}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         )}
 
@@ -1589,7 +1776,6 @@ export default function App(){
               <div style={{fontWeight:800,fontSize:14,color:"#F0EDF8",marginBottom:4}}>📞 AI Voice Calls</div>
               <div style={{color:"#8090B0",fontSize:12,marginBottom:12}}>Real phone call UI. Speaks Indian English or Hindi. Powered by Claude. No other quit app offers this.</div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-                <button onClick={()=>{if(isPremium){setShowPremium(false);setPremiumScreen("coach_call");}}} style={{background:"rgba(0,217,170,0.15)",border:"1px solid rgba(0,217,170,0.3)",borderRadius:10,padding:"10px 8px",color:"#00D9AA",fontWeight:700,fontSize:12,cursor:"pointer",opacity:isPremium?1:0.5}}>🤖 Call AI Coach</button>
                 <a href="tel:+918950695379" style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,background:"rgba(201,168,76,0.15)",border:"1px solid rgba(201,168,76,0.3)",borderRadius:10,padding:"10px 8px",color:"#C9A84C",fontWeight:700,fontSize:12,textDecoration:"none"}}>📞 Call Saksham</a>
               </div>
             </div>
