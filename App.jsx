@@ -955,6 +955,17 @@ export default function App(){
   const [dietTab,setDietTab]=useState("veg");
   const [exTab,setExTab]=useState("today");
 
+
+  // Sponsored banner data — replace with real brand deals
+  const BANNERS=[
+    {id:"b1",tag:"Sponsored",brand:"Nicotex",headline:"Nicotine patches clinically proven to double quit success",cta:"Get 20% off",color:"#0A8A6A",emoji:"💊",url:"https://nicotex.in"},
+    {id:"b2",tag:"Sponsored",brand:"Quit Genius",headline:"AI-powered CBT therapy for nicotine addiction — free trial",cta:"Try free",color:"#7050A8",emoji:"🧠",url:"https://quitgenius.com"},
+    {id:"b3",tag:"Partner",brand:"Apollo Pharmacy",headline:"Find NRT products near you — delivered in 2 hours",cta:"Order now",color:"#B87000",emoji:"🏥",url:"https://apollopharmacy.in"},
+  ];
+  const [bannerIdx,setBannerIdx]=useState(0);
+  useEffect(()=>{const t=setInterval(()=>setBannerIdx(i=>(i+1)%BANNERS.length),5000);return()=>clearInterval(t);},[]);
+  const curBanner=BANNERS[bannerIdx];
+
   const wrap={fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif",background:C.bg,color:C.text,height:"100svh",display:"flex",flexDirection:"column",overflow:"hidden",width:"100%",position:"fixed",top:0,left:0,right:0,bottom:0};
   const inputStyle={background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:9,padding:"12px 13px",color:C.text,fontSize:14,width:"100%",boxSizing:"border-box",outline:"none"};
   const lblStyle={color:C.sub,fontSize:10,fontWeight:700,letterSpacing:"0.09em",textTransform:"uppercase",marginBottom:5,display:"block"};
@@ -1433,6 +1444,50 @@ export default function App(){
                 <div key={l} style={crd({textAlign:"center",padding:"12px 8px"})}><div style={{fontSize:16,fontWeight:900,color:c}}>{v}</div><div style={{color:C.sub,fontSize:9,marginTop:2}}>{l}</div></div>
               ))}
             </div>
+
+            {/* Chat with Saksham */}
+            <div onClick={()=>setTab("messages")} style={{...glassCard(C.gold+"44",{marginBottom:12,cursor:"pointer",background:"linear-gradient(135deg,rgba(160,114,10,0.05),rgba(184,112,0,0.02))",boxShadow:"0 4px 16px rgba(160,114,10,0.10)"})}}>
+              <div style={{display:"flex",alignItems:"center",gap:14}}>
+                <div style={{position:"relative",flexShrink:0}}>
+                  <div style={{width:50,height:50,borderRadius:"50%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,fontWeight:900,color:"#fff",boxShadow:"0 4px 12px rgba(160,114,10,0.25)"}}>S</div>
+                  <div style={{position:"absolute",bottom:1,right:1,width:12,height:12,borderRadius:"50%",background:C.emerald,border:"2px solid "+C.surface}}/>
+                </div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontWeight:900,fontSize:15,color:C.text,marginBottom:2}}>Chat with Saksham</div>
+                  <div style={{fontSize:12,color:C.sub,overflow:"hidden",whiteSpace:"nowrap",textOverflow:"ellipsis"}}>{msgThread.length>0?(msgThread[msgThread.length-1].role==="saksham"?"Saksham: ":"You: ")+msgThread[msgThread.length-1].text:"He reads every message — ask him anything"}</div>
+                </div>
+                <div style={{display:"flex",alignItems:"center",gap:8,flexShrink:0}}>
+                  {msgUnread>0&&<div style={{background:C.ruby,color:"#fff",borderRadius:20,padding:"2px 8px",fontSize:11,fontWeight:800}}>{msgUnread}</div>}
+                  <span style={{color:C.gold,fontSize:20}}>›</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Sponsored Banner */}
+            <div style={{marginBottom:12}}>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}>
+                <div style={{fontSize:9,color:C.muted,letterSpacing:"0.08em",textTransform:"uppercase",fontWeight:700}}>{curBanner.tag}</div>
+                <div style={{fontSize:9,color:C.muted}}>Ad</div>
+              </div>
+              <div onClick={()=>window.open(curBanner.url,"_blank")} style={{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:"14px 16px",cursor:"pointer",boxShadow:"0 2px 8px rgba(0,0,0,0.06)",overflow:"hidden",position:"relative"}}>
+                <div style={{position:"absolute",top:0,left:0,width:3,bottom:0,background:curBanner.color,borderRadius:"16px 0 0 16px"}}/>
+                <div style={{display:"flex",alignItems:"center",gap:12,paddingLeft:10}}>
+                  <div style={{width:42,height:42,borderRadius:12,background:curBanner.color+"18",border:"1px solid "+curBanner.color+"33",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>{curBanner.emoji}</div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontSize:10,color:curBanner.color,fontWeight:700,marginBottom:3,letterSpacing:"0.04em"}}>{curBanner.brand}</div>
+                    <div style={{fontWeight:700,fontSize:13,color:C.text,marginBottom:6,lineHeight:1.35}}>{curBanner.headline}</div>
+                    <div style={{display:"inline-block",background:curBanner.color,color:"#fff",borderRadius:20,padding:"4px 14px",fontSize:11,fontWeight:700}}>{curBanner.cta} →</div>
+                  </div>
+                </div>
+                <div style={{display:"flex",justifyContent:"center",gap:5,marginTop:12}}>
+                  {BANNERS.map((_,bi)=>(
+                    <div key={bi} onClick={e=>{e.stopPropagation();setBannerIdx(bi);}} style={{height:4,borderRadius:2,background:bi===bannerIdx?curBanner.color:C.muted,width:bi===bannerIdx?20:5,transition:"all 0.3s",cursor:"pointer"}}/>
+                  ))}
+                </div>
+              </div>
+              <div style={{textAlign:"center",marginTop:5,fontSize:9,color:C.muted}}>Advertise here → @ssakshamchauhan</div>
+            </div>
+
             {!isPremium&&(
               <div onClick={()=>setShowPremium(true)} style={crd({marginBottom:10,cursor:"pointer",background:C.amberFade,borderColor:C.gold+"44"})}>
                 <div style={{display:"flex",alignItems:"center",gap:12}}>
