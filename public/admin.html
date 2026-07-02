@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Unsmoke Admin</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:#07080F;color:#EDF1FF;font-family:-apple-system,BlinkMacSystemFont,sans-serif;height:100vh;display:flex;flex-direction:column;}
+    .login{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:16px;padding:24px;}
+    .login h1{font-size:22px;font-weight:900;color:#C9A84C;}
+    .login p{color:#68788A;font-size:13px;}
+    .login input{background:#131825;border:1px solid #1A2035;border-radius:12px;padding:14px 18px;color:#EDF1FF;font-size:15px;width:100%;max-width:320px;outline:none;}
+    .login button{background:linear-gradient(135deg,#C9A84C,#E8A020);border:none;border-radius:12px;padding:14px;color:#07080F;font-weight:800;font-size:15px;cursor:pointer;width:100%;max-width:320px;}
+    .header{padding:16px 20px;border-bottom:1px solid #1A2035;display:flex;justify-content:space-between;align-items:center;background:#131825;flex-shrink:0;}
+    .header h1{font-size:16px;font-weight:900;color:#C9A84C;}
+    .header span{font-size:11px;color:#68788A;}
+    .layout{display:flex;flex:1;overflow:hidden;}
+    .sidebar{width:280px;border-right:1px solid #1A2035;overflow-y:auto;flex-shrink:0;}
+    .user-card{padding:14px 16px;border-bottom:1px solid #1A2035;cursor:pointer;transition:background 0.15s;}
+    .user-card:hover,.user-card.active{background:#131825;}
+    .user-name{font-weight:700;font-size:14px;color:#EDF1FF;}
+    .user-meta{font-size:11px;color:#68788A;margin-top:3px;}
+    .user-last{font-size:12px;color:#C9A84C;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .unread{display:inline-block;background:#C9A84C;color:#07080F;border-radius:20px;padding:1px 8px;font-size:10px;font-weight:800;margin-left:6px;}
+    .chat{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+    .chat-header{padding:14px 18px;border-bottom:1px solid #1A2035;background:#131825;}
+    .chat-header h2{font-size:15px;font-weight:800;}
+    .chat-header p{font-size:11px;color:#68788A;margin-top:2px;}
+    .messages{flex:1;overflow-y:auto;padding:16px;}
+    .msg{display:flex;justify-content:flex-start;margin-bottom:14px;}
+    .msg.saksham{justify-content:flex-end;}
+    .bubble{max-width:75%;padding:11px 15px;border-radius:18px;font-size:13px;line-height:1.65;}
+    .bubble.user{background:#131825;border:1px solid #1A2035;border-radius:18px 18px 18px 4px;}
+    .bubble.saksham{background:linear-gradient(135deg,#C9A84C,#E8A020);color:#07080F;border-radius:18px 18px 4px 18px;}
+    .time{font-size:10px;color:#2A3455;margin-top:4px;text-align:right;}
+    .input-area{padding:12px 16px;border-top:1px solid #1A2035;display:flex;gap:10px;background:#131825;}
+    .input-area input{flex:1;background:#0D1018;border:1px solid #1A2035;border-radius:24px;padding:11px 16px;color:#EDF1FF;font-size:14px;outline:none;}
+    .input-area button{background:linear-gradient(135deg,#C9A84C,#E8A020);border:none;border-radius:50%;width:44px;height:44px;color:#07080F;font-weight:900;font-size:16px;cursor:pointer;flex-shrink:0;}
+    .empty{flex:1;display:flex;align-items:center;justify-content:center;color:#2A3455;font-size:14px;}
+    .stat-tag{display:inline-block;background:#1A2035;border-radius:20px;padding:3px 10px;font-size:10px;color:#68788A;margin-right:6px;margin-top:4px;}
+    .refresh-btn{background:#1A2035;border:1px solid #1A2035;border-radius:20px;padding:5px 12px;color:#68788A;font-size:11px;cursor:pointer;}
+    .online-dot{width:8px;height:8px;border-radius:50%;background:#10C9A0;display:inline-block;margin-right:5px;}
+  </style>
+</head>
+<body>
+
+<div id="login" class="login">
+  <h1>Unsmoke Admin</h1>
+  <p>Saksham only</p>
+  <input type="password" id="pin" placeholder="Enter PIN" onkeydown="if(event.key==='Enter')checkPin()"/>
+  <button onclick="checkPin()">Sign In</button>
+  <p id="pin-err" style="color:#E85D75;font-size:12px;"></p>
+</div>
+
+<div id="app" style="display:none;flex-direction:column;height:100vh;">
+  <div class="header">
+    <div>
+      <h1>Unsmoke Admin</h1>
+      <span id="last-refresh">Loading users...</span>
+    </div>
+    <button class="refresh-btn" onclick="loadUsers()">Refresh</button>
+  </div>
+  <div class="layout">
+    <div class="sidebar" id="sidebar">
+      <div style="padding:12px 16px;border-bottom:1px solid #1A2035;font-size:10px;color:#68788A;text-transform:uppercase;letter-spacing:0.1em;">Users</div>
+    </div>
+    <div class="chat" id="chat-area">
+      <div class="empty">Select a conversation</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const FB_KEY = "AIzaSyBy6CrePlG8499_tVBwqNw97ivycI142mI";
+const FB_BASE = "https://firestore.googleapis.com/v1/projects/unsmoke-app-92a39/databases/(default)/documents";
+const ADMIN_PIN = "1234";
+let currentUser = null;
+let allUsers = [];
+
+function checkPin(){
+  const pin = document.getElementById("pin").value;
+  if(pin === ADMIN_PIN){
+    document.getElementById("login").style.display = "none";
+    document.getElementById("app").style.display = "flex";
+    loadUsers();
+    setInterval(loadUsers, 8000);
+  } else {
+    document.getElementById("pin-err").textContent = "Wrong PIN";
+  }
+}
+
+async function fbGet(path){
+  try{
+    const r = await fetch(FB_BASE+"/"+path+"?key="+FB_KEY);
+    if(!r.ok) return null;
+    return parseDoc(await r.json());
+  }catch{return null;}
+}
+
+async function fbSet(path, data){
+  try{
+    await fetch(FB_BASE+"/"+path+"?key="+FB_KEY, {
+      method:"PATCH", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify(toDoc(data))
+    });
+  }catch{}
+}
+
+async function fbList(collection){
+  try{
+    const r = await fetch(FB_BASE+"/"+collection+"?key="+FB_KEY);
+    if(!r.ok) return [];
+    const data = await r.json();
+    return (data.documents||[]).map(d=>({...parseDoc(d), _id: d.name.split("/").pop()}));
+  }catch{return [];}
+}
+
+function parseVal(v){
+  if(v.stringValue!==undefined) return v.stringValue;
+  if(v.booleanValue!==undefined) return v.booleanValue;
+  if(v.integerValue!==undefined) return parseInt(v.integerValue);
+  if(v.doubleValue!==undefined) return v.doubleValue;
+  if(v.nullValue!==undefined) return null;
+  if(v.arrayValue) return (v.arrayValue.values||[]).map(parseVal);
+  if(v.mapValue) return parseDoc(v.mapValue);
+  return null;
+}
+function parseDoc(doc){
+  if(!doc||!doc.fields) return null;
+  const r={};
+  Object.entries(doc.fields).forEach(([k,v])=>{r[k]=parseVal(v);});
+  return r;
+}
+function toVal(v){
+  if(v===null||v===undefined) return{nullValue:null};
+  if(typeof v==="boolean") return{booleanValue:v};
+  if(typeof v==="number") return Number.isInteger(v)&&Math.abs(v)<2e15?{integerValue:String(v)}:{doubleValue:v};
+  if(typeof v==="string") return{stringValue:v};
+  if(Array.isArray(v)) return{arrayValue:{values:v.map(toVal)}};
+  if(typeof v==="object"){const f={};Object.entries(v).forEach(([k,val])=>{if(val!==undefined)f[k]=toVal(val);});return{mapValue:{fields:f}};}
+  return{stringValue:String(v)};
+}
+function toDoc(data){const f={};Object.entries(data).forEach(([k,v])=>{if(v!==undefined)f[k]=toVal(v);});return{fields:f};}
+
+async function loadUsers(){
+  const users = await fbList("users");
+  const convs = await fbList("conversations");
+  const convMap = {};
+  convs.forEach(c=>{ if(c&&c.userPhone) convMap[c.userPhone]=c; });
+  
+  allUsers = users.filter(u=>u&&u.phone).map(u=>({
+    ...u,
+    conv: convMap[u.phone] || null
+  })).sort((a,b)=>{
+    const aTime = a.conv ? a.conv.lastActivity||0 : 0;
+    const bTime = b.conv ? b.conv.lastActivity||0 : 0;
+    return bTime - aTime;
+  });
+
+  const sidebar = document.getElementById("sidebar");
+  const inner = allUsers.map(u=>{
+    const unread = u.conv&&u.conv.unread>0 ? `<span class="unread">${u.conv.unread}</span>` : "";
+    const lastMsg = u.conv&&u.conv.lastMessage ? `<div class="user-last">${u.conv.lastMessage}</div>` : "";
+    const isActive = currentUser && currentUser.phone === u.phone ? "active" : "";
+    const daysSince = u.quitTS ? Math.floor((Date.now()-u.quitTS)/86400000) : 0;
+    return `<div class="user-card ${isActive}" onclick="selectUser('${u.phone}')">
+      <div class="user-name">${u.name||"Unknown"}${unread}</div>
+      <div class="user-meta">${u.phone} · ${daysSince}d smoke-free</div>
+      ${lastMsg}
+    </div>`;
+  }).join("");
+  sidebar.innerHTML = '<div style="padding:12px 16px;border-bottom:1px solid #1A2035;font-size:10px;color:#68788A;text-transform:uppercase;letter-spacing:0.1em;">'+allUsers.length+' Users</div>' + inner;
+  
+  document.getElementById("last-refresh").textContent = "Updated "+new Date().toLocaleTimeString();
+  
+  if(currentUser) loadChat(currentUser.phone);
+}
+
+async function selectUser(phone){
+  const user = allUsers.find(u=>u.phone===phone);
+  if(!user) return;
+  currentUser = user;
+  loadChat(phone);
+  // Mark as read
+  if(user.conv&&user.conv.unread>0){
+    await fbSet("conversations/"+phone, {...user.conv, unread:0});
+  }
+}
+
+async function loadChat(phone){
+  const conv = await fbGet("conversations/"+phone);
+  const user = allUsers.find(u=>u.phone===phone)||{};
+  const msgs = conv&&conv.messages ? conv.messages.sort((a,b)=>a.ts-b.ts) : [];
+  const daysSince = user.quitTS ? Math.floor((Date.now()-user.quitTS)/86400000) : 0;
+  
+  document.getElementById("chat-area").innerHTML = `
+    <div class="chat-header">
+      <h2>${user.name||"Unknown"} <span style="color:#68788A;font-size:12px;font-weight:400">${phone}</span></h2>
+      <p>
+        <span class="stat-tag">${daysSince}d smoke-free</span>
+        <span class="stat-tag">Score: ${user.healthScore||"-"}</span>
+        <span class="stat-tag">Premium: ${user.premium?"Yes":"No"}</span>
+      </p>
+    </div>
+    <div class="messages" id="messages">
+      ${msgs.length===0 ? '<div style="text-align:center;color:#2A3455;font-size:13px;padding:40px">No messages yet</div>' : ''}
+      ${msgs.map(m=>`
+        <div class="msg ${m.role}">
+          <div>
+            <div class="bubble ${m.role}">${m.text}</div>
+            <div class="time">${new Date(m.ts).toLocaleTimeString()}</div>
+          </div>
+        </div>
+      `).join("")}
+    </div>
+    <div class="input-area">
+      <input id="reply-input" placeholder="Reply as Saksham..." onkeydown="if(event.key==='Enter')sendReply()"/>
+      <button onclick="sendReply()">↑</button>
+    </div>
+  `;
+  
+  const msgs_div = document.getElementById("messages");
+  if(msgs_div) msgs_div.scrollTop = msgs_div.scrollHeight;
+}
+
+async function sendReply(){
+  const input = document.getElementById("reply-input");
+  if(!input||!input.value.trim()||!currentUser) return;
+  const text = input.value.trim();
+  input.value = "";
+  
+  const conv = await fbGet("conversations/"+currentUser.phone) || {};
+  const existing = conv.messages || [];
+  const msg = {id:String(Date.now()), role:"saksham", text, ts:Date.now()};
+  await fbSet("conversations/"+currentUser.phone, {
+    ...conv,
+    messages:[...existing, msg],
+    lastMessage:"Saksham: "+text,
+    lastActivity:Date.now(),
+    unread:0
+  });
+  
+  loadChat(currentUser.phone);
+}
+
+document.addEventListener("keydown", e=>{
+  if(e.key==="Enter"&&document.activeElement===document.getElementById("pin")) checkPin();
+});
+</script>
+</body>
+</html>
