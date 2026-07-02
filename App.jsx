@@ -653,7 +653,6 @@ export default function App(){
 
   const FOUNDER_QUIT_TS=new Date("2024-10-31T00:00:00").getTime();
   const founderDays=Math.floor((now-FOUNDER_QUIT_TS)/86400000);
-  const todayExercise=EXERCISES[new Date().getDay()===0?6:new Date().getDay()-1];
   const curBanner=BANNERS[bannerIdx];
 
   useEffect(()=>{
@@ -1000,7 +999,6 @@ export default function App(){
 
   const outerWrap={background:C.bg,minHeight:"100dvh",display:"flex",justifyContent:"center"};
 
-  const todayExercise=EXERCISES[new Date().getDay()===0?6:new Date().getDay()-1];
 
   const wrap={fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif",background:C.bg,color:C.text,height:"100svh",display:"flex",flexDirection:"column",overflow:"hidden",width:"100%",position:"fixed",top:0,left:0,right:0,bottom:0};
   const inputStyle={background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:9,padding:"12px 13px",color:C.text,fontSize:14,width:"100%",boxSizing:"border-box",outline:"none"};
