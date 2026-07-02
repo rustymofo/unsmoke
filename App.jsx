@@ -36,7 +36,21 @@ const C = {
   purple:"#7050A8", purpleFade:"rgba(112,80,168,0.08)",
 };
 
-const pad = n => String(n).padStart(2,"0");
+const pad=n=>String(n).padStart(2,"0");
+const glassCard=(accent,extra={})=>({
+  background:"#FFFFFF",border:"1px solid "+(accent||"#E8DDD0"),
+  borderRadius:18,padding:"18px 16px",
+  boxShadow:"0 2px 12px rgba(0,0,0,0.06)",...extra,
+});
+const card=(extra={})=>({
+  background:"#FFFFFF",border:"1px solid #E8DDD0",
+  borderRadius:18,padding:"18px 16px",
+  boxShadow:"0 2px 12px rgba(0,0,0,0.06)",...extra,
+});
+function GoldBtn({children,onClick,disabled,outline,style={}}){
+  return <button onClick={onClick} disabled={disabled} style={{background:outline?"transparent":"linear-gradient(135deg,#A0720A,#B87000)",color:outline?"#A0720A":"#fff",border:outline?"1.5px solid #A0720A66":"none",borderRadius:14,padding:"14px 20px",fontWeight:700,fontSize:14,cursor:disabled?"not-allowed":"pointer",width:"100%",opacity:disabled?0.4:1,boxShadow:outline?"none":"0 4px 20px rgba(160,114,10,0.25)",...style}}>{children}</button>;
+}
+
 function parseDur(ms){const s=Math.floor(ms/1000);return{d:Math.floor(s/86400),h:Math.floor((s%86400)/3600),m:Math.floor((s%3600)/60),s:s%60};}
 function msLabel(min){if(min<60)return Math.ceil(min)+"m";if(min<1440)return Math.ceil(min/60)+"h";if(min<43800)return Math.ceil(min/1440)+"d";if(min<525600)return Math.round(min/43800)+" months";return Math.round(min/525600)+" years";}
 function dateKey(ts){const d=new Date(ts);return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());}
