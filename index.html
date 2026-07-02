@@ -2,17 +2,44 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Unsmoke with Saksham</title>
     <meta name="description" content="Quit smoking with Saksham. Track every second. Every rupee saved.">
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#07080F">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- iOS specific -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Unsmoke">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico">
+
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { background: #07080F; font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif; }
+      html, body, #root { height: 100%; }
+      body {
+        background: #07080F;
+        font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        overscroll-behavior: none;
+      }
     </style>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/main.jsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js');
+        });
+      }
+    </script>
   </body>
 </html>
