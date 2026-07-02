@@ -1,5 +1,26 @@
 // Unsmoke v3.1 - {"t": 1783017382.753017}
 import { useState, useEffect, useRef } from "react";
+import React from "react";
+
+class ErrorBoundary extends React.Component {
+  constructor(props){super(props);this.state={error:null};}
+  static getDerivedStateFromError(e){return{error:e};}
+  render(){
+    if(this.state.error){
+      return (
+        <div style={{padding:24,background:"#F5F0E8",minHeight:"100svh",fontFamily:"sans-serif"}}>
+          <div style={{fontSize:16,fontWeight:700,color:"#C03050",marginBottom:12}}>App Error (send this to Saksham):</div>
+          <pre style={{fontSize:12,background:"#fff",padding:12,borderRadius:8,overflow:"auto",color:"#1A1208",whiteSpace:"pre-wrap"}}>
+            {this.state.error.toString()}
+            {this.state.error.stack}
+          </pre>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 
 const C = {
   bg:"#F5F0E8", surface:"#FFFFFF", surfaceHi:"#FAF7F2",
@@ -562,7 +583,7 @@ const NONVEG_FOODS=[
 
 const todayExercise=EXERCISES[new Date().getDay()===0?6:new Date().getDay()-1];
 
-export default function App(){
+function AppInner(){
   const [ready,setReady]=useState(false);
   const [authStep,setAuthStep]=useState(null);
   const [authUser,setAuthUser]=useState(null);
@@ -1938,3 +1959,5 @@ export default function App(){
     </div>
   );
 }
+
+export default function App(){return <ErrorBoundary><AppInner/></ErrorBoundary>;}
