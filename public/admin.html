@@ -1,252 +1,413 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Unsmoke Admin</title>
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box;}
-    body{background:#07080F;color:#EDF1FF;font-family:-apple-system,BlinkMacSystemFont,sans-serif;height:100vh;display:flex;flex-direction:column;}
-    .login{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:16px;padding:24px;}
-    .login h1{font-size:22px;font-weight:900;color:#C9A84C;}
-    .login p{color:#68788A;font-size:13px;}
-    .login input{background:#131825;border:1px solid #1A2035;border-radius:12px;padding:14px 18px;color:#EDF1FF;font-size:15px;width:100%;max-width:320px;outline:none;}
-    .login button{background:linear-gradient(135deg,#C9A84C,#E8A020);border:none;border-radius:12px;padding:14px;color:#07080F;font-weight:800;font-size:15px;cursor:pointer;width:100%;max-width:320px;}
-    .header{padding:16px 20px;border-bottom:1px solid #1A2035;display:flex;justify-content:space-between;align-items:center;background:#131825;flex-shrink:0;}
-    .header h1{font-size:16px;font-weight:900;color:#C9A84C;}
-    .header span{font-size:11px;color:#68788A;}
-    .layout{display:flex;flex:1;overflow:hidden;}
-    .sidebar{width:280px;border-right:1px solid #1A2035;overflow-y:auto;flex-shrink:0;}
-    .user-card{padding:14px 16px;border-bottom:1px solid #1A2035;cursor:pointer;transition:background 0.15s;}
-    .user-card:hover,.user-card.active{background:#131825;}
-    .user-name{font-weight:700;font-size:14px;color:#EDF1FF;}
-    .user-meta{font-size:11px;color:#68788A;margin-top:3px;}
-    .user-last{font-size:12px;color:#C9A84C;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-    .unread{display:inline-block;background:#C9A84C;color:#07080F;border-radius:20px;padding:1px 8px;font-size:10px;font-weight:800;margin-left:6px;}
-    .chat{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-    .chat-header{padding:14px 18px;border-bottom:1px solid #1A2035;background:#131825;}
-    .chat-header h2{font-size:15px;font-weight:800;}
-    .chat-header p{font-size:11px;color:#68788A;margin-top:2px;}
-    .messages{flex:1;overflow-y:auto;padding:16px;}
-    .msg{display:flex;justify-content:flex-start;margin-bottom:14px;}
-    .msg.saksham{justify-content:flex-end;}
-    .bubble{max-width:75%;padding:11px 15px;border-radius:18px;font-size:13px;line-height:1.65;}
-    .bubble.user{background:#131825;border:1px solid #1A2035;border-radius:18px 18px 18px 4px;}
-    .bubble.saksham{background:linear-gradient(135deg,#C9A84C,#E8A020);color:#07080F;border-radius:18px 18px 4px 18px;}
-    .time{font-size:10px;color:#2A3455;margin-top:4px;text-align:right;}
-    .input-area{padding:12px 16px;border-top:1px solid #1A2035;display:flex;gap:10px;background:#131825;}
-    .input-area input{flex:1;background:#0D1018;border:1px solid #1A2035;border-radius:24px;padding:11px 16px;color:#EDF1FF;font-size:14px;outline:none;}
-    .input-area button{background:linear-gradient(135deg,#C9A84C,#E8A020);border:none;border-radius:50%;width:44px;height:44px;color:#07080F;font-weight:900;font-size:16px;cursor:pointer;flex-shrink:0;}
-    .empty{flex:1;display:flex;align-items:center;justify-content:center;color:#2A3455;font-size:14px;}
-    .stat-tag{display:inline-block;background:#1A2035;border-radius:20px;padding:3px 10px;font-size:10px;color:#68788A;margin-right:6px;margin-top:4px;}
-    .refresh-btn{background:#1A2035;border:1px solid #1A2035;border-radius:20px;padding:5px 12px;color:#68788A;font-size:11px;cursor:pointer;}
-    .online-dot{width:8px;height:8px;border-radius:50%;background:#10C9A0;display:inline-block;margin-right:5px;}
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>Unsmoke Admin</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{background:#07080F;color:#EDF1FF;font-family:-apple-system,BlinkMacSystemFont,sans-serif;height:100svh;display:flex;flex-direction:column;overflow:hidden;}
+.login-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100svh;padding:32px;}
+.login-logo{font-size:52px;margin-bottom:16px;filter:drop-shadow(0 0 20px rgba(201,168,76,0.4));}
+.login-title{font-size:26px;font-weight:900;color:#C9A84C;margin-bottom:6px;letter-spacing:-0.02em;}
+.login-sub{font-size:13px;color:#68788A;margin-bottom:36px;}
+.login-input{background:#131825;border:1px solid #1A2035;border-radius:16px;padding:16px;color:#EDF1FF;font-size:22px;width:100%;max-width:280px;outline:none;text-align:center;letter-spacing:0.3em;margin-bottom:14px;}
+.login-btn{background:linear-gradient(135deg,#C9A84C,#E8A020);border:none;border-radius:14px;padding:15px;color:#07080F;font-weight:800;font-size:16px;cursor:pointer;width:100%;max-width:280px;box-shadow:0 4px 20px rgba(201,168,76,0.3);}
+.login-err{color:#E85D75;font-size:13px;margin-top:10px;min-height:20px;}
+#app{display:none;flex-direction:column;height:100svh;}
+.header{padding:14px 18px;background:#131825;border-bottom:1px solid #1A2035;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.header-left h1{font-size:17px;font-weight:900;color:#C9A84C;letter-spacing:-0.01em;}
+.header-left p{font-size:10px;color:#68788A;margin-top:2px;}
+.refresh-btn{background:#1A2035;border:1px solid #1A2035;border-radius:20px;padding:7px 16px;color:#68788A;font-size:12px;cursor:pointer;font-weight:600;}
+.tabs{display:flex;border-bottom:1px solid #1A2035;background:#0D1018;flex-shrink:0;}
+.tab{flex:1;padding:13px 4px;border:none;background:transparent;color:#68788A;font-size:10px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:0.07em;position:relative;transition:color 0.2s;}
+.tab.active{color:#C9A84C;}
+.tab.active::after{content:"";position:absolute;bottom:0;left:15%;right:15%;height:2px;background:linear-gradient(90deg,#C9A84C,#E8A020);border-radius:2px 2px 0 0;}
+.ubadge{display:inline-block;background:#E85D75;color:#fff;border-radius:10px;padding:1px 6px;font-size:9px;margin-left:3px;vertical-align:middle;font-weight:800;}
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px;}
+.stat-box{background:linear-gradient(135deg,#131825,#0D1018);border:1px solid #1A2035;border-radius:16px;padding:16px;}
+.stat-box .val{font-size:30px;font-weight:900;color:#C9A84C;line-height:1;letter-spacing:-0.02em;}
+.stat-box .lbl{font-size:11px;color:#68788A;margin-top:5px;}
+.stat-box.green .val{color:#10C9A0;}
+.stat-box.purple .val{color:#9B72CF;}
+.stat-box.ruby .val{color:#E85D75;}
+.msg-preview{background:#131825;border-radius:14px;padding:13px 14px;margin-bottom:8px;cursor:pointer;border:1px solid #1A2035;transition:border-color 0.2s;}
+.msg-preview.unread{border-color:#C9A84C33;}
+.msg-preview .name{font-weight:700;font-size:13px;color:#EDF1FF;}
+.msg-preview .text{font-size:12px;color:#68788A;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.user-row{padding:14px 16px;border-bottom:1px solid #1A2035;display:flex;gap:12px;align-items:center;cursor:pointer;}
+.user-row:active{background:#131825;}
+.avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#C9A84C22,#9B72CF22);border:1.5px solid #C9A84C33;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#C9A84C;flex-shrink:0;overflow:hidden;}
+.avatar img{width:100%;height:100%;object-fit:cover;}
+.user-info{flex:1;min-width:0;}
+.user-name{font-weight:700;font-size:14px;color:#EDF1FF;}
+.user-meta{font-size:11px;color:#68788A;margin-top:2px;}
+.user-last{font-size:11px;color:#C9A84C;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tag{display:inline-block;border-radius:20px;padding:2px 9px;font-size:10px;font-weight:700;}
+.tag.days{background:#C9A84C15;border:1px solid #C9A84C33;color:#C9A84C;}
+.tag.pro{background:#9B72CF15;border:1px solid #9B72CF33;color:#9B72CF;}
+.tag.unread{background:#E85D75;color:#fff;}
+.detail-wrap{display:none;position:fixed;inset:0;background:#07080F;z-index:20;flex-direction:column;}
+.detail-wrap.open{display:flex;}
+.detail-header{padding:14px 16px;border-bottom:1px solid #1A2035;background:#131825;display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.back-btn{background:none;border:none;color:#C9A84C;font-size:22px;cursor:pointer;padding:0 8px 0 0;line-height:1;}
+.detail-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.section{padding:14px 16px;border-bottom:1px solid #1A2035;}
+.section-title{font-size:10px;color:#68788A;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;font-weight:700;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.mini-card{background:#131825;border:1px solid #1A2035;border-radius:12px;padding:11px 8px;text-align:center;}
+.mini-card .v{font-size:20px;font-weight:900;color:#C9A84C;}
+.mini-card .l{font-size:9px;color:#68788A;margin-top:2px;letter-spacing:0.04em;}
+.mini-card.g .v{color:#10C9A0;}
+.mini-card.p .v{color:#9B72CF;}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #1A2035;}
+.info-row:last-child{border-bottom:none;}
+.info-key{font-size:12px;color:#68788A;}
+.info-val{font-size:12px;color:#EDF1FF;font-weight:600;text-align:right;max-width:60%;}
+.mood-bar{display:flex;gap:5px;align-items:flex-end;height:44px;margin-top:10px;}
+.mood-col{flex:1;border-radius:4px;background:#C9A84C;min-height:4px;}
+.action-row{padding:14px 16px;}
+.action-btn{width:100%;background:#131825;border:1px solid #1A2035;border-radius:13px;padding:14px;color:#EDF1FF;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:8px;text-align:left;display:flex;align-items:center;gap:10px;}
+.action-btn.gold{border-color:#C9A84C33;color:#C9A84C;}
+.action-btn.teal{border-color:#10C9A033;color:#10C9A0;}
+.action-btn.ruby{border-color:#E85D7533;color:#E85D75;}
+.chat-wrap{display:none;position:fixed;inset:0;background:#07080F;z-index:30;flex-direction:column;}
+.chat-wrap.open{display:flex;}
+.chat-header{padding:14px 16px;border-bottom:1px solid #1A2035;background:#131825;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.chat-msgs{flex:1;overflow-y:auto;padding:14px;-webkit-overflow-scrolling:touch;}
+.msg-row{display:flex;margin-bottom:12px;}
+.msg-row.user{justify-content:flex-start;}
+.msg-row.saksham{justify-content:flex-end;}
+.bubble{max-width:80%;padding:10px 14px;border-radius:16px;font-size:13px;line-height:1.65;}
+.bubble.user{background:#131825;border:1px solid #1A2035;border-radius:16px 16px 16px 4px;}
+.bubble.saksham{background:linear-gradient(135deg,#C9A84C,#E8A020);color:#07080F;border-radius:16px 16px 4px 16px;font-weight:500;}
+.msg-time{font-size:9px;color:#2A3455;margin-top:3px;}
+.chat-input-row{padding:10px 14px;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 10px);border-top:1px solid #1A2035;background:#131825;display:flex;gap:8px;flex-shrink:0;}
+.chat-input-row input{flex:1;min-width:0;background:#0D1018;border:1px solid #1A2035;border-radius:22px;padding:11px 16px;color:#EDF1FF;font-size:14px;outline:none;}
+.send-btn{background:linear-gradient(135deg,#C9A84C,#E8A020);border:none;border-radius:50%;width:44px;height:44px;color:#07080F;font-weight:900;font-size:20px;cursor:pointer;flex-shrink:0;}
+.empty{padding:48px 20px;text-align:center;color:#2A3455;font-size:13px;}
+</style>
 </head>
 <body>
 
-<div id="login" class="login">
-  <h1>Unsmoke Admin</h1>
-  <p>Saksham only</p>
-  <input type="password" id="pin" placeholder="Enter PIN" onkeydown="if(event.key==='Enter')checkPin()"/>
-  <button onclick="checkPin()">Sign In</button>
-  <p id="pin-err" style="color:#E85D75;font-size:12px;"></p>
+<div class="login-wrap" id="loginWrap">
+  <div class="login-logo">🚭</div>
+  <div class="login-title">Unsmoke Admin</div>
+  <div class="login-sub">Saksham only</div>
+  <input class="login-input" type="password" id="pinInput" placeholder="· · · ·" maxlength="4" inputmode="numeric" onkeydown="if(event.key==='Enter')checkPin()"/>
+  <button class="login-btn" onclick="checkPin()">Enter</button>
+  <div class="login-err" id="pinErr"></div>
 </div>
 
-<div id="app" style="display:none;flex-direction:column;height:100vh;">
+<div id="app">
   <div class="header">
-    <div>
+    <div class="header-left">
       <h1>Unsmoke Admin</h1>
-      <span id="last-refresh">Loading users...</span>
+      <p id="lastUpdate">Loading...</p>
     </div>
-    <button class="refresh-btn" onclick="loadUsers()">Refresh</button>
+    <button class="refresh-btn" onclick="loadAll()">Refresh</button>
   </div>
-  <div class="layout">
-    <div class="sidebar" id="sidebar">
-      <div style="padding:12px 16px;border-bottom:1px solid #1A2035;font-size:10px;color:#68788A;text-transform:uppercase;letter-spacing:0.1em;">Users</div>
+  <div class="tabs">
+    <button class="tab active" id="tab-overview" onclick="switchTab('overview')">Overview</button>
+    <button class="tab" id="tab-users" onclick="switchTab('users')">Users</button>
+    <button class="tab" id="tab-messages" onclick="switchTab('messages')">Messages <span class="ubadge" id="unreadBadge" style="display:none">0</span></button>
+  </div>
+  <div class="content" id="content"></div>
+</div>
+
+<!-- USER DETAIL -->
+<div class="detail-wrap" id="detailWrap">
+  <div class="detail-header">
+    <button class="back-btn" onclick="closeDetail()">←</button>
+    <div style="flex:1">
+      <div style="font-weight:800;font-size:16px" id="detailName"></div>
+      <div style="font-size:11px;color:#68788A;margin-top:2px" id="detailSub"></div>
     </div>
-    <div class="chat" id="chat-area">
-      <div class="empty">Select a conversation</div>
+    <button class="refresh-btn" onclick="openChat(currentDetailPhone)">💬 Chat</button>
+  </div>
+  <div class="detail-content" id="detailContent"></div>
+</div>
+
+<!-- CHAT -->
+<div class="chat-wrap" id="chatWrap">
+  <div class="chat-header">
+    <button class="back-btn" onclick="closeChat()">←</button>
+    <div style="flex:1">
+      <div style="font-weight:800;font-size:15px" id="chatName"></div>
+      <div style="font-size:11px;color:#68788A;margin-top:2px" id="chatSub"></div>
     </div>
+    <button class="refresh-btn" onclick="refreshChat()">↻</button>
+  </div>
+  <div class="chat-msgs" id="chatMsgs"></div>
+  <div class="chat-input-row">
+    <input id="replyInput" placeholder="Reply as Saksham..." onkeydown="if(event.key==='Enter')sendReply()"/>
+    <button class="send-btn" onclick="sendReply()">↑</button>
   </div>
 </div>
 
 <script>
-const FB_KEY = "AIzaSyBy6CrePlG8499_tVBwqNw97ivycI142mI";
-const FB_BASE = "https://firestore.googleapis.com/v1/projects/unsmoke-app-92a39/databases/(default)/documents";
-const ADMIN_PIN = "1234";
-let currentUser = null;
-let allUsers = [];
+const FB_KEY="AIzaSyBy6CrePlG8499_tVBwqNw97ivycI142mI";
+const FB="https://firestore.googleapis.com/v1/projects/unsmoke-app-92a39/databases/(default)/documents";
+const PIN="1234";
+let users=[],convs=[],currentTab="overview",currentChatPhone=null,currentDetailPhone=null,autoRefresh=null;
 
-function checkPin(){
-  const pin = document.getElementById("pin").value;
-  if(pin === ADMIN_PIN){
-    document.getElementById("login").style.display = "none";
-    document.getElementById("app").style.display = "flex";
-    loadUsers();
-    setInterval(loadUsers, 8000);
-  } else {
-    document.getElementById("pin-err").textContent = "Wrong PIN";
-  }
-}
-
-async function fbGet(path){
-  try{
-    const r = await fetch(FB_BASE+"/"+path+"?key="+FB_KEY);
-    if(!r.ok) return null;
-    return parseDoc(await r.json());
-  }catch{return null;}
-}
-
-async function fbSet(path, data){
-  try{
-    await fetch(FB_BASE+"/"+path+"?key="+FB_KEY, {
-      method:"PATCH", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify(toDoc(data))
-    });
-  }catch{}
-}
-
-async function fbList(collection){
-  try{
-    const r = await fetch(FB_BASE+"/"+collection+"?key="+FB_KEY);
-    if(!r.ok) return [];
-    const data = await r.json();
-    return (data.documents||[]).map(d=>({...parseDoc(d), _id: d.name.split("/").pop()}));
-  }catch{return [];}
-}
-
-function parseVal(v){
-  if(v.stringValue!==undefined) return v.stringValue;
-  if(v.booleanValue!==undefined) return v.booleanValue;
-  if(v.integerValue!==undefined) return parseInt(v.integerValue);
-  if(v.doubleValue!==undefined) return v.doubleValue;
-  if(v.nullValue!==undefined) return null;
-  if(v.arrayValue) return (v.arrayValue.values||[]).map(parseVal);
-  if(v.mapValue) return parseDoc(v.mapValue);
+function pv(v){
+  if(v.stringValue!==undefined)return v.stringValue;
+  if(v.booleanValue!==undefined)return v.booleanValue;
+  if(v.integerValue!==undefined)return parseInt(v.integerValue);
+  if(v.doubleValue!==undefined)return v.doubleValue;
+  if(v.nullValue!==undefined)return null;
+  if(v.arrayValue)return(v.arrayValue.values||[]).map(pv);
+  if(v.mapValue)return pd(v.mapValue);
   return null;
 }
-function parseDoc(doc){
-  if(!doc||!doc.fields) return null;
-  const r={};
-  Object.entries(doc.fields).forEach(([k,v])=>{r[k]=parseVal(v);});
-  return r;
-}
-function toVal(v){
-  if(v===null||v===undefined) return{nullValue:null};
-  if(typeof v==="boolean") return{booleanValue:v};
-  if(typeof v==="number") return Number.isInteger(v)&&Math.abs(v)<2e15?{integerValue:String(v)}:{doubleValue:v};
-  if(typeof v==="string") return{stringValue:v};
-  if(Array.isArray(v)) return{arrayValue:{values:v.map(toVal)}};
-  if(typeof v==="object"){const f={};Object.entries(v).forEach(([k,val])=>{if(val!==undefined)f[k]=toVal(val);});return{mapValue:{fields:f}};}
+function pd(d){if(!d||!d.fields)return null;const r={};Object.entries(d.fields).forEach(([k,v])=>{r[k]=pv(v);});return r;}
+function tv(v){
+  if(v===null||v===undefined)return{nullValue:null};
+  if(typeof v==="boolean")return{booleanValue:v};
+  if(typeof v==="number")return Number.isInteger(v)&&Math.abs(v)<2e15?{integerValue:String(v)}:{doubleValue:v};
+  if(typeof v==="string")return{stringValue:v};
+  if(Array.isArray(v))return{arrayValue:{values:v.map(tv)}};
+  if(typeof v==="object"){const f={};Object.entries(v).forEach(([k,val])=>{if(val!==undefined)f[k]=tv(val);});return{mapValue:{fields:f}};}
   return{stringValue:String(v)};
 }
-function toDoc(data){const f={};Object.entries(data).forEach(([k,v])=>{if(v!==undefined)f[k]=toVal(v);});return{fields:f};}
+function td(d){const f={};Object.entries(d).forEach(([k,v])=>{if(v!==undefined)f[k]=tv(v);});return{fields:f};}
 
-async function loadUsers(){
-  const users = await fbList("users");
-  const convs = await fbList("conversations");
-  const convMap = {};
-  convs.forEach(c=>{ if(c&&c.userPhone) convMap[c.userPhone]=c; });
-  
-  allUsers = users.filter(u=>u&&u.phone).map(u=>({
-    ...u,
-    conv: convMap[u.phone] || null
-  })).sort((a,b)=>{
-    const aTime = a.conv ? a.conv.lastActivity||0 : 0;
-    const bTime = b.conv ? b.conv.lastActivity||0 : 0;
-    return bTime - aTime;
-  });
-
-  const sidebar = document.getElementById("sidebar");
-  const inner = allUsers.map(u=>{
-    const unread = u.conv&&u.conv.unread>0 ? `<span class="unread">${u.conv.unread}</span>` : "";
-    const lastMsg = u.conv&&u.conv.lastMessage ? `<div class="user-last">${u.conv.lastMessage}</div>` : "";
-    const isActive = currentUser && currentUser.phone === u.phone ? "active" : "";
-    const daysSince = u.quitTS ? Math.floor((Date.now()-u.quitTS)/86400000) : 0;
-    return `<div class="user-card ${isActive}" onclick="selectUser('${u.phone}')">
-      <div class="user-name">${u.name||"Unknown"}${unread}</div>
-      <div class="user-meta">${u.phone} · ${daysSince}d smoke-free</div>
-      ${lastMsg}
-    </div>`;
-  }).join("");
-  sidebar.innerHTML = '<div style="padding:12px 16px;border-bottom:1px solid #1A2035;font-size:10px;color:#68788A;text-transform:uppercase;letter-spacing:0.1em;">'+allUsers.length+' Users</div>' + inner;
-  
-  document.getElementById("last-refresh").textContent = "Updated "+new Date().toLocaleTimeString();
-  
-  if(currentUser) loadChat(currentUser.phone);
+async function fbGet(path){
+  try{const r=await fetch(FB+"/"+path+"?key="+FB_KEY);if(!r.ok)return null;return pd(await r.json());}catch{return null;}
+}
+async function fbSet(path,data){
+  try{await fetch(FB+"/"+path+"?key="+FB_KEY,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify(td(data))});}catch{}
+}
+async function fbList(col){
+  try{const r=await fetch(FB+"/"+col+"?key="+FB_KEY);if(!r.ok)return[];const d=await r.json();return(d.documents||[]).map(doc=>({...pd(doc),_id:doc.name.split("/").pop()}));}catch{return[];}
 }
 
-async function selectUser(phone){
-  const user = allUsers.find(u=>u.phone===phone);
-  if(!user) return;
-  currentUser = user;
-  loadChat(phone);
-  // Mark as read
-  if(user.conv&&user.conv.unread>0){
-    await fbSet("conversations/"+phone, {...user.conv, unread:0});
+function checkPin(){
+  const p=document.getElementById("pinInput").value;
+  if(p===PIN){
+    document.getElementById("loginWrap").style.display="none";
+    document.getElementById("app").style.display="flex";
+    loadAll();
+    autoRefresh=setInterval(loadAll,8000);
+  }else{
+    document.getElementById("pinErr").textContent="Wrong PIN";
+    document.getElementById("pinInput").value="";
   }
 }
 
-async function loadChat(phone){
-  const conv = await fbGet("conversations/"+phone);
-  const user = allUsers.find(u=>u.phone===phone)||{};
-  const msgs = conv&&conv.messages ? conv.messages.sort((a,b)=>a.ts-b.ts) : [];
-  const daysSince = user.quitTS ? Math.floor((Date.now()-user.quitTS)/86400000) : 0;
-  
-  document.getElementById("chat-area").innerHTML = `
-    <div class="chat-header">
-      <h2>${user.name||"Unknown"} <span style="color:#68788A;font-size:12px;font-weight:400">${phone}</span></h2>
-      <p>
-        <span class="stat-tag">${daysSince}d smoke-free</span>
-        <span class="stat-tag">Score: ${user.healthScore||"-"}</span>
-        <span class="stat-tag">Premium: ${user.premium?"Yes":"No"}</span>
-      </p>
+async function loadAll(){
+  const [u,c]=await Promise.all([fbList("users"),fbList("conversations")]);
+  users=(u||[]).filter(x=>x&&x.phone);
+  convs=(c||[]).filter(x=>x&&x.userPhone);
+  const total=convs.reduce((s,c)=>s+(c.unread||0),0);
+  const badge=document.getElementById("unreadBadge");
+  if(total>0){badge.textContent=total;badge.style.display="inline-block";}
+  else badge.style.display="none";
+  document.getElementById("lastUpdate").textContent="Updated "+new Date().toLocaleTimeString();
+  renderTab();
+  if(currentChatPhone)refreshChat();
+}
+
+function switchTab(name){
+  currentTab=name;
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  document.getElementById("tab-"+name).classList.add("active");
+  renderTab();
+}
+
+function renderTab(){
+  if(currentTab==="overview")renderOverview();
+  else if(currentTab==="users")renderUsers();
+  else if(currentTab==="messages")renderMessages();
+}
+
+function ta(ts){
+  if(!ts)return"never";
+  const s=Math.floor((Date.now()-ts)/1000);
+  if(s<60)return"just now";
+  if(s<3600)return Math.floor(s/60)+"m ago";
+  if(s<86400)return Math.floor(s/3600)+"h ago";
+  return Math.floor(s/86400)+"d ago";
+}
+function days(ts){return ts?Math.floor((Date.now()-ts)/86400000):0;}
+function ttime(ts){return new Date(ts).toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"});}
+
+function renderOverview(){
+  const premium=users.filter(u=>u.premium).length;
+  const active=users.filter(u=>u.quitTS&&(Date.now()-u.quitTS)<86400000*7).length;
+  const unread=convs.reduce((s,c)=>s+(c.unread||0),0);
+  const avgD=users.length>0?Math.round(users.filter(u=>u.quitTS).reduce((s,u)=>s+days(u.quitTS),0)/Math.max(1,users.filter(u=>u.quitTS).length)):0;
+  const recentMsgs=convs.filter(c=>(c.messages||[]).length>0).sort((a,b)=>(b.lastActivity||0)-(a.lastActivity||0)).slice(0,6);
+  document.getElementById("content").innerHTML=`
+    <div class="stats-grid">
+      <div class="stat-box"><div class="val">${users.length}</div><div class="lbl">Total Users</div></div>
+      <div class="stat-box green"><div class="val">${active}</div><div class="lbl">Active This Week</div></div>
+      <div class="stat-box purple"><div class="val">${premium}</div><div class="lbl">Premium</div></div>
+      <div class="stat-box ruby"><div class="val">${unread}</div><div class="lbl">Unread Messages</div></div>
     </div>
-    <div class="messages" id="messages">
-      ${msgs.length===0 ? '<div style="text-align:center;color:#2A3455;font-size:13px;padding:40px">No messages yet</div>' : ''}
-      ${msgs.map(m=>`
-        <div class="msg ${m.role}">
-          <div>
-            <div class="bubble ${m.role}">${m.text}</div>
-            <div class="time">${new Date(m.ts).toLocaleTimeString()}</div>
-          </div>
+    <div style="padding:0 14px 6px">
+      <div class="stat-box" style="margin-bottom:14px">
+        <div class="val" style="font-size:22px">${avgD}d</div>
+        <div class="lbl">Average days smoke-free across all users</div>
+      </div>
+      <div style="font-size:10px;color:#68788A;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px">Recent Conversations</div>
+      ${recentMsgs.length===0?'<div class="empty">No messages yet</div>':
+        recentMsgs.map(c=>`
+          <div class="msg-preview ${(c.unread||0)>0?"unread":""}" onclick="openChat('${c.userPhone}')">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div class="name">${c.userName||c.userPhone}</div>
+              <div style="display:flex;align-items:center;gap:6px">
+                ${(c.unread||0)>0?`<span class="tag unread">${c.unread} new</span>`:""}
+                <span style="font-size:10px;color:#2A3455">${ta(c.lastActivity)}</span>
+              </div>
+            </div>
+            <div class="text">${c.lastMessage||"No messages"}</div>
+          </div>`).join("")}
+    </div>`;
+}
+
+function renderUsers(){
+  if(!users.length){document.getElementById("content").innerHTML='<div class="empty">No users yet</div>';return;}
+  document.getElementById("content").innerHTML=`
+    <div style="padding:12px 16px 6px;font-size:10px;color:#68788A;text-transform:uppercase;letter-spacing:0.1em">${users.length} registered users</div>
+    ${users.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).map(u=>{
+      const conv=convs.find(c=>c.userPhone===u.phone);
+      const d=days(u.quitTS);
+      return `<div class="user-row" onclick="showDetail('${u.phone}')">
+        <div class="avatar">${u.photo?`<img src="${u.photo}" alt=""/>`:(u.name||"?")[0].toUpperCase()}</div>
+        <div class="user-info">
+          <div class="user-name">${u.name||"Unknown"}</div>
+          <div class="user-meta">+91 ${u.phone}</div>
+          ${conv?.lastMessage?`<div class="user-last">${conv.lastMessage}</div>`:""}
         </div>
-      `).join("")}
+        <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;flex-shrink:0">
+          <span class="tag days">${d}d</span>
+          ${u.premium?'<span class="tag pro">PRO</span>':""}
+          ${(conv?.unread||0)>0?`<span class="tag unread">${conv.unread}</span>`:""}
+        </div>
+      </div>`;
+    }).join("")}`;
+}
+
+function renderMessages(){
+  const withMsgs=convs.filter(c=>(c.messages||[]).length>0).sort((a,b)=>(b.lastActivity||0)-(a.lastActivity||0));
+  if(!withMsgs.length){document.getElementById("content").innerHTML='<div class="empty">No conversations yet</div>';return;}
+  document.getElementById("content").innerHTML=`
+    <div style="padding:12px 16px 6px;font-size:10px;color:#68788A;text-transform:uppercase;letter-spacing:0.1em">${withMsgs.length} conversations</div>
+    ${withMsgs.map(c=>`
+      <div class="user-row" onclick="openChat('${c.userPhone}')">
+        <div class="avatar" style="background:linear-gradient(135deg,#C9A84C22,#E8A02022)">${(c.userName||"?")[0].toUpperCase()}</div>
+        <div class="user-info">
+          <div class="user-name">${c.userName||c.userPhone}</div>
+          <div class="user-meta">${(c.messages||[]).length} messages · ${ta(c.lastActivity)}</div>
+          <div class="user-last">${c.lastMessage||""}</div>
+        </div>
+        <div style="flex-shrink:0">
+          ${(c.unread||0)>0?`<span class="tag unread">${c.unread}</span>`:'<span style="color:#2A3455;font-size:16px">›</span>'}
+        </div>
+      </div>`).join("")}`;
+}
+
+function showDetail(phone){
+  currentDetailPhone=phone;
+  const u=users.find(u=>u.phone===phone);
+  if(!u)return;
+  const conv=convs.find(c=>c.userPhone===phone)||{};
+  const d=days(u.quitTS);
+  const journal=u.journal||[];
+  const resisted=journal.filter(e=>e.resisted).length;
+  const moods=Object.values(u.moods||{}).slice(-7);
+  const trig=(()=>{if(!journal.length)return null;const c={};journal.forEach(e=>(e.tags||[]).forEach(t=>c[t]=(c[t]||0)+1));return Object.entries(c).sort((a,b)=>b[1]-a[1])[0]?.[0];})();
+  document.getElementById("detailName").textContent=u.name||"Unknown";
+  document.getElementById("detailSub").textContent="+91 "+phone+" · joined "+new Date(u.createdAt||Date.now()).toLocaleDateString("en-IN");
+  document.getElementById("detailContent").innerHTML=`
+    <div class="section">
+      <div class="section-title">Quit Stats</div>
+      <div class="grid3">
+        <div class="mini-card"><div class="v">${d}</div><div class="l">Days Quit</div></div>
+        <div class="mini-card g"><div class="v">${Math.min(100,Math.round(d*0.4+resisted*2))}</div><div class="l">Health Score</div></div>
+        <div class="mini-card p"><div class="v">${journal.length}</div><div class="l">Craving Logs</div></div>
+      </div>
     </div>
-    <div class="input-area">
-      <input id="reply-input" placeholder="Reply as Saksham..." onkeydown="if(event.key==='Enter')sendReply()"/>
-      <button onclick="sendReply()">↑</button>
+    <div class="section">
+      <div class="section-title">Profile Info</div>
+      <div class="info-row"><span class="info-key">Cigarettes/day</span><span class="info-val">${u.cpd||"-"}</span></div>
+      <div class="info-row"><span class="info-key">Price per pack</span><span class="info-val">Rs ${u.pp||"-"}</span></div>
+      <div class="info-row"><span class="info-key">Money saved</span><span class="info-val">Rs ${u.quitTS?Math.floor(((d*( u.cpd||20))/(u.cpp||20))*(u.pp||300)).toLocaleString("en-IN"):"-"}</span></div>
+      <div class="info-row"><span class="info-key">Cravings resisted</span><span class="info-val">${resisted} / ${journal.length}</span></div>
+      <div class="info-row"><span class="info-key">Top trigger</span><span class="info-val">${trig||"-"}</span></div>
+      <div class="info-row"><span class="info-key">Premium</span><span class="info-val" style="color:${u.premium?"#C9A84C":"#68788A"}">${u.premium?"Active":"No"}</span></div>
+      <div class="info-row"><span class="info-key">Lessons read</span><span class="info-val">${(u.lessonsRead||[]).length} / 6</span></div>
     </div>
-  `;
-  
-  const msgs_div = document.getElementById("messages");
-  if(msgs_div) msgs_div.scrollTop = msgs_div.scrollHeight;
+    ${moods.length>0?`
+    <div class="section">
+      <div class="section-title">Mood Last 7 Days</div>
+      <div class="mood-bar">
+        ${moods.map(v=>`<div class="mood-col" style="height:${Math.max(4,(v/5)*40)}px;opacity:${0.3+v*0.14}"></div>`).join("")}
+      </div>
+    </div>`:""}
+    <div class="action-row">
+      <div class="section-title" style="margin-bottom:10px">Actions</div>
+      <button class="action-btn gold" onclick="openChat('${phone}')">💬 Message ${u.name||"User"}</button>
+      <button class="action-btn teal" onclick="window.location.href='tel:+91${phone}'">📞 Call +91 ${phone}</button>
+    </div>`;
+  document.getElementById("detailWrap").classList.add("open");
+}
+
+function closeDetail(){
+  document.getElementById("detailWrap").classList.remove("open");
+  currentDetailPhone=null;
+}
+
+function openChat(phone){
+  currentChatPhone=phone;
+  const u=users.find(u=>u.phone===phone)||{};
+  const conv=convs.find(c=>c.userPhone===phone)||{};
+  document.getElementById("chatName").textContent=u.name||phone;
+  document.getElementById("chatSub").textContent=days(u.quitTS)+"d smoke-free · +91 "+phone;
+  document.getElementById("chatWrap").classList.add("open");
+  document.getElementById("replyInput").value="";
+  refreshChat();
+  if(conv.unread>0){fbSet("conversations/"+phone,{...conv,unread:0});conv.unread=0;loadAll();}
+}
+
+async function refreshChat(){
+  if(!currentChatPhone)return;
+  const conv=await fbGet("conversations/"+currentChatPhone);
+  const msgs=(conv?.messages||[]).sort((a,b)=>a.ts-b.ts);
+  const container=document.getElementById("chatMsgs");
+  if(!msgs.length){container.innerHTML='<div class="empty">No messages yet. Say something!</div>';return;}
+  container.innerHTML=msgs.map(m=>`
+    <div class="msg-row ${m.role}">
+      <div>
+        <div class="bubble ${m.role}">${m.text}</div>
+        <div class="msg-time" style="text-align:${m.role==="saksham"?"right":"left"}">${ttime(m.ts)}</div>
+      </div>
+    </div>`).join("");
+  container.scrollTop=container.scrollHeight;
 }
 
 async function sendReply(){
-  const input = document.getElementById("reply-input");
-  if(!input||!input.value.trim()||!currentUser) return;
-  const text = input.value.trim();
-  input.value = "";
-  
-  const conv = await fbGet("conversations/"+currentUser.phone) || {};
-  const existing = conv.messages || [];
-  const msg = {id:String(Date.now()), role:"saksham", text, ts:Date.now()};
-  await fbSet("conversations/"+currentUser.phone, {
-    ...conv,
-    messages:[...existing, msg],
-    lastMessage:"Saksham: "+text,
-    lastActivity:Date.now(),
-    unread:0
-  });
-  
-  loadChat(currentUser.phone);
+  const input=document.getElementById("replyInput");
+  const text=input.value.trim();
+  if(!text||!currentChatPhone)return;
+  input.value="";
+  const conv=await fbGet("conversations/"+currentChatPhone)||{};
+  const existing=conv.messages||[];
+  const msg={id:String(Date.now()),role:"saksham",text,ts:Date.now()};
+  await fbSet("conversations/"+currentChatPhone,{...conv,messages:[...existing,msg],lastMessage:"Saksham: "+text,lastActivity:Date.now(),unread:0});
+  refreshChat();
+  loadAll();
 }
 
-document.addEventListener("keydown", e=>{
-  if(e.key==="Enter"&&document.activeElement===document.getElementById("pin")) checkPin();
-});
+function closeChat(){
+  document.getElementById("chatWrap").classList.remove("open");
+  currentChatPhone=null;
+}
+
+setInterval(()=>{if(currentChatPhone)refreshChat();},5000);
 </script>
 </body>
 </html>
