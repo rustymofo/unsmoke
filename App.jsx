@@ -240,7 +240,7 @@ function VoiceCall({person,systemPrompt,avatar,onClose}){
   const pad2=n=>String(n).padStart(2,"0");
 
   return (
-    <div style={{position:"absolute",inset:0,zIndex:1002,background:"#030408",display:"flex",flexDirection:"column",alignItems:"center"}}>
+    <div style={{position:"fixed",inset:0,zIndex:1002,background:"#030408",display:"flex",flexDirection:"column",alignItems:"center"}}>
       <div style={{width:"100%",padding:"16px 20px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
         <div style={{display:"flex",gap:6}}>
           {[["en-IN","EN-IN"],["hi-IN","हिंदी"]].map(([l,label])=>(
@@ -393,7 +393,7 @@ function SakshamChat({userPhone, userName, d, healthScore, onClose}){
   };
 
   return (
-    <div style={{position:"absolute",inset:0,zIndex:999,background:"#07080F",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",inset:0,zIndex:999,background:"#07080F",display:"flex",flexDirection:"column",overflow:"hidden"}}>
       <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #1A2035",display:"flex",alignItems:"center",gap:12,flexShrink:0,background:"linear-gradient(180deg,#131825,#07080F)"}}>
         <div style={{width:42,height:42,borderRadius:"50%",background:"linear-gradient(135deg,#C9A84C,#E8A020)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0,fontWeight:900,color:"#07080F",boxShadow:"0 4px 12px rgba(201,168,76,0.3)"}}>S</div>
         <div style={{flex:1}}>
@@ -416,7 +416,7 @@ function SakshamChat({userPhone, userName, d, healthScore, onClose}){
         <div ref={endRef}/>
       </div>
       <div style={{padding:"12px 16px",paddingBottom:"calc(env(safe-area-inset-bottom, 0px) + 12px)",borderTop:"1px solid #1A2035",display:"flex",gap:10,flexShrink:0,background:"#131825"}}>
-        <input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&send()} placeholder="Message Saksham..." style={{flex:1,background:"#0D1018",border:"1px solid #1A2035",borderRadius:24,padding:"12px 18px",color:"#EDF1FF",fontSize:14,outline:"none"}}/>
+        <input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&send()} placeholder="Message Saksham..." style={{flex:1,minWidth:0,background:"#0D1018",border:"1px solid #1A2035",borderRadius:24,padding:"12px 16px",color:"#EDF1FF",fontSize:14,outline:"none"}}/>
         <button onClick={send} disabled={sending||!input.trim()} style={{background:"linear-gradient(135deg,#C9A84C,#E8A020)",border:"none",borderRadius:"50%",width:46,height:46,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",opacity:sending||!input.trim()?0.4:1,flexShrink:0,boxShadow:"0 4px 12px rgba(201,168,76,0.3)"}}>
           <span style={{color:"#07080F",fontSize:16,fontWeight:900}}>up</span>
         </button>
@@ -831,7 +831,7 @@ export default function App(){
   const nrtPlan=(()=>{const c=parseFloat(nrtCigsLocal)||20,s1=c>=20?21:c>=10?14:7;return [{week:"Week 1-"+Math.ceil(s1/7),patch:c>=20?"21mg patch":c>=10?"14mg patch":"7mg patch",desc:"Full replacement. Match your current nicotine intake."},{week:"Week "+Math.ceil(s1/7+1)+"-"+Math.ceil(s1/7+2),patch:c>=20?"14mg patch":"7mg patch",desc:"Step down. Your baseline need is dropping."},{week:"Week "+Math.ceil(s1/7+3)+"+",patch:c>=20?"7mg patch":"None",desc:c>=20?"Final step. Wean off completely.":"You are done with NRT. Day 8: go cold turkey."}];})();
 
   const outerWrap={background:C.bg,minHeight:"100dvh",display:"flex",justifyContent:"center"};
-  const wrap={fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif",background:C.bg,color:C.text,height:"100dvh",display:"flex",flexDirection:"column",overflow:"hidden",maxWidth:430,margin:"0 auto",width:"100%",position:"relative"};
+  const wrap={fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif",background:C.bg,color:C.text,height:"100svh",display:"flex",flexDirection:"column",overflow:"hidden",width:"100%",position:"fixed",top:0,left:0,right:0,bottom:0};
   const inputStyle={background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:9,padding:"12px 13px",color:C.text,fontSize:14,width:"100%",boxSizing:"border-box",outline:"none"};
   const lblStyle={color:C.sub,fontSize:10,fontWeight:700,letterSpacing:"0.09em",textTransform:"uppercase",marginBottom:5,display:"block"};
   const curB=PHASES.find(p=>p.phase===bPhase)||PHASES[0];
@@ -1125,7 +1125,7 @@ export default function App(){
 
       {/* Founder story overlay */}
       {showFounderStory&&(
-        <div style={{position:"absolute",inset:0,zIndex:997,background:"#07081A",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+        <div style={{position:"fixed",inset:0,zIndex:997,background:"#07081A",display:"flex",flexDirection:"column",overflow:"hidden"}}>
           <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #1C2040",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
             <div><div style={{fontWeight:800,fontSize:15,color:"#F0EDF8"}}>Saksham Story</div><div style={{fontSize:11,color:"#8090B0"}}>@ssakshamchauhan</div></div>
             <button onClick={()=>setShowFounderStory(false)} style={{background:"#141730",border:"1px solid #1C2040",borderRadius:20,padding:"6px 14px",color:"#8090B0",fontSize:12,fontWeight:700,cursor:"pointer"}}>Close</button>
@@ -1162,7 +1162,7 @@ export default function App(){
 
       {/* Profile overlay */}
       {showProfile&&(
-        <div style={{position:"absolute",inset:0,zIndex:1005,background:"rgba(0,0,0,0.85)",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
+        <div style={{position:"fixed",inset:0,zIndex:1005,background:"rgba(0,0,0,0.85)",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
           <div style={{background:C.surface,borderRadius:"20px 20px 0 0",padding:"28px 20px 40px",border:"1px solid "+C.border}}>
             <div style={{width:40,height:4,background:C.muted,borderRadius:2,margin:"0 auto 24px"}}/>
             <div style={{display:"flex",alignItems:"center",gap:16,marginBottom:24}}>
@@ -1196,7 +1196,7 @@ export default function App(){
 
       {/* Snap viewer */}
       {viewingSnap&&(
-        <div style={{position:"absolute",inset:0,zIndex:1000,background:"#000",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:24}}>
+        <div style={{position:"fixed",inset:0,zIndex:1000,background:"#000",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:24}}>
           <div style={{background:"linear-gradient(160deg,#0E1128,#1A0E28)",border:"1px solid "+C.purple+"44",borderRadius:20,width:"100%",maxWidth:360,overflow:"hidden"}}>
             {viewingSnap.photo&&<div style={{position:"relative",width:"100%",paddingBottom:"60%",overflow:"hidden"}}><img src={viewingSnap.photo} alt="snap" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}}/><div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom,transparent 50%,#0E1128 100%)"}}/><div style={{position:"absolute",bottom:12,left:0,right:0,textAlign:"center",color:"#fff",fontWeight:800,fontSize:18}}>{viewingSnap.senderName}</div></div>}
             <div style={{padding:"20px 20px 24px",textAlign:"center"}}>
@@ -1219,14 +1219,14 @@ export default function App(){
       )}
 
       {celebMS&&!viewingSnap&&(
-        <div style={{position:"absolute",top:60,left:"50%",transform:"translateX(-50%)",zIndex:995,background:"linear-gradient(135deg,"+C.teal+","+C.purple+")",borderRadius:14,padding:"12px 20px",textAlign:"center",boxShadow:"0 8px 32px rgba(0,0,0,0.5)",maxWidth:280,pointerEvents:"none"}}>
+        <div style={{position:"fixed",top:60,left:"50%",transform:"translateX(-50%)",zIndex:995,background:"linear-gradient(135deg,"+C.teal+","+C.purple+")",borderRadius:14,padding:"12px 20px",textAlign:"center",boxShadow:"0 8px 32px rgba(0,0,0,0.5)",maxWidth:280,pointerEvents:"none"}}>
           <div style={{fontWeight:800,fontSize:13,color:"#fff"}}>Milestone reached!</div>
           <div style={{fontSize:12,color:"rgba(255,255,255,0.8)",marginTop:2}}>{celebMS.label}</div>
         </div>
       )}
 
       {showSlipped&&(
-        <div style={{position:"absolute",inset:0,zIndex:996,background:"rgba(0,0,0,0.8)",display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+        <div style={{position:"fixed",inset:0,zIndex:996,background:"rgba(0,0,0,0.8)",display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
           <div style={crd({maxWidth:340,width:"100%",padding:24})}>
             <div style={{fontSize:28,textAlign:"center",marginBottom:8}}>💙</div>
             <div style={{fontSize:17,fontWeight:800,textAlign:"center",marginBottom:8}}>It is okay. One slip does not define you.</div>
@@ -1246,7 +1246,7 @@ export default function App(){
           </button>
           <div>
             <div style={{fontWeight:900,fontSize:14,background:"linear-gradient(135deg,"+C.accent+","+C.teal+")",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",lineHeight:1}}>Unsmoke</div>
-            <div style={{color:C.muted,fontSize:9,lineHeight:1}}>{authUser?authUser.name||authName:"with Saksham"}</div>
+            <div style={{color:"rgba(201,168,76,0.55)",fontSize:9,lineHeight:1,letterSpacing:"0.04em"}}>{authUser?authUser.name||authName:"with Saksham"}</div>
           </div>
         </div>
         <div style={{display:"flex",alignItems:"center",gap:6}}>
@@ -1573,7 +1573,7 @@ export default function App(){
       </div>
 
       {showPremium&&(
-        <div style={{position:"absolute",inset:0,zIndex:998,background:"#07081A",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+        <div style={{position:"fixed",inset:0,zIndex:998,background:"#07081A",display:"flex",flexDirection:"column",overflow:"hidden"}}>
           <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #1C2040",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
             <div><div style={{fontWeight:900,fontSize:16,color:"#FFD700"}}>👑 Unsmoke Premium</div><div style={{fontSize:11,color:"#8090B0",marginTop:1}}>Rs 299/month</div></div>
             <button onClick={()=>setShowPremium(false)} style={{background:"#141730",border:"1px solid #1C2040",borderRadius:20,padding:"6px 14px",color:"#8090B0",fontSize:12,fontWeight:700,cursor:"pointer"}}>Close</button>
@@ -1594,7 +1594,7 @@ export default function App(){
               </div>
             </div>
             <div style={{fontSize:10,color:"#00D9AA",fontWeight:800,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:10,marginTop:6}}>Chat</div>
-            {[{icon:"🤖",color:"#00D9AA",title:"AI Quit Coach",desc:"24/7 chat that knows your journey. "+d+" days, score "+healthScore+", triggers.",screen:"coach"},{icon:"🧑",color:"#FF6534",title:"Chat with Saksham",desc:"DM the founder. "+founderDays+" days clean. 12 years. 2 packs/day. He responds.",screen:"saksham"},{icon:"💊",color:"#FFB800",title:"NRT Step-Down Calculator",desc:"Personalized nicotine patch plan based on Saksham own protocol.",screen:"nrt"}].map(({icon,color,title,desc,screen})=>(
+            {[{icon:"🤖",color:"#00D9AA",title:"AI Quit Coach",desc:"24/7 chat that knows your journey. "+d+" days, score "+healthScore+".",screen:"coach"},{icon:"S",color:"#C9A84C",title:"Chat with Saksham",desc:"Message the founder directly. He reads and responds personally.",screen:"saksham"},{icon:"💊",color:"#FFB800",title:"NRT Step-Down Calculator",desc:"Personalized nicotine patch plan based on Saksham own protocol.",screen:"nrt"}].map(({icon,color,title,desc,screen})=>(
               <div key={title} onClick={()=>{if(isPremium){setShowPremium(false);setPremiumScreen(screen);}}} style={{background:"#0E1128",border:"1px solid #1C2040",borderRadius:14,padding:"16px 14px",marginBottom:10,cursor:isPremium?"pointer":"default"}}>
                 <div style={{display:"flex",alignItems:"center",gap:12}}>
                   <div style={{width:44,height:44,borderRadius:12,background:color+"22",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>{icon}</div>
