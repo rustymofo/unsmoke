@@ -23,9 +23,33 @@ function genId(len=8){return Math.random().toString(36).substr(2,len).toUpperCas
 
 // Session (browser local - just login token)
 const session={
-  async get(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch{return null;}},
-  async set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}},
-  async del(k){try{localStorage.removeItem(k);}catch{}},
+  async get(k){
+    try{
+      // Try localStorage first
+      const ls=localStorage.getItem(k);
+      if(ls)return JSON.parse(ls);
+      // Fallback: read from cookie
+      const match=document.cookie.split(";").map(c=>c.trim()).find(c=>c.startsWith(k+"="));
+      if(match)return JSON.parse(decodeURIComponent(match.split("=").slice(1).join("=")));
+      return null;
+    }catch{return null;}
+  },
+  async set(k,v){
+    try{
+      const str=JSON.stringify(v);
+      // Save to localStorage
+      localStorage.setItem(k,str);
+      // Also save as 30-day cookie (survives localStorage clears on iOS)
+      const exp=new Date(Date.now()+30*86400000).toUTCString();
+      document.cookie=k+"="+encodeURIComponent(str)+"; expires="+exp+"; path=/; SameSite=Strict";
+    }catch{}
+  },
+  async del(k){
+    try{
+      localStorage.removeItem(k);
+      document.cookie=k+"=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }catch{}
+  },
 };
 
 // Firebase Firestore REST
