@@ -534,6 +534,11 @@ export default function App(){
   const [locPerm,setLocPerm]=useState(null);
   const [permLoading,setPermLoading]=useState(null);
   const [nrtCigs,setNrtCigs]=useState("20");
+  const [exDone,setExDone]=useState([]);
+  const [exStarted,setExStarted]=useState(false);
+  const [dietTab,setDietTab]=useState("veg");
+  const [exTab,setExTab]=useState("today");
+  const [bannerIdx,setBannerIdx]=useState(0);
 
   const FOUNDER_QUIT_TS=new Date("2024-10-31T00:00:00").getTime();
   const MILESTONES=[
@@ -957,8 +962,6 @@ export default function App(){
     ]},
   ];
   const todayExercise=EXERCISES[new Date().getDay()===0?6:new Date().getDay()-1];
-  const [exDone,setExDone]=useState([]);
-  const [exStarted,setExStarted]=useState(false);
 
   const VEG_FOODS=[
     {name:"Raw Carrot Sticks",reason:"Crunching satisfies the oral fixation. The act of biting replaces the hand-to-mouth habit.",emoji:"🥕"},
@@ -976,8 +979,6 @@ export default function App(){
     {name:"Greek Yogurt",reason:"Probiotic cultures reduce cortisol, the stress hormone that drives most cravings.",emoji:"🥛"},
     {name:"Tuna with Crackers",reason:"Protein and complex carbs together prevent the blood sugar dips that trigger craving episodes.",emoji:"🐠"},
   ];
-  const [dietTab,setDietTab]=useState("veg");
-  const [exTab,setExTab]=useState("today");
 
 
   // Sponsored banner data — replace with real brand deals
@@ -986,7 +987,6 @@ export default function App(){
     {id:"b2",tag:"Sponsored",brand:"Quit Genius",headline:"AI-powered CBT therapy for nicotine addiction — free trial",cta:"Try free",color:"#7050A8",emoji:"🧠",url:"https://quitgenius.com"},
     {id:"b3",tag:"Partner",brand:"Apollo Pharmacy",headline:"Find NRT products near you — delivered in 2 hours",cta:"Order now",color:"#B87000",emoji:"🏥",url:"https://apollopharmacy.in"},
   ];
-  const [bannerIdx,setBannerIdx]=useState(0);
   useEffect(()=>{const t=setInterval(()=>setBannerIdx(i=>(i+1)%BANNERS.length),5000);return()=>clearInterval(t);},[]);
   const curBanner=BANNERS[bannerIdx];
 
