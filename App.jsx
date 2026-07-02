@@ -461,6 +461,11 @@ export default function App(){
   const [goalName,setGoalName]=useState("");
   const [goalAmt,setGoalAmt]=useState("");
   const [isPremium,setIsPremium]=useState(false);
+  const [msgThread,setMsgThread]=useState([]);
+  const [msgInput,setMsgInput]=useState("");
+  const [msgSending,setMsgSending]=useState(false);
+  const [msgUnread,setMsgUnread]=useState(0);
+  const [msgPollRef,setMsgPollRef]=useState(null);
   const [myStreaks,setMyStreaks]=useState([]);
   const [showPremium,setShowPremium]=useState(false);
   const [challengeDone,setChallengeDone]=useState(()=>localStorage.getItem('cd_'+new Date().toDateString())==='1');
@@ -615,6 +620,48 @@ export default function App(){
   const quote=QUOTES[new Date().getDate()%QUOTES.length];
   const challenge=CHALLENGES[Math.floor((now/86400000))%CHALLENGES.length];
 
+  function startMsgPoll(phone){
+    if(!phone)return;
+    loadMsgs(phone);
+    const interval=setInterval(()=>loadMsgs(phone),6000);
+    setMsgPollRef(interval);
+    return ()=>clearInterval(interval);
+  }
+  async function loadMsgs(phone){
+    if(!phone)return;
+    const conv=await FB.get("conversations/"+phone);
+    if(conv&&conv.messages){
+      const sorted=[...conv.messages].sort((a,b)=>a.ts-b.ts);
+      setMsgThread(sorted);
+      const unread=sorted.filter(m=>m.role==="saksham"&&!m.seenByUser).length;
+      setMsgUnread(unread);
+      if(unread>0){
+        const updated=sorted.map(m=>m.role==="saksham"?Object.assign({},m,{seenByUser:true}):m);
+        await FB.merge("conversations/"+phone,{messages:updated});
+        setMsgUnread(0);
+      }
+    }
+  }
+  async function sendMsg(){
+    const phone=authUser?authUser.phone:authPhone;
+    if(!msgInput.trim()||msgSending||!phone)return;
+    const text=msgInput.trim();
+    setMsgInput("");setMsgSending(true);
+    const msg={id:String(Date.now()),role:"user",text,ts:Date.now(),senderName:userName,read:false,seenByUser:true};
+    const updated=[...msgThread,msg];
+    setMsgThread(updated);
+    try{
+      const conv=await FB.get("conversations/"+phone)||{};
+      await FB.set("conversations/"+phone,{
+        userPhone:phone,userName,d,healthScore,
+        lastMessage:text,lastActivity:Date.now(),
+        unread:(conv.unread||0)+1,
+        messages:updated
+      });
+    }catch{}
+    setMsgSending(false);
+  }
+
   async function saveUD(fields){
     const phone=authUser?authUser.phone:authPhone;
     if(!phone)return;
@@ -652,6 +699,7 @@ export default function App(){
       if(ud.moods)setMoods(ud.moods);
       if(ud.premium)setIsPremium(ud.premium);
       setAuthStep("done");setReady(true);setAuthLoading(false);
+      startMsgPoll(authPhone);
     } else {
       setAuthStep("profile");
     }
@@ -1430,6 +1478,66 @@ export default function App(){
           </div>
         )}
 
+
+        {tab==="messages"&&(
+          <div style={{display:"flex",flexDirection:"column",height:"100%"}}>
+
+            {/* Header */}
+            <div style={{padding:"16px 18px 12px",borderBottom:"1px solid "+C.border,background:C.surface,flexShrink:0}}>
+              <div style={{display:"flex",alignItems:"center",gap:14}}>
+                <div style={{width:46,height:46,borderRadius:"50%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,fontWeight:900,color:"#fff",flexShrink:0,boxShadow:"0 4px 14px rgba(160,114,10,0.25)"}}>S</div>
+                <div style={{flex:1}}>
+                  <div style={{fontWeight:900,fontSize:16,color:C.text}}>Saksham</div>
+                  <div style={{fontSize:11,color:C.emerald,marginTop:2,fontWeight:600}}>Founder · Unsmoke with Saksham</div>
+                </div>
+                <div style={{fontSize:10,color:C.sub,background:C.surfaceHi,padding:"4px 10px",borderRadius:20,border:"1px solid "+C.border}}>Responds same day</div>
+              </div>
+              <div style={{marginTop:12,padding:"10px 12px",background:C.goldFade,borderRadius:10,border:"1px solid "+C.gold+"33",fontSize:12,color:C.sub,lineHeight:1.6}}>
+                {d+" days smoke-free. Health score "+healthScore+"/100. Saksham reads every message personally."}
+              </div>
+            </div>
+
+            {/* Messages */}
+            <div style={{flex:1,overflowY:"auto",padding:"14px 16px",display:"flex",flexDirection:"column",gap:10}}>
+              {msgThread.length===0&&(
+                <div style={{textAlign:"center",padding:"32px 20px",color:C.muted}}>
+                  <div style={{fontSize:36,marginBottom:12}}>💬</div>
+                  <div style={{fontWeight:700,fontSize:14,color:C.text,marginBottom:6}}>Start a conversation with Saksham</div>
+                  <div style={{fontSize:13,color:C.sub,lineHeight:1.65}}>He quit after 12 years of 2 packs a day. Ask him anything about quitting. He reads every message.</div>
+                </div>
+              )}
+              {msgThread.map(msg=>(
+                <div key={msg.id||msg.ts} style={{display:"flex",justifyContent:msg.role==="user"?"flex-end":"flex-start",alignItems:"flex-end",gap:8}}>
+                  {msg.role==="saksham"&&(
+                    <div style={{width:28,height:28,borderRadius:"50%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:900,color:"#fff",flexShrink:0}}>S</div>
+                  )}
+                  <div style={{maxWidth:"78%"}}>
+                    <div style={{padding:"11px 15px",borderRadius:msg.role==="user"?"18px 18px 4px 18px":"18px 18px 18px 4px",background:msg.role==="user"?"linear-gradient(135deg,"+C.gold+","+C.amber+")":C.surface,color:msg.role==="user"?"#fff":C.text,fontSize:13,lineHeight:1.7,border:msg.role==="user"?"none":"1px solid "+C.border,boxShadow:msg.role==="user"?"0 4px 14px rgba(160,114,10,0.2)":"0 1px 4px rgba(0,0,0,0.06)"}}>
+                      {msg.text}
+                    </div>
+                    <div style={{fontSize:9,color:C.muted,marginTop:3,textAlign:msg.role==="user"?"right":"left",paddingLeft:msg.role==="saksham"?4:0,paddingRight:msg.role==="user"?4:0}}>
+                      {new Date(msg.ts).toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"})}
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {msgSending&&(
+                <div style={{display:"flex",justifyContent:"flex-end"}}>
+                  <div style={{padding:"10px 15px",borderRadius:"18px 18px 4px 18px",background:C.goldFade,border:"1px solid "+C.gold+"44",fontSize:13,color:C.sub}}>Sending...</div>
+                </div>
+              )}
+            </div>
+
+            {/* Input */}
+            <div style={{padding:"12px 16px",paddingBottom:"calc(env(safe-area-inset-bottom,0px) + 12px)",borderTop:"1px solid "+C.border,background:C.surface,display:"flex",gap:10,flexShrink:0}}>
+              <input value={msgInput} onChange={e=>setMsgInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&sendMsg()} placeholder="Message Saksham..." style={{flex:1,minWidth:0,background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:24,padding:"11px 16px",color:C.text,fontSize:14,outline:"none"}}/>
+              <button onClick={sendMsg} disabled={msgSending||!msgInput.trim()} style={{background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:"50%",width:46,height:46,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0,opacity:msgSending||!msgInput.trim()?0.4:1,boxShadow:"0 4px 12px rgba(160,114,10,0.3)"}}>
+                <span style={{color:"#fff",fontSize:18,fontWeight:900}}>↑</span>
+              </button>
+            </div>
+          </div>
+        )}
+
         {tab==="sos"&&(
           <div style={{padding:"16px 14px"}}>
             <div style={{fontSize:18,fontWeight:800,marginBottom:3}}>Craving Toolkit</div>
@@ -1670,7 +1778,10 @@ export default function App(){
       <div style={{display:"flex",borderTop:"1px solid "+C.border,background:C.surface,flexShrink:0}}>
         {TABS.map(t=>(
           <button key={t.id} onClick={()=>{setTab(t.id);setBreathOn(false);}} style={{flex:1,padding:"9px 2px 11px",border:"none",background:"transparent",color:tab===t.id?C.accent:C.muted,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:2,fontSize:8,fontWeight:700,letterSpacing:"0.03em",textTransform:"uppercase"}}>
-            <span style={{fontSize:16}}>{t.icon}</span>
+            <div style={{position:"relative",display:"inline-block"}}>
+              <span style={{fontSize:16}}>{t.icon}</span>
+              {t.id==="messages"&&msgUnread>0&&<div style={{position:"absolute",top:-3,right:-4,width:7,height:7,borderRadius:"50%",background:C.ruby}}/>}
+            </div>
             <span>{t.label}</span>
           </button>
         ))}
