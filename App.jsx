@@ -486,9 +486,11 @@ function SakshamChat({userPhone, userName, d, healthScore, onClose}){
 }
 
 const BANNERS=[
-  {id:"b1",tag:"Sponsored",brand:"Nicotex",headline:"Nicotine patches clinically proven to double quit success",cta:"Get 20% off",color:"#0A8A6A",emoji:"💊",url:"https://nicotex.in"},
-  {id:"b2",tag:"Sponsored",brand:"Quit Genius",headline:"AI-powered CBT therapy for nicotine addiction — free trial",cta:"Try free",color:"#7050A8",emoji:"🧠",url:"https://quitgenius.com"},
-  {id:"b3",tag:"Partner",brand:"Apollo Pharmacy",headline:"Find NRT products near you — delivered in 2 hours",cta:"Order now",color:"#B87000",emoji:"🏥",url:"https://apollopharmacy.in"},
+    // To use image ads: add image:"https://your-ad-image-url.jpg" to any banner
+    // Leave image field out to use emoji placeholder
+  {id:"b1",tag:"Sponsored",brand:"Nicotex",image:null,headline:"Nicotine patches clinically proven to double quit success",cta:"Get 20% off",color:"#0A8A6A",emoji:"💊",url:"https://nicotex.in"},
+  {id:"b2",tag:"Sponsored",brand:"Quit Genius",image:null,headline:"AI-powered CBT therapy for nicotine addiction — free trial",cta:"Try free",color:"#7050A8",emoji:"🧠",url:"https://quitgenius.com"},
+  {id:"b3",tag:"Partner",brand:"Apollo Pharmacy",image:null,headline:"Find NRT products near you — delivered in 2 hours",cta:"Order now",color:"#B87000",emoji:"🏥",url:"https://apollopharmacy.in"},
 ];
 
 // ── APP CONSTANTS (module level) ──────────────────────
@@ -1516,6 +1518,46 @@ function AppInner(){
               ))}
             </div>
 
+            {/* Sponsored Banner - image ads */}
+            <div style={{marginBottom:12}}>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}>
+                <div style={{fontSize:9,color:C.muted,letterSpacing:"0.08em",textTransform:"uppercase",fontWeight:700}}>{curBanner.tag}</div>
+                <div style={{fontSize:9,color:C.muted}}>Ad</div>
+              </div>
+              <div onClick={()=>window.open(curBanner.url,"_blank")} style={{background:C.surface,border:"1px solid "+C.border,borderRadius:16,overflow:"hidden",cursor:"pointer",boxShadow:"0 2px 8px rgba(0,0,0,0.06)"}}>
+                {curBanner.image?(
+                  <img src={curBanner.image} alt={curBanner.brand} style={{width:"100%",height:140,objectFit:"cover",display:"block"}}/>
+                ):(
+                  <div style={{height:140,background:"linear-gradient(135deg,"+curBanner.color+"22,"+curBanner.color+"08)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                    <div style={{fontSize:64}}>{curBanner.emoji}</div>
+                  </div>
+                )}
+                <div style={{padding:"12px 14px",borderTop:"1px solid "+C.border}}>
+                  <div style={{fontSize:10,color:curBanner.color,fontWeight:700,marginBottom:3}}>{curBanner.brand}</div>
+                  <div style={{fontWeight:700,fontSize:13,color:C.text,marginBottom:8,lineHeight:1.35}}>{curBanner.headline}</div>
+                  <div style={{display:"inline-block",background:curBanner.color,color:"#fff",borderRadius:20,padding:"4px 14px",fontSize:11,fontWeight:700}}>{curBanner.cta} →</div>
+                </div>
+                <div style={{display:"flex",justifyContent:"center",gap:5,padding:"8px 0"}}>
+                  {BANNERS.map((_,bi)=>(
+                    <div key={bi} onClick={e=>{e.stopPropagation();setBannerIdx(bi);}} style={{height:4,borderRadius:2,background:bi===bannerIdx?curBanner.color:C.muted,width:bi===bannerIdx?20:5,transition:"all 0.3s",cursor:"pointer"}}/>
+                  ))}
+                </div>
+              </div>
+              <div style={{textAlign:"center",marginTop:5,fontSize:9,color:C.muted}}>Advertise here → DM @ssakshamchauhan</div>
+            </div>
+
+            {/* AI Coach quick access */}
+            <div onClick={()=>{setShowPremium(true);}} style={{...glassCard(C.emerald+"44",{marginBottom:12,cursor:"pointer",background:"linear-gradient(135deg,rgba(10,138,106,0.05),rgba(10,138,106,0.02))"})}}>
+              <div style={{display:"flex",alignItems:"center",gap:14}}>
+                <div style={{width:46,height:46,borderRadius:"50%",background:"linear-gradient(135deg,"+C.emerald+",rgba(10,138,106,0.7))",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0,boxShadow:"0 4px 12px rgba(10,138,106,0.25)"}}>🤖</div>
+                <div style={{flex:1}}>
+                  <div style={{fontWeight:900,fontSize:15,color:C.text,marginBottom:2}}>AI Quit Coach</div>
+                  <div style={{fontSize:12,color:C.sub}}>24/7 — knows your exact journey. Ask anything.</div>
+                </div>
+                <span style={{color:C.emerald,fontSize:20}}>›</span>
+              </div>
+            </div>
+
             {/* Chat with Saksham */}
             <div onClick={()=>setTab("messages")} style={{...glassCard(C.gold+"44",{marginBottom:12,cursor:"pointer",background:"linear-gradient(135deg,rgba(160,114,10,0.05),rgba(184,112,0,0.02))",boxShadow:"0 4px 16px rgba(160,114,10,0.10)"})}}>
               <div style={{display:"flex",alignItems:"center",gap:14}}>
@@ -1532,31 +1574,6 @@ function AppInner(){
                   <span style={{color:C.gold,fontSize:20}}>›</span>
                 </div>
               </div>
-            </div>
-
-            {/* Sponsored Banner */}
-            <div style={{marginBottom:12}}>
-              <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}>
-                <div style={{fontSize:9,color:C.muted,letterSpacing:"0.08em",textTransform:"uppercase",fontWeight:700}}>{curBanner.tag}</div>
-                <div style={{fontSize:9,color:C.muted}}>Ad</div>
-              </div>
-              <div onClick={()=>window.open(curBanner.url,"_blank")} style={{background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:"14px 16px",cursor:"pointer",boxShadow:"0 2px 8px rgba(0,0,0,0.06)",overflow:"hidden",position:"relative"}}>
-                <div style={{position:"absolute",top:0,left:0,width:3,bottom:0,background:curBanner.color,borderRadius:"16px 0 0 16px"}}/>
-                <div style={{display:"flex",alignItems:"center",gap:12,paddingLeft:10}}>
-                  <div style={{width:42,height:42,borderRadius:12,background:curBanner.color+"18",border:"1px solid "+curBanner.color+"33",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>{curBanner.emoji}</div>
-                  <div style={{flex:1,minWidth:0}}>
-                    <div style={{fontSize:10,color:curBanner.color,fontWeight:700,marginBottom:3,letterSpacing:"0.04em"}}>{curBanner.brand}</div>
-                    <div style={{fontWeight:700,fontSize:13,color:C.text,marginBottom:6,lineHeight:1.35}}>{curBanner.headline}</div>
-                    <div style={{display:"inline-block",background:curBanner.color,color:"#fff",borderRadius:20,padding:"4px 14px",fontSize:11,fontWeight:700}}>{curBanner.cta} →</div>
-                  </div>
-                </div>
-                <div style={{display:"flex",justifyContent:"center",gap:5,marginTop:12}}>
-                  {BANNERS.map((_,bi)=>(
-                    <div key={bi} onClick={e=>{e.stopPropagation();setBannerIdx(bi);}} style={{height:4,borderRadius:2,background:bi===bannerIdx?curBanner.color:C.muted,width:bi===bannerIdx?20:5,transition:"all 0.3s",cursor:"pointer"}}/>
-                  ))}
-                </div>
-              </div>
-              <div style={{textAlign:"center",marginTop:5,fontSize:9,color:C.muted}}>Advertise here → @ssakshamchauhan</div>
             </div>
 
             {!isPremium&&(
