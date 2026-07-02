@@ -347,6 +347,7 @@ export default function App(){
   const [authOtpInput,setAuthOtpInput]=useState(["","","","","",""]);
   const [authError,setAuthError]=useState("");
   const [authLoading,setAuthLoading]=useState(false);
+  const [isSignIn,setIsSignIn]=useState(false);
   const [fbStatus,setFbStatus]=useState(null); // null | testing | ok | fail
   const [showProfile,setShowProfile]=useState(false);
   const [profileCam,setProfileCam]=useState(false);
@@ -535,10 +536,29 @@ export default function App(){
     const next=[...authOtpInput];next[idx]=val.slice(-1);setAuthOtpInput(next);setAuthError("");
     if(val&&idx<5)setTimeout(()=>otpRefs[idx+1]&&otpRefs[idx+1].current&&otpRefs[idx+1].current.focus(),30);
   }
-  function verifyOTP(){
+  async function verifyOTP(){
     const entered=authOtpInput.join("");
-    if(entered===authOtpCode){setAuthStep("profile");setAuthError("");}
-    else{setAuthError("Wrong code. Check and try again.");}
+    if(entered!==authOtpCode){setAuthError("Wrong code. Check and try again.");return;}
+    setAuthError("");
+    if(isSignIn){
+      setAuthLoading(true);
+      const ud=await FB.get("users/"+authPhone);
+      if(!ud){setAuthError("No account found. Tap Back and create one instead.");setAuthLoading(false);return;}
+      const sessionData={userId:ud.userId,phone:authPhone,name:ud.name,loggedIn:true};
+      await session.set("uns9-session",sessionData);
+      setAuthUser(Object.assign({},sessionData,{photo:ud.photo||null}));
+      setUserId(ud.userId||genId(8));setUserName(ud.name||"");
+      if(ud.photo)setAuthPhoto(ud.photo);
+      if(ud.quitTS){setQuitTS(ud.quitTS);setCpd(String(ud.cpd||20));setPP(String(ud.pp||300));setCpp(String(ud.cpp||20));setStep(4);}
+      else setStep(1);
+      if(ud.journal)setEntries(ud.journal);
+      if(ud.lessonsRead)setRead(ud.lessonsRead);
+      if(ud.moods)setMoods(ud.moods);
+      if(ud.premium)setIsPremium(ud.premium);
+      setAuthStep("done");setReady(true);setAuthLoading(false);
+    } else {
+      setAuthStep("profile");
+    }
   }
   async function startProfileCam(){
     try{
@@ -721,7 +741,8 @@ export default function App(){
   const sakshamSystem="You are Saksham Singh Chauhan, founder of Unsmoke. You quit Oct 31 2024 after 12 years of 2 packs per day. Delhi entrepreneur. Cold turkey Day 8. Reverse psychology trick. Now "+founderDays+" days clean.\n\nUser: "+d+" days smoke-free, score "+healthScore+".\n\nText like a real person. Short messages. Honest. Occasional yaar naturally. No corporate language.";
   const nrtPlan=(()=>{const c=parseFloat(nrtCigsLocal)||20,s1=c>=20?21:c>=10?14:7;return [{week:"Week 1-"+Math.ceil(s1/7),patch:c>=20?"21mg patch":c>=10?"14mg patch":"7mg patch",desc:"Full replacement. Match your current nicotine intake."},{week:"Week "+Math.ceil(s1/7+1)+"-"+Math.ceil(s1/7+2),patch:c>=20?"14mg patch":"7mg patch",desc:"Step down. Your baseline need is dropping."},{week:"Week "+Math.ceil(s1/7+3)+"+",patch:c>=20?"7mg patch":"None",desc:c>=20?"Final step. Wean off completely.":"You are done with NRT. Day 8: go cold turkey."}];})();
 
-  const wrap={fontFamily:"Inter,system-ui,sans-serif",background:C.bg,color:C.text,height:"100vh",display:"flex",flexDirection:"column",overflow:"hidden"};
+  const outerWrap={background:C.bg,minHeight:"100dvh",display:"flex",justifyContent:"center"};
+  const wrap={fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif",background:C.bg,color:C.text,height:"100dvh",display:"flex",flexDirection:"column",overflow:"hidden",maxWidth:480,margin:"0 auto",width:"100%"};
   const inputStyle={background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:9,padding:"12px 13px",color:C.text,fontSize:14,width:"100%",boxSizing:"border-box",outline:"none"};
   const lblStyle={color:C.sub,fontSize:10,fontWeight:700,letterSpacing:"0.09em",textTransform:"uppercase",marginBottom:5,display:"block"};
   const curB=PHASES.find(p=>p.phase===bPhase)||PHASES[0];
@@ -756,8 +777,11 @@ export default function App(){
               <div style={{fontSize:18,fontWeight:800,marginBottom:8}}>Start your smoke-free journey</div>
               <div style={{color:C.sub,fontSize:13,lineHeight:1.7}}>Join thousands quitting with Saksham proven method. Track every second. Every rupee saved. Every milestone earned.</div>
             </div>
-            <button onClick={()=>setAuthStep("phone")} style={{width:"100%",background:"linear-gradient(135deg,"+C.accent+","+C.purple+")",border:"none",borderRadius:13,padding:15,color:"#fff",fontWeight:800,fontSize:16,cursor:"pointer",marginBottom:10,marginTop:12}}>
-              Continue with Phone
+            <button onClick={()=>{setIsSignIn(false);setAuthStep("phone");}} style={{width:"100%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:13,padding:15,color:"#07080F",fontWeight:800,fontSize:16,cursor:"pointer",marginBottom:10,marginTop:12,boxShadow:"0 4px 20px rgba(201,168,76,0.25)"}}>
+              Create Account
+            </button>
+            <button onClick={()=>{setIsSignIn(true);setAuthStep("phone");}} style={{width:"100%",background:"transparent",border:"1.5px solid "+C.gold+"55",borderRadius:13,padding:14,color:C.gold,fontWeight:700,fontSize:15,cursor:"pointer",marginBottom:14}}>
+              Sign In — I have an account
             </button>
             <div style={{textAlign:"center",fontSize:11,color:C.muted}}>By continuing you agree to our Terms. We never share your data.</div>
           </div>
@@ -771,7 +795,8 @@ export default function App(){
           <div style={{width:"100%",maxWidth:420,padding:"28px 22px"}}>
             {brandHeader}
             <div style={{marginBottom:24}}>
-              <div style={{fontSize:20,fontWeight:800,marginBottom:5}}>Enter your number</div>
+              <div style={{fontSize:20,fontWeight:800,marginBottom:5}}>{isSignIn?"Welcome back":"Enter your number"}</div>
+              <div style={{color:C.sub,fontSize:13}}>{isSignIn?"Enter your registered number to sign in.":"We will send a one-time code to verify."}</div>
               <div style={{color:C.sub,fontSize:13}}>We will send a one-time code to verify.</div>
             </div>
             <div style={{display:"flex",gap:8,marginBottom:16}}>
