@@ -1,27 +1,9 @@
-const CACHE = 'unsmoke-v3';
-const ASSETS = ['/', '/index.html'];
-
-self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
-  self.skipWaiting();
-});
-
+// This service worker unregisters itself and clears all caches
+self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', e => {
   e.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => {
-        console.log('Deleting old cache:', k);
-        return caches.delete(k);
-      }))
-    )
-  );
-  self.clients.claim();
-});
-
-self.addEventListener('fetch', e => {
-  if (e.request.method !== 'GET') return;
-  // Network first - always get fresh content
-  e.respondWith(
-    fetch(e.request).catch(() => caches.match(e.request))
+    caches.keys()
+      .then(keys => Promise.all(keys.map(k => caches.delete(k))))
+      .then(() => self.registration.unregister())
   );
 });
