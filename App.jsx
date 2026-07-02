@@ -121,7 +121,7 @@ function AIChat({systemPrompt,welcomeMsg,avatar,name,subtitle,onClose}){
     const updated=[...messages,{role:"user",content:text}];
     setMessages(updated);setInput("");setLoading(true);
     try{
-      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:1000,system:systemPrompt,messages:updated})});
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:1000,system:systemPrompt,messages:updated})});
       const data=await res.json();
       setMessages(m=>[...m,{role:"assistant",content:(data.content&&data.content[0]&&data.content[0].text)||"I am here. Keep going."}]);
     }catch{setMessages(m=>[...m,{role:"assistant",content:"Something went wrong. But you are still here, still quit. That counts."}]);}
@@ -129,7 +129,7 @@ function AIChat({systemPrompt,welcomeMsg,avatar,name,subtitle,onClose}){
   }
   return (
     <div style={{position:"absolute",inset:0,zIndex:999,background:"#07081A",display:"flex",flexDirection:"column"}}>
-      <div style={{padding:"14px 16px",borderBottom:"1px solid #1C2040",display:"flex",alignItems:"center",gap:12,flexShrink:0}}>
+      <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #1C2040",display:"flex",alignItems:"center",gap:12,flexShrink:0}}>
         <div style={{width:40,height:40,borderRadius:"50%",background:"linear-gradient(135deg,#FF6534,#8B5CF6)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0}}>{avatar}</div>
         <div style={{flex:1}}><div style={{fontWeight:800,fontSize:15,color:"#F0EDF8"}}>{name}</div><div style={{fontSize:11,color:"#00D9AA",marginTop:1}}>{subtitle}</div></div>
         <button onClick={onClose} style={{background:"#141730",border:"1px solid #1C2040",borderRadius:20,padding:"6px 14px",color:"#8090B0",fontSize:12,fontWeight:700,cursor:"pointer"}}>Close</button>
@@ -195,7 +195,7 @@ function VoiceCall({person,systemPrompt,avatar,onClose}){
   async function getReply(userText){
     setAiState("thinking");
     try{
-      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:120,system:systemPrompt+" VOICE CALL: Max 1-2 short sentences. Sound human and natural. "+(lang==="hi-IN"?"Reply in Hinglish.":"Indian English."),messages:[...histRef.current,{role:"user",content:userText}]})});
+      const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:120,system:systemPrompt+" VOICE CALL: Max 1-2 short sentences. Sound human and natural. "+(lang==="hi-IN"?"Reply in Hinglish.":"Indian English."),messages:[...histRef.current,{role:"user",content:userText}]})});
       const data=await res.json();
       speak((data.content&&data.content[0]&&data.content[0].text)||"Keep going, you are doing great.");
     }catch{speak(person==="saksham"?"Yaar, connection issue. But you are doing great!":"Connection issue. You are doing well, keep going.");}
@@ -332,6 +332,95 @@ function ScoreRing({score}){
       </div>
       <div style={{fontSize:11,fontWeight:700,color,letterSpacing:"0.06em",textTransform:"uppercase"}}>{label}</div>
       <div style={{fontSize:10,color:C.sub}}>Recovery score</div>
+    </div>
+  );
+}
+
+
+// ── SAKSHAM REAL CHAT (Firestore-based) ────────────────────
+function SakshamChat({userPhone, userName, d, healthScore, onClose}){
+  const [messages, setMessages] = useState([
+    {id:"welcome", role:"saksham", text:"Hey! "+d+" days smoke-free. That is real. What is going on?", ts:Date.now()-1000}
+  ]);
+  const [input, setInput] = useState("");
+  const [sending, setSending] = useState(false);
+  const [status, setStatus] = useState("online");
+  const endRef = useRef(null);
+  const pollRef = useRef(null);
+
+  useEffect(()=>{
+    loadMessages();
+    pollRef.current = setInterval(loadMessages, 4000);
+    return()=>clearInterval(pollRef.current);
+  },[]);
+
+  useEffect(()=>{endRef.current&&endRef.current.scrollIntoView({behavior:"smooth"});},[messages]);
+
+  async function loadMessages(){
+    try{
+      const conv = await FB.get("conversations/"+userPhone);
+      if(conv&&conv.messages&&conv.messages.length>0){
+        setMessages([
+          {id:"welcome", role:"saksham", text:"Hey! "+d+" days smoke-free. That is real. What is going on?", ts:0},
+          ...conv.messages.sort((a,b)=>a.ts-b.ts)
+        ]);
+      }
+    }catch{}
+  }
+
+  async function send(){
+    if(!input.trim()||sending) return;
+    const text = input.trim();
+    setInput("");setSending(true);
+    const msg = {id:String(Date.now()), role:"user", text, ts:Date.now(), senderName:userName, read:false};
+    setMessages(m=>[...m, msg]);
+    try{
+      const conv = await FB.get("conversations/"+userPhone) || {};
+      const existing = conv.messages || [];
+      await FB.set("conversations/"+userPhone, {
+        userPhone, userName, d, healthScore,
+        lastMessage:text, lastActivity:Date.now(),
+        unread:(conv.unread||0)+1,
+        messages:[...existing, msg]
+      });
+    }catch{}
+    setSending(false);
+  }
+
+  const timeStr = (ts) => {
+    const d2 = new Date(ts);
+    return d2.getHours()+":"+String(d2.getMinutes()).padStart(2,"0");
+  };
+
+  return (
+    <div style={{position:"absolute",inset:0,zIndex:999,background:"#07080F",display:"flex",flexDirection:"column"}}>
+      <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #1A2035",display:"flex",alignItems:"center",gap:12,flexShrink:0,background:"linear-gradient(180deg,#131825,#07080F)"}}>
+        <div style={{width:42,height:42,borderRadius:"50%",background:"linear-gradient(135deg,#C9A84C,#E8A020)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0,fontWeight:900,color:"#07080F",boxShadow:"0 4px 12px rgba(201,168,76,0.3)"}}>S</div>
+        <div style={{flex:1}}>
+          <div style={{fontWeight:800,fontSize:15,color:"#EDF1FF"}}>Saksham</div>
+          <div style={{fontSize:11,color:"#10C9A0",marginTop:1}}>Founder - Will respond soon</div>
+        </div>
+        <button onClick={onClose} style={{background:"#131825",border:"1px solid #1A2035",borderRadius:20,padding:"6px 14px",color:"#68788A",fontSize:12,fontWeight:600,cursor:"pointer"}}>Close</button>
+      </div>
+      <div style={{flex:1,overflowY:"auto",padding:"16px 16px"}}>
+        {messages.map(msg=>(
+          <div key={msg.id} style={{display:"flex",justifyContent:msg.role==="user"?"flex-end":"flex-start",marginBottom:14}}>
+            {msg.role==="saksham"&&<div style={{width:30,height:30,borderRadius:"50%",background:"linear-gradient(135deg,#C9A84C,#E8A020)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,marginRight:8,flexShrink:0,alignSelf:"flex-end",color:"#07080F",fontWeight:900}}>S</div>}
+            <div style={{maxWidth:"78%"}}>
+              <div style={{padding:"12px 16px",borderRadius:msg.role==="user"?"18px 18px 4px 18px":"18px 18px 18px 4px",background:msg.role==="user"?"linear-gradient(135deg,#C9A84C,#E8A020)":"#131825",color:msg.role==="user"?"#07080F":"#EDF1FF",fontSize:13,lineHeight:1.7,border:msg.role==="user"?"none":"1px solid #1A2035",boxShadow:msg.role==="user"?"0 4px 16px rgba(201,168,76,0.2)":"none"}}>{msg.text}</div>
+              {msg.ts>1000&&<div style={{fontSize:10,color:"#2A3455",marginTop:4,textAlign:msg.role==="user"?"right":"left"}}>{timeStr(msg.ts)}</div>}
+            </div>
+          </div>
+        ))}
+        {sending&&<div style={{textAlign:"left",padding:"8px 16px",fontSize:12,color:"#68788A"}}>Sending...</div>}
+        <div ref={endRef}/>
+      </div>
+      <div style={{padding:"12px 16px",paddingBottom:"calc(env(safe-area-inset-bottom, 0px) + 12px)",borderTop:"1px solid #1A2035",display:"flex",gap:10,flexShrink:0,background:"#131825"}}>
+        <input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&send()} placeholder="Message Saksham..." style={{flex:1,background:"#0D1018",border:"1px solid #1A2035",borderRadius:24,padding:"12px 18px",color:"#EDF1FF",fontSize:14,outline:"none"}}/>
+        <button onClick={send} disabled={sending||!input.trim()} style={{background:"linear-gradient(135deg,#C9A84C,#E8A020)",border:"none",borderRadius:"50%",width:46,height:46,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",opacity:sending||!input.trim()?0.4:1,flexShrink:0,boxShadow:"0 4px 12px rgba(201,168,76,0.3)"}}>
+          <span style={{color:"#07080F",fontSize:16,fontWeight:900}}>up</span>
+        </button>
+      </div>
     </div>
   );
 }
@@ -742,7 +831,7 @@ export default function App(){
   const nrtPlan=(()=>{const c=parseFloat(nrtCigsLocal)||20,s1=c>=20?21:c>=10?14:7;return [{week:"Week 1-"+Math.ceil(s1/7),patch:c>=20?"21mg patch":c>=10?"14mg patch":"7mg patch",desc:"Full replacement. Match your current nicotine intake."},{week:"Week "+Math.ceil(s1/7+1)+"-"+Math.ceil(s1/7+2),patch:c>=20?"14mg patch":"7mg patch",desc:"Step down. Your baseline need is dropping."},{week:"Week "+Math.ceil(s1/7+3)+"+",patch:c>=20?"7mg patch":"None",desc:c>=20?"Final step. Wean off completely.":"You are done with NRT. Day 8: go cold turkey."}];})();
 
   const outerWrap={background:C.bg,minHeight:"100dvh",display:"flex",justifyContent:"center"};
-  const wrap={fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif",background:C.bg,color:C.text,height:"100dvh",display:"flex",flexDirection:"column",overflow:"hidden",maxWidth:480,margin:"0 auto",width:"100%"};
+  const wrap={fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif",background:C.bg,color:C.text,height:"100dvh",display:"flex",flexDirection:"column",overflow:"hidden",maxWidth:430,margin:"0 auto",width:"100%",position:"relative"};
   const inputStyle={background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:9,padding:"12px 13px",color:C.text,fontSize:14,width:"100%",boxSizing:"border-box",outline:"none"};
   const lblStyle={color:C.sub,fontSize:10,fontWeight:700,letterSpacing:"0.09em",textTransform:"uppercase",marginBottom:5,display:"block"};
   const curB=PHASES.find(p=>p.phase===bPhase)||PHASES[0];
@@ -1002,14 +1091,13 @@ export default function App(){
     <div style={wrap}>
       {/* AI Chat screens */}
       {premiumScreen==="coach"&&<AIChat systemPrompt={coachSystem} welcomeMsg={"Hey! "+d+" days smoke-free with a score of "+healthScore+"/100. Solid. What is on your mind today?"} avatar="🤖" name="AI Quit Coach" subtitle="Powered by Claude - Online" onClose={()=>setPremiumScreen(null)}/>}
-      {premiumScreen==="saksham"&&<AIChat systemPrompt={sakshamSystem} welcomeMsg={"Hey! "+d+" days. That is solid. What is going on?"} avatar="🧑" name="Saksham" subtitle="Founder - Responding now" onClose={()=>setPremiumScreen(null)}/>}
+      {premiumScreen==="saksham"&&<SakshamChat userPhone={authUser?authUser.phone:authPhone} userName={userName} d={d} healthScore={healthScore} onClose={()=>setPremiumScreen(null)}/>}
       {premiumScreen==="coach_call"&&<VoiceCall person="coach" systemPrompt={coachSystem} avatar="🤖" onClose={()=>setPremiumScreen(null)}/>}
-      {premiumScreen==="saksham_call"&&<VoiceCall person="saksham" systemPrompt={sakshamSystem} avatar="🧑" onClose={()=>setPremiumScreen(null)}/>}
 
       {/* NRT overlay */}
       {premiumScreen==="nrt"&&(
         <div style={{position:"absolute",inset:0,zIndex:999,background:"#07081A",display:"flex",flexDirection:"column",overflow:"hidden"}}>
-          <div style={{padding:"14px 16px",borderBottom:"1px solid #1C2040",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
+          <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #1C2040",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
             <div><div style={{fontWeight:800,fontSize:15,color:"#F0EDF8"}}>NRT Step-Down Plan</div><div style={{fontSize:11,color:"#8090B0"}}>Saksham own protocol</div></div>
             <button onClick={()=>setPremiumScreen(null)} style={{background:"#141730",border:"1px solid #1C2040",borderRadius:20,padding:"6px 14px",color:"#8090B0",fontSize:12,fontWeight:700,cursor:"pointer"}}>Close</button>
           </div>
@@ -1038,7 +1126,7 @@ export default function App(){
       {/* Founder story overlay */}
       {showFounderStory&&(
         <div style={{position:"absolute",inset:0,zIndex:997,background:"#07081A",display:"flex",flexDirection:"column",overflow:"hidden"}}>
-          <div style={{padding:"14px 16px",borderBottom:"1px solid #1C2040",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
+          <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #1C2040",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
             <div><div style={{fontWeight:800,fontSize:15,color:"#F0EDF8"}}>Saksham Story</div><div style={{fontSize:11,color:"#8090B0"}}>@ssakshamchauhan</div></div>
             <button onClick={()=>setShowFounderStory(false)} style={{background:"#141730",border:"1px solid #1C2040",borderRadius:20,padding:"6px 14px",color:"#8090B0",fontSize:12,fontWeight:700,cursor:"pointer"}}>Close</button>
           </div>
@@ -1228,7 +1316,7 @@ export default function App(){
               <div style={crd({marginTop:8})}>
                 <div style={{fontSize:10,color:C.gold,fontWeight:800,textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:10}}>👑 Premium</div>
                 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-                  {[{label:"📞 Call Coach",screen:"coach_call",c:C.teal},{label:"📞 Call Saksham",screen:"saksham_call",c:C.accent},{label:"💬 Chat Coach",screen:"coach",c:C.teal},{label:"💊 NRT Plan",screen:"nrt",c:C.amber}].map(({label,screen,c})=>(
+                  {[{label:"📞 Call Coach",screen:"coach_call",c:C.teal},{label:"💬 Chat Coach",screen:"coach",c:C.teal},{label:"💊 NRT Plan",screen:"nrt",c:C.amber}].map(({label,screen,c})=>(
                     <button key={screen} onClick={()=>setPremiumScreen(screen)} style={{background:c+"22",border:"1px solid "+c+"44",borderRadius:10,padding:"10px 8px",color:c,fontWeight:700,fontSize:11,cursor:"pointer"}}>{label}</button>
                   ))}
                 </div>
@@ -1486,7 +1574,7 @@ export default function App(){
 
       {showPremium&&(
         <div style={{position:"absolute",inset:0,zIndex:998,background:"#07081A",display:"flex",flexDirection:"column",overflow:"hidden"}}>
-          <div style={{padding:"14px 16px",borderBottom:"1px solid #1C2040",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
+          <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #1C2040",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
             <div><div style={{fontWeight:900,fontSize:16,color:"#FFD700"}}>👑 Unsmoke Premium</div><div style={{fontSize:11,color:"#8090B0",marginTop:1}}>Rs 299/month</div></div>
             <button onClick={()=>setShowPremium(false)} style={{background:"#141730",border:"1px solid #1C2040",borderRadius:20,padding:"6px 14px",color:"#8090B0",fontSize:12,fontWeight:700,cursor:"pointer"}}>Close</button>
           </div>
@@ -1502,7 +1590,7 @@ export default function App(){
               <div style={{color:"#8090B0",fontSize:12,marginBottom:12}}>Real phone call UI. Speaks Indian English or Hindi. Powered by Claude. No other quit app offers this.</div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
                 <button onClick={()=>{if(isPremium){setShowPremium(false);setPremiumScreen("coach_call");}}} style={{background:"rgba(0,217,170,0.15)",border:"1px solid rgba(0,217,170,0.3)",borderRadius:10,padding:"10px 8px",color:"#00D9AA",fontWeight:700,fontSize:12,cursor:"pointer",opacity:isPremium?1:0.5}}>🤖 Call AI Coach</button>
-                <button onClick={()=>{if(isPremium){setShowPremium(false);setPremiumScreen("saksham_call");}}} style={{background:"rgba(255,101,52,0.15)",border:"1px solid rgba(255,101,52,0.3)",borderRadius:10,padding:"10px 8px",color:"#FF6534",fontWeight:700,fontSize:12,cursor:"pointer",opacity:isPremium?1:0.5}}>🧑 Call Saksham</button>
+                <a href="tel:+918950695379" style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,background:"rgba(201,168,76,0.15)",border:"1px solid rgba(201,168,76,0.3)",borderRadius:10,padding:"10px 8px",color:"#C9A84C",fontWeight:700,fontSize:12,textDecoration:"none"}}>📞 Call Saksham</a>
               </div>
             </div>
             <div style={{fontSize:10,color:"#00D9AA",fontWeight:800,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:10,marginTop:6}}>Chat</div>
