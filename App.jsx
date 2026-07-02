@@ -449,6 +449,116 @@ function SakshamChat({userPhone, userName, d, healthScore, onClose}){
   );
 }
 
+const BANNERS=[
+  {id:"b1",tag:"Sponsored",brand:"Nicotex",headline:"Nicotine patches clinically proven to double quit success",cta:"Get 20% off",color:"#0A8A6A",emoji:"💊",url:"https://nicotex.in"},
+  {id:"b2",tag:"Sponsored",brand:"Quit Genius",headline:"AI-powered CBT therapy for nicotine addiction — free trial",cta:"Try free",color:"#7050A8",emoji:"🧠",url:"https://quitgenius.com"},
+  {id:"b3",tag:"Partner",brand:"Apollo Pharmacy",headline:"Find NRT products near you — delivered in 2 hours",cta:"Order now",color:"#B87000",emoji:"🏥",url:"https://apollopharmacy.in"},
+];
+
+// ── APP CONSTANTS (module level) ──────────────────────
+
+const MILESTONES=[
+  {min:20,icon:"heart",label:"Heart rate drops to normal"},
+  {min:480,icon:"drop",label:"Carbon monoxide clears from blood"},
+  {min:1440,icon:"flex",label:"Heart attack risk starts falling"},
+  {min:2880,icon:"nose",label:"Taste and smell begin recovering"},
+  {min:4320,icon:"wind",label:"Breathing becomes easier"},
+  {min:20160,icon:"heart2",label:"Circulation improves significantly"},
+  {min:43800,icon:"lung",label:"Lung function up by 30 percent"},
+  {min:131400,icon:"star",label:"Coughing and breathlessness reduce"},
+  {min:525600,icon:"trophy",label:"Heart disease risk cut in half"},
+  {min:2628000,icon:"star2",label:"Stroke risk equals a non-smoker"},
+  {min:5256000,icon:"target",label:"Lung cancer risk halved"},
+  {min:7884000,icon:"crown",label:"Heart disease risk equals non-smoker"},
+];
+
+const LESSONS=[
+  {tag:"SCIENCE",color:C.teal,title:"The Craving Lie",body:"A craving is not your body asking for nicotine. It is a trained reflex. The nicotine is gone in 72 hours. What remains is the pattern. Patterns can be unlearned.",key:"The craving is a ghost. It has no real power over you."},
+  {tag:"TECHNIQUE",color:C.accent,title:"The 5-Minute Rule",body:"Every craving peaks and passes in under 5 minutes. Your brain creates the sensation of emergency but it is not an emergency. Start a timer. Do anything else. When it ends, the craving will have passed.",key:"You do not fight cravings. You just outlast them."},
+  {tag:"MINDSET",color:C.purple,title:"Identity, Rewritten",body:"Most people say I am trying to quit smoking. Try instead: I do not smoke. That shift is the difference between struggle and freedom.",key:"You are not a smoker who quit. You are a non-smoker."},
+  {tag:"CBT",color:C.teal,title:"Triggers Are Information",body:"A trigger does not cause you to smoke. It causes you to think about smoking. Between the trigger and the cigarette there is always a gap. CBT works by expanding that gap.",key:"Log your triggers. Awareness is the first act of choice."},
+  {tag:"SCIENCE",color:C.accent,title:"Already Healing",body:"The moment you stopped smoking, your body began repairing itself. Within 20 minutes your heart rate normalized. Within 8 hours blood oxygen rose. Every cigarette you do not smoke is your body getting more of what it is already doing.",key:"Recovery is already happening. You just need to let it."},
+  {tag:"MINDSET",color:C.purple,title:"The Real Cost of One",body:"One cigarette does not satisfy the pattern, it re-activates it. One almost always leads back to regular smoking within a week. The only one that works is the one you never smoke.",key:"There is no such thing as just one."},
+];
+
+const CHALLENGES=["When a craving hits today, name 5 things you can see around you right now.","Take a 10-minute walk the next time you think about smoking.","Text someone you love that you have been smoke-free.","Drink a full glass of cold water every time a craving comes.","Do 10 deep breaths before opening any social app today.","Write down one thing quitting has already given you.","Notice your sense of taste or smell today. It is coming back.","Tell one person in your life about your quit journey.","When a craving hits, count to 60 before doing anything else.","Identify your number one trigger today and plan a substitute action.","Drink a herbal tea slowly, the way you used to smoke slowly.","Name 3 physical improvements you have noticed since quitting.","Replace your usual smoking time with a 5-minute stretch.","Think of one person who would be proud of you right now. Text them.","Write down what you will do with the money you are saving."];
+
+const REFRAMES=[{trigger:"I am stressed and need it",reframe:"Stress existed before smoking. A cigarette delays relief, it does not solve the stress."},{trigger:"I will just have one",reframe:"One cigarette relights a pattern that was nearly out. There is no just one for someone quitting."},{trigger:"I have done well, I deserve it",reframe:"You have done well. The reward is everything you have already built, not a step backwards."},{trigger:"Everyone around me is smoking",reframe:"They are feeding a habit they probably wish they could quit. You already did what they have not."},{trigger:"I cannot focus without it",reframe:"That is withdrawal talking, not reality. It passes in 3 minutes. Wait it out."}];
+
+const MOODS=[{v:1,e:"😰",l:"Rough"},{v:2,e:"😕",l:"Tough"},{v:3,e:"😐",l:"Okay"},{v:4,e:"🙂",l:"Good"},{v:5,e:"😊",l:"Great"}];
+
+const TRIGGERS=["Stress","Coffee","After meal","Alcohol","Social","Boredom","Driving","Morning","Work break","Phone call"];
+
+const ACHIEVEMENTS=[{id:"1h",label:"1 Hour",icon:"⚡",min:60},{id:"1d",label:"1 Day",icon:"🌅",min:1440},{id:"3d",label:"3 Days",icon:"🔥",min:4320},{id:"1w",label:"1 Week",icon:"🏅",min:10080},{id:"2w",label:"2 Weeks",icon:"💫",min:20160},{id:"1m",label:"1 Month",icon:"🏆",min:43800}];
+
+const PHASES=[{phase:"inhale",dur:4000,label:"Breathe in",color:C.teal},{phase:"hold",dur:7000,label:"Hold",color:C.accent},{phase:"exhale",dur:8000,label:"Breathe out",color:C.purple}];
+
+const QUOTES=["Quitting is not about willpower. It is about changing how you see cigarettes.","Every minute without one is your lungs quietly thanking you.","The urge to smoke is a reflex, not a need. Watch it pass.","You are not giving something up. You are getting everything back.","A craving is proof your brain is rewiring. It is working.","The hardest part is believing it is hard. It gets easier by the hour."];
+
+const EXERCISES=[
+  {day:"Monday",theme:"Morning Mobility",duration:"15 min",moves:[
+    {name:"Neck Rolls",reps:"10 each side",why:"Releases tension from sleep"},
+    {name:"Shoulder Rolls",reps:"15 circles",why:"Opens chest tightened by smoking"},
+    {name:"Hip Circles",reps:"10 each side",why:"Wakes up core and spine"},
+    {name:"Standing Forward Fold",reps:"Hold 30s x 3",why:"Calms nervous system, reduces craving anxiety"},
+    {name:"Deep Diaphragmatic Breathing",reps:"5 min",why:"Rebuilds lung capacity post-smoking"},
+  ]},
+  {day:"Tuesday",theme:"Cardio Burst",duration:"15 min",moves:[
+    {name:"Jumping Jacks",reps:"3 sets of 30s",why:"Releases endorphins that replace nicotine reward"},
+    {name:"High Knees",reps:"3 sets of 20s",why:"Boosts dopamine naturally"},
+    {name:"Mountain Climbers",reps:"3 sets of 15",why:"Full body activation, burns restlessness"},
+    {name:"Rest Walk in Place",reps:"1 min between sets",why:"Active recovery, keeps momentum"},
+  ]},
+  {day:"Wednesday",theme:"Upper Body",duration:"15 min",moves:[
+    {name:"Push-Ups",reps:"3 sets of 8-12",why:"Builds strength, occupies the hands"},
+    {name:"Tricep Dips on Chair",reps:"3 sets of 10",why:"Arms that held cigarettes now lift weight"},
+    {name:"Arm Circles",reps:"30s forward, 30s back",why:"Shoulder mobility and blood flow"},
+    {name:"Wall Push-Ups",reps:"2 sets of 15",why:"Gentler option, same benefit"},
+  ]},
+  {day:"Thursday",theme:"Core Strength",duration:"15 min",moves:[
+    {name:"Plank Hold",reps:"3 x 20-40 seconds",why:"Core strength improves posture damaged by smoking"},
+    {name:"Crunches",reps:"3 sets of 15",why:"Activates deep breathing muscles"},
+    {name:"Leg Raises",reps:"3 sets of 10",why:"Lower core, stabilizes breathing"},
+    {name:"Bicycle Crunches",reps:"2 sets of 20",why:"Coordination that replaces smoking rituals"},
+  ]},
+  {day:"Friday",theme:"Lower Body",duration:"15 min",moves:[
+    {name:"Squats",reps:"3 sets of 15",why:"Largest muscle group, maximum endorphin release"},
+    {name:"Reverse Lunges",reps:"3 sets of 10 each leg",why:"Balance and focus, counters brain fog"},
+    {name:"Glute Bridges",reps:"3 sets of 15",why:"Activates hip flexors tightened from sitting and smoking"},
+    {name:"Calf Raises",reps:"3 sets of 20",why:"Improves circulation that nicotine had restricted"},
+  ]},
+  {day:"Saturday",theme:"Yoga Flow",duration:"15 min",moves:[
+    {name:"Child Pose",reps:"Hold 1 min",why:"Calms the fight-or-flight craving response"},
+    {name:"Downward Dog",reps:"Hold 30s x 3",why:"Opens lungs, improves oxygen flow"},
+    {name:"Warrior I",reps:"Hold 30s each side",why:"Confidence and groundedness"},
+    {name:"Seated Twist",reps:"Hold 30s each side",why:"Detoxifies organs stressed by smoking"},
+    {name:"Legs Up The Wall",reps:"5 min",why:"Best craving killer, calms the entire nervous system"},
+  ]},
+  {day:"Sunday",theme:"Active Recovery",duration:"15 min",moves:[
+    {name:"Gentle Walk",reps:"10 min easy pace",why:"Fresh air replaces the outdoor smoking ritual"},
+    {name:"Full Body Stretch",reps:"5 min",why:"Recovery and reflection"},
+    {name:"Gratitude Breathing",reps:"10 deep breaths",why:"Acknowledge what your lungs are gaining back"},
+  ]},
+];
+
+const VEG_FOODS=[
+  {name:"Raw Carrot Sticks",reason:"Crunching satisfies the oral fixation. The act of biting replaces the hand-to-mouth habit.",emoji:"🥕"},
+  {name:"Sunflower Seeds",reason:"Shelling seeds keeps hands and mouth busy, directly replacing the smoking ritual.",emoji:"🌻"},
+  {name:"Tulsi or Ginger Tea",reason:"Warm beverages replace the ritual comfort of a cigarette. Tulsi calms the nervous system.",emoji:"🍵"},
+  {name:"Orange or Lemon",reason:"Citrus boosts Vitamin C depleted by nicotine. The sharp taste overrides craving signals.",emoji:"🍊"},
+  {name:"Celery with Hummus",reason:"Low calorie, high satiety. The crunch and chewing action is a direct craving disruptor.",emoji:"🥬"},
+  {name:"Dark Chocolate (1 piece)",reason:"Releases dopamine just like nicotine did, but without the harm. One small piece is enough.",emoji:"🍫"},
+  {name:"Almonds or Walnuts",reason:"Healthy fats stabilise blood sugar which spikes during nicotine withdrawal and triggers cravings.",emoji:"🥜"},
+];
+
+const NONVEG_FOODS=[
+  {name:"Boiled Egg",reason:"High protein stabilises blood sugar, reducing the hunger-like feeling that triggers cravings.",emoji:"🥚"},
+  {name:"Grilled Fish",reason:"Omega-3 fatty acids help repair brain receptors damaged by nicotine over time.",emoji:"🐟"},
+  {name:"Chicken Soup",reason:"Warm, comforting, and nutritious. Replaces the warmth and ritual comfort of smoking.",emoji:"🍲"},
+  {name:"Greek Yogurt",reason:"Probiotic cultures reduce cortisol, the stress hormone that drives most cravings.",emoji:"🥛"},
+  {name:"Tuna with Crackers",reason:"Protein and complex carbs together prevent the blood sugar dips that trigger craving episodes.",emoji:"🐠"},
+];
+
 export default function App(){
   const [ready,setReady]=useState(false);
   const [authStep,setAuthStep]=useState(null);
@@ -541,36 +651,9 @@ export default function App(){
   const [bannerIdx,setBannerIdx]=useState(0);
 
   const FOUNDER_QUIT_TS=new Date("2024-10-31T00:00:00").getTime();
-  const MILESTONES=[
-    {min:20,icon:"heart",label:"Heart rate drops to normal"},
-    {min:480,icon:"drop",label:"Carbon monoxide clears from blood"},
-    {min:1440,icon:"flex",label:"Heart attack risk starts falling"},
-    {min:2880,icon:"nose",label:"Taste and smell begin recovering"},
-    {min:4320,icon:"wind",label:"Breathing becomes easier"},
-    {min:20160,icon:"heart2",label:"Circulation improves significantly"},
-    {min:43800,icon:"lung",label:"Lung function up by 30 percent"},
-    {min:131400,icon:"star",label:"Coughing and breathlessness reduce"},
-    {min:525600,icon:"trophy",label:"Heart disease risk cut in half"},
-    {min:2628000,icon:"star2",label:"Stroke risk equals a non-smoker"},
-    {min:5256000,icon:"target",label:"Lung cancer risk halved"},
-    {min:7884000,icon:"crown",label:"Heart disease risk equals non-smoker"},
-  ];
-  const LESSONS=[
-    {tag:"SCIENCE",color:C.teal,title:"The Craving Lie",body:"A craving is not your body asking for nicotine. It is a trained reflex. The nicotine is gone in 72 hours. What remains is the pattern. Patterns can be unlearned.",key:"The craving is a ghost. It has no real power over you."},
-    {tag:"TECHNIQUE",color:C.accent,title:"The 5-Minute Rule",body:"Every craving peaks and passes in under 5 minutes. Your brain creates the sensation of emergency but it is not an emergency. Start a timer. Do anything else. When it ends, the craving will have passed.",key:"You do not fight cravings. You just outlast them."},
-    {tag:"MINDSET",color:C.purple,title:"Identity, Rewritten",body:"Most people say I am trying to quit smoking. Try instead: I do not smoke. That shift is the difference between struggle and freedom.",key:"You are not a smoker who quit. You are a non-smoker."},
-    {tag:"CBT",color:C.teal,title:"Triggers Are Information",body:"A trigger does not cause you to smoke. It causes you to think about smoking. Between the trigger and the cigarette there is always a gap. CBT works by expanding that gap.",key:"Log your triggers. Awareness is the first act of choice."},
-    {tag:"SCIENCE",color:C.accent,title:"Already Healing",body:"The moment you stopped smoking, your body began repairing itself. Within 20 minutes your heart rate normalized. Within 8 hours blood oxygen rose. Every cigarette you do not smoke is your body getting more of what it is already doing.",key:"Recovery is already happening. You just need to let it."},
-    {tag:"MINDSET",color:C.purple,title:"The Real Cost of One",body:"One cigarette does not satisfy the pattern, it re-activates it. One almost always leads back to regular smoking within a week. The only one that works is the one you never smoke.",key:"There is no such thing as just one."},
-  ];
-  const CHALLENGES=["When a craving hits today, name 5 things you can see around you right now.","Take a 10-minute walk the next time you think about smoking.","Text someone you love that you have been smoke-free.","Drink a full glass of cold water every time a craving comes.","Do 10 deep breaths before opening any social app today.","Write down one thing quitting has already given you.","Notice your sense of taste or smell today. It is coming back.","Tell one person in your life about your quit journey.","When a craving hits, count to 60 before doing anything else.","Identify your number one trigger today and plan a substitute action.","Drink a herbal tea slowly, the way you used to smoke slowly.","Name 3 physical improvements you have noticed since quitting.","Replace your usual smoking time with a 5-minute stretch.","Think of one person who would be proud of you right now. Text them.","Write down what you will do with the money you are saving."];
-  const REFRAMES=[{trigger:"I am stressed and need it",reframe:"Stress existed before smoking. A cigarette delays relief, it does not solve the stress."},{trigger:"I will just have one",reframe:"One cigarette relights a pattern that was nearly out. There is no just one for someone quitting."},{trigger:"I have done well, I deserve it",reframe:"You have done well. The reward is everything you have already built, not a step backwards."},{trigger:"Everyone around me is smoking",reframe:"They are feeding a habit they probably wish they could quit. You already did what they have not."},{trigger:"I cannot focus without it",reframe:"That is withdrawal talking, not reality. It passes in 3 minutes. Wait it out."}];
-  const MOODS=[{v:1,e:"😰",l:"Rough"},{v:2,e:"😕",l:"Tough"},{v:3,e:"😐",l:"Okay"},{v:4,e:"🙂",l:"Good"},{v:5,e:"😊",l:"Great"}];
-  const TRIGGERS=["Stress","Coffee","After meal","Alcohol","Social","Boredom","Driving","Morning","Work break","Phone call"];
-  const ACHIEVEMENTS=[{id:"1h",label:"1 Hour",icon:"⚡",min:60},{id:"1d",label:"1 Day",icon:"🌅",min:1440},{id:"3d",label:"3 Days",icon:"🔥",min:4320},{id:"1w",label:"1 Week",icon:"🏅",min:10080},{id:"2w",label:"2 Weeks",icon:"💫",min:20160},{id:"1m",label:"1 Month",icon:"🏆",min:43800}];
-  const PHASES=[{phase:"inhale",dur:4000,label:"Breathe in",color:C.teal},{phase:"hold",dur:7000,label:"Hold",color:C.accent},{phase:"exhale",dur:8000,label:"Breathe out",color:C.purple}];
-  const QUOTES=["Quitting is not about willpower. It is about changing how you see cigarettes.","Every minute without one is your lungs quietly thanking you.","The urge to smoke is a reflex, not a need. Watch it pass.","You are not giving something up. You are getting everything back.","A craving is proof your brain is rewiring. It is working.","The hardest part is believing it is hard. It gets easier by the hour."];
   const founderDays=Math.floor((now-FOUNDER_QUIT_TS)/86400000);
+  const todayExercise=EXERCISES[new Date().getDay()===0?6:new Date().getDay()-1];
+  const curBanner=BANNERS[bannerIdx];
 
   useEffect(()=>{
     const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -916,79 +999,7 @@ export default function App(){
 
   const outerWrap={background:C.bg,minHeight:"100dvh",display:"flex",justifyContent:"center"};
 
-  const EXERCISES=[
-    {day:"Monday",theme:"Morning Mobility",duration:"15 min",moves:[
-      {name:"Neck Rolls",reps:"10 each side",why:"Releases tension from sleep"},
-      {name:"Shoulder Rolls",reps:"15 circles",why:"Opens chest tightened by smoking"},
-      {name:"Hip Circles",reps:"10 each side",why:"Wakes up core and spine"},
-      {name:"Standing Forward Fold",reps:"Hold 30s x 3",why:"Calms nervous system, reduces craving anxiety"},
-      {name:"Deep Diaphragmatic Breathing",reps:"5 min",why:"Rebuilds lung capacity post-smoking"},
-    ]},
-    {day:"Tuesday",theme:"Cardio Burst",duration:"15 min",moves:[
-      {name:"Jumping Jacks",reps:"3 sets of 30s",why:"Releases endorphins that replace nicotine reward"},
-      {name:"High Knees",reps:"3 sets of 20s",why:"Boosts dopamine naturally"},
-      {name:"Mountain Climbers",reps:"3 sets of 15",why:"Full body activation, burns restlessness"},
-      {name:"Rest Walk in Place",reps:"1 min between sets",why:"Active recovery, keeps momentum"},
-    ]},
-    {day:"Wednesday",theme:"Upper Body",duration:"15 min",moves:[
-      {name:"Push-Ups",reps:"3 sets of 8-12",why:"Builds strength, occupies the hands"},
-      {name:"Tricep Dips on Chair",reps:"3 sets of 10",why:"Arms that held cigarettes now lift weight"},
-      {name:"Arm Circles",reps:"30s forward, 30s back",why:"Shoulder mobility and blood flow"},
-      {name:"Wall Push-Ups",reps:"2 sets of 15",why:"Gentler option, same benefit"},
-    ]},
-    {day:"Thursday",theme:"Core Strength",duration:"15 min",moves:[
-      {name:"Plank Hold",reps:"3 x 20-40 seconds",why:"Core strength improves posture damaged by smoking"},
-      {name:"Crunches",reps:"3 sets of 15",why:"Activates deep breathing muscles"},
-      {name:"Leg Raises",reps:"3 sets of 10",why:"Lower core, stabilizes breathing"},
-      {name:"Bicycle Crunches",reps:"2 sets of 20",why:"Coordination that replaces smoking rituals"},
-    ]},
-    {day:"Friday",theme:"Lower Body",duration:"15 min",moves:[
-      {name:"Squats",reps:"3 sets of 15",why:"Largest muscle group, maximum endorphin release"},
-      {name:"Reverse Lunges",reps:"3 sets of 10 each leg",why:"Balance and focus, counters brain fog"},
-      {name:"Glute Bridges",reps:"3 sets of 15",why:"Activates hip flexors tightened from sitting and smoking"},
-      {name:"Calf Raises",reps:"3 sets of 20",why:"Improves circulation that nicotine had restricted"},
-    ]},
-    {day:"Saturday",theme:"Yoga Flow",duration:"15 min",moves:[
-      {name:"Child Pose",reps:"Hold 1 min",why:"Calms the fight-or-flight craving response"},
-      {name:"Downward Dog",reps:"Hold 30s x 3",why:"Opens lungs, improves oxygen flow"},
-      {name:"Warrior I",reps:"Hold 30s each side",why:"Confidence and groundedness"},
-      {name:"Seated Twist",reps:"Hold 30s each side",why:"Detoxifies organs stressed by smoking"},
-      {name:"Legs Up The Wall",reps:"5 min",why:"Best craving killer, calms the entire nervous system"},
-    ]},
-    {day:"Sunday",theme:"Active Recovery",duration:"15 min",moves:[
-      {name:"Gentle Walk",reps:"10 min easy pace",why:"Fresh air replaces the outdoor smoking ritual"},
-      {name:"Full Body Stretch",reps:"5 min",why:"Recovery and reflection"},
-      {name:"Gratitude Breathing",reps:"10 deep breaths",why:"Acknowledge what your lungs are gaining back"},
-    ]},
-  ];
   const todayExercise=EXERCISES[new Date().getDay()===0?6:new Date().getDay()-1];
-
-  const VEG_FOODS=[
-    {name:"Raw Carrot Sticks",reason:"Crunching satisfies the oral fixation. The act of biting replaces the hand-to-mouth habit.",emoji:"🥕"},
-    {name:"Sunflower Seeds",reason:"Shelling seeds keeps hands and mouth busy, directly replacing the smoking ritual.",emoji:"🌻"},
-    {name:"Tulsi or Ginger Tea",reason:"Warm beverages replace the ritual comfort of a cigarette. Tulsi calms the nervous system.",emoji:"🍵"},
-    {name:"Orange or Lemon",reason:"Citrus boosts Vitamin C depleted by nicotine. The sharp taste overrides craving signals.",emoji:"🍊"},
-    {name:"Celery with Hummus",reason:"Low calorie, high satiety. The crunch and chewing action is a direct craving disruptor.",emoji:"🥬"},
-    {name:"Dark Chocolate (1 piece)",reason:"Releases dopamine just like nicotine did, but without the harm. One small piece is enough.",emoji:"🍫"},
-    {name:"Almonds or Walnuts",reason:"Healthy fats stabilise blood sugar which spikes during nicotine withdrawal and triggers cravings.",emoji:"🥜"},
-  ];
-  const NONVEG_FOODS=[
-    {name:"Boiled Egg",reason:"High protein stabilises blood sugar, reducing the hunger-like feeling that triggers cravings.",emoji:"🥚"},
-    {name:"Grilled Fish",reason:"Omega-3 fatty acids help repair brain receptors damaged by nicotine over time.",emoji:"🐟"},
-    {name:"Chicken Soup",reason:"Warm, comforting, and nutritious. Replaces the warmth and ritual comfort of smoking.",emoji:"🍲"},
-    {name:"Greek Yogurt",reason:"Probiotic cultures reduce cortisol, the stress hormone that drives most cravings.",emoji:"🥛"},
-    {name:"Tuna with Crackers",reason:"Protein and complex carbs together prevent the blood sugar dips that trigger craving episodes.",emoji:"🐠"},
-  ];
-
-
-  // Sponsored banner data — replace with real brand deals
-  const BANNERS=[
-    {id:"b1",tag:"Sponsored",brand:"Nicotex",headline:"Nicotine patches clinically proven to double quit success",cta:"Get 20% off",color:"#0A8A6A",emoji:"💊",url:"https://nicotex.in"},
-    {id:"b2",tag:"Sponsored",brand:"Quit Genius",headline:"AI-powered CBT therapy for nicotine addiction — free trial",cta:"Try free",color:"#7050A8",emoji:"🧠",url:"https://quitgenius.com"},
-    {id:"b3",tag:"Partner",brand:"Apollo Pharmacy",headline:"Find NRT products near you — delivered in 2 hours",cta:"Order now",color:"#B87000",emoji:"🏥",url:"https://apollopharmacy.in"},
-  ];
-  useEffect(()=>{const t=setInterval(()=>setBannerIdx(i=>(i+1)%BANNERS.length),5000);return()=>clearInterval(t);},[]);
-  const curBanner=BANNERS[bannerIdx];
 
   const wrap={fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif",background:C.bg,color:C.text,height:"100svh",display:"flex",flexDirection:"column",overflow:"hidden",width:"100%",position:"fixed",top:0,left:0,right:0,bottom:0};
   const inputStyle={background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:9,padding:"12px 13px",color:C.text,fontSize:14,width:"100%",boxSizing:"border-box",outline:"none"};
@@ -1025,11 +1036,11 @@ export default function App(){
               <div style={{fontSize:18,fontWeight:800,marginBottom:8}}>Start your smoke-free journey</div>
               <div style={{color:C.sub,fontSize:13,lineHeight:1.7}}>Join thousands quitting with Saksham proven method. Track every second. Every rupee saved. Every milestone earned.</div>
             </div>
-            <button onClick={()=>{setIsSignIn(false);setAuthStep("phone");}} style={{width:"100%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:13,padding:15,color:"#F5F0E8",fontWeight:800,fontSize:16,cursor:"pointer",marginBottom:10,marginTop:12,boxShadow:"0 4px 20px rgba(201,168,76,0.25)"}}>
-              Create Account
+            <button onClick={()=>{setIsSignIn(true);setAuthStep("phone");}} style={{width:"100%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:13,padding:15,color:"#F5F0E8",fontWeight:800,fontSize:16,cursor:"pointer",marginBottom:10,marginTop:12,boxShadow:"0 4px 20px rgba(201,168,76,0.25)"}}>
+              Sign In
             </button>
-            <button onClick={()=>{setIsSignIn(true);setAuthStep("phone");}} style={{width:"100%",background:"transparent",border:"1.5px solid "+C.gold+"55",borderRadius:13,padding:14,color:C.gold,fontWeight:700,fontSize:15,cursor:"pointer",marginBottom:14}}>
-              Sign In   I already have an account
+            <button onClick={()=>{setIsSignIn(false);setAuthStep("phone");}} style={{width:"100%",background:"transparent",border:"1.5px solid "+C.gold+"55",borderRadius:13,padding:14,color:C.gold,fontWeight:700,fontSize:15,cursor:"pointer",marginBottom:14}}>
+              Create Account
             </button>
             <div style={{textAlign:"center",fontSize:11,color:C.muted}}>By continuing you agree to our Terms. We never share your data.</div>
           </div>
