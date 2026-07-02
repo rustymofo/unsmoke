@@ -347,7 +347,7 @@ export default function App(){
   const [authOtpInput,setAuthOtpInput]=useState(["","","","","",""]);
   const [authError,setAuthError]=useState("");
   const [authLoading,setAuthLoading]=useState(false);
-  const [fbStatus,setFbStatus]=useState(null); // null|'testing'|'ok'|'fail'
+  const [fbStatus,setFbStatus]=useState(null); // null | testing | ok | fail
   const [showProfile,setShowProfile]=useState(false);
   const [profileCam,setProfileCam]=useState(false);
   const profileVideoRef=useRef(null);
@@ -408,6 +408,8 @@ export default function App(){
   const [prevAchieved,setPrevAchieved]=useState(0);
   const [nameInput,setNameInput]=useState("");
   const [camPerm,setCamPerm]=useState(null);
+  const [micPerm,setMicPerm]=useState(null);
+  const [photoPerm,setPhotoPerm]=useState(null);
   const [locPerm,setLocPerm]=useState(null);
   const [permLoading,setPermLoading]=useState(null);
   const [nrtCigs,setNrtCigs]=useState("20");
@@ -614,6 +616,26 @@ export default function App(){
       stream.getTracks().forEach(t=>t.stop());setCamPerm("granted");
     }catch{setCamPerm("denied");}
     setPermLoading(null);
+  };
+  const askMic=async()=>{
+    setPermLoading("mic");
+    try{
+      const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+      stream.getTracks().forEach(t=>t.stop());
+      setMicPerm("granted");
+    }catch{setMicPerm("denied");}
+    setPermLoading(null);
+  };
+  const askPhotos=()=>{
+    // Trigger file picker which prompts iOS photo library permission
+    const input=document.createElement("input");
+    input.type="file";input.accept="image/*";
+    input.onchange=()=>setPhotoPerm("granted");
+    input.onerror=()=>setPhotoPerm("denied");
+    setPermLoading("photo");
+    input.click();
+    // After 2s assume granted if no error (iOS does not fire error on deny of picker)
+    setTimeout(()=>{setPhotoPerm("granted");setPermLoading(null);},2000);
   };
   const askLocation=()=>{
     setPermLoading("loc");
@@ -860,7 +882,7 @@ export default function App(){
   // SETUP SCREENS
   if(step<4){
     if(step===3){
-      const allAsked=camPerm!==null&&locPerm!==null;
+      const allAsked=camPerm!==null&&micPerm!==null&&locPerm!==null&&photoPerm!==null;
       const pBg={background:C.surface,border:"1px solid "+C.border,borderRadius:16,padding:"18px 16px",marginBottom:12};
       return (
         <div style={Object.assign({},wrap,{alignItems:"center",justifyContent:"center",overflowY:"auto"})}>
@@ -1209,7 +1231,7 @@ export default function App(){
               <div style={{color:C.sub,fontSize:12,marginBottom:14}}>Activates your parasympathetic system. Dissolves anxiety.</div>
               {breathOn?(
                 <div style={{textAlign:"center",padding:"8px 0"}}>
-                  <div style={{width:100,height:100,borderRadius:"50%",margin:"0 auto 14px",background:"radial-gradient(circle,"+curB.color+"20,transparent)",border:"3px solid "+curB.color,display:"flex",alignItems:"center",justifyContent:"center",transition:bPhase==="inhale"?"transform 4s ease-in-out":"bPhase==='exhale'?'transform 8s ease-in-out':'none'",transform:bPhase==="exhale"?"scale(0.82)":"scale(1.28)"}}>
+                  <div style={{width:100,height:100,borderRadius:"50%",margin:"0 auto 14px",background:"radial-gradient(circle,"+curB.color+"20,transparent)",border:"3px solid "+curB.color,display:"flex",alignItems:"center",justifyContent:"center",transition:bPhase==="inhale"?"transform 4s ease-in-out":"none",transform:bPhase==="exhale"?"scale(0.82)":"scale(1.28)"}}>
                     <span style={{color:curB.color,fontSize:11,fontWeight:700}}>{curB.label}</span>
                   </div>
                   <div style={{color:C.sub,fontSize:11}}>4s inhale - 7s hold - 8s exhale</div>
