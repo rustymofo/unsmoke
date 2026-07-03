@@ -1824,7 +1824,7 @@ function App(){
               <div onClick={()=>setShowPremium(true)} style={crd({marginBottom:10,cursor:"pointer",background:C.amberFade,borderColor:C.gold+"44"})}>
                 <div style={{display:"flex",alignItems:"center",gap:12}}>
                   <div style={{fontSize:24}}>👑</div>
-                  <div style={{flex:1}}><div style={{fontWeight:800,fontSize:13,color:C.gold}}>AI Coach - Voice Calls - NRT Plan</div><div style={{fontSize:12,color:C.sub,marginTop:2}}>Unlock Premium features</div></div>
+                  <div style={{flex:1}}><div style={{fontWeight:800,fontSize:13,color:C.gold}}>AI Coach - Chat - NRT Plan</div><div style={{fontSize:12,color:C.sub,marginTop:2}}>Unlock Premium features</div></div>
                   <span style={{color:C.gold,fontSize:16}}>›</span>
                 </div>
               </div>
