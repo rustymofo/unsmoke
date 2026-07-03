@@ -4,6 +4,9 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>Unsmoke Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="DENY">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{background:#07080F;color:#EDF1FF;font-family:-apple-system,BlinkMacSystemFont,sans-serif;height:100svh;display:flex;flex-direction:column;overflow:hidden;}
@@ -181,7 +184,6 @@ body{background:#07080F;color:#EDF1FF;font-family:-apple-system,BlinkMacSystemFo
 <script>
 const FB_KEY="AIzaSyBy6CrePlG8499_tVBwqNw97ivycI142mI";
 const FB="https://firestore.googleapis.com/v1/projects/unsmoke-app-92a39/databases/(default)/documents";
-const PIN="1234";
 let users=[],convs=[],currentTab="overview",currentChatPhone=null,currentDetailPhone=null;
 
 function pv(v){
@@ -210,14 +212,60 @@ async function fbGet(path){try{const r=await fetch(FB+"/"+path+"?key="+FB_KEY);i
 async function fbSet(path,data){try{await fetch(FB+"/"+path+"?key="+FB_KEY,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify(td(data))});}catch{}}
 async function fbList(col){try{const r=await fetch(FB+"/"+col+"?key="+FB_KEY);if(!r.ok)return[];const d=await r.json();return(d.documents||[]).map(doc=>({...pd(doc),_id:doc.name.split("/").pop()}));}catch{return[];}}
 
-function checkPin(){
-  if(document.getElementById("pinInput").value===PIN){
+const CORRECT_HASH="e7e6126cbbe891e3d725ec65bfe34a9a73d4961efada4e1a08e2d9b331cb0a4b";
+const SALT="unsmoke_admin_2024_secure";
+let failedAttempts=0,lockoutUntil=0;
+
+async function hashPin(pin){
+  const data=new TextEncoder().encode(pin+SALT);
+  const buf=await crypto.subtle.digest("SHA-256",data);
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+
+async function checkPin(){
+  const now=Date.now();
+  if(now<lockoutUntil){
+    const mins=Math.ceil((lockoutUntil-now)/60000);
+    document.getElementById("pinErr").textContent="Locked. Try again in "+mins+" min.";
+    return;
+  }
+  const pin=document.getElementById("pinInput").value;
+  if(!pin){return;}
+  const hash=await hashPin(pin);
+  if(hash===CORRECT_HASH){
+    failedAttempts=0;
+    // Store session with 8-hour expiry
+    sessionStorage.setItem("admin_auth",JSON.stringify({ok:true,exp:Date.now()+8*3600000}));
     document.getElementById("loginWrap").style.display="none";
     document.getElementById("app").style.display="flex";
     loadAll();
     setInterval(loadAll,8000);
-  }else{document.getElementById("pinErr").textContent="Wrong PIN";document.getElementById("pinInput").value="";}
+    // Auto-logout after 8 hours
+    setTimeout(()=>{location.reload();},8*3600000);
+  }else{
+    failedAttempts++;
+    document.getElementById("pinInput").value="";
+    if(failedAttempts>=5){
+      lockoutUntil=Date.now()+30*60000;
+      document.getElementById("pinErr").textContent="Too many attempts. Locked for 30 minutes.";
+    }else{
+      document.getElementById("pinErr").textContent="Wrong PIN. "+(5-failedAttempts)+" attempts left.";
+    }
+  }
 }
+
+// Check existing session
+(function(){
+  try{
+    const s=JSON.parse(sessionStorage.getItem("admin_auth")||"null");
+    if(s&&s.ok&&Date.now()<s.exp){
+      document.getElementById("loginWrap").style.display="none";
+      document.getElementById("app").style.display="flex";
+      loadAll();setInterval(loadAll,8000);
+    }
+  }catch{}
+})();
+
 document.addEventListener("keydown",e=>{if(e.key==="Enter"&&document.activeElement===document.getElementById("pinInput"))checkPin();});
 
 function days(ts){return ts?Math.floor((Date.now()-ts)/86400000):0;}
