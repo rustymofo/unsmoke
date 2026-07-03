@@ -658,6 +658,18 @@ function App(){
   const [journalText,setJournalText]=useState("");
   const [journalEntries,setJournalEntries]=useState([]);
   const [showJournal,setShowJournal]=useState(false);
+  const [communityPosts,setCommunityPosts]=useState([]);
+  const [communityInput,setCommunityInput]=useState("");
+  const [communityPosting,setCommunityPosting]=useState(false);
+  const [friends,setFriends]=useState([]);
+  const [friendInput,setFriendInput]=useState("");
+  const [friendStatus,setFriendStatus]=useState("");
+  const [peerChat,setPeerChat]=useState(null);
+  const [peerMsgs,setPeerMsgs]=useState([]);
+  const [peerInput,setPeerInput]=useState("");
+  const [peerSending,setPeerSending]=useState(false);
+  const [myPublicId,setMyPublicId]=useState("");
+  const [copied,setCopied]=useState(false);
   const [snapPhoto,setSnapPhoto]=useState(null);
   const [showCamera,setShowCamera]=useState(false);
   const [cameraFacing,setCameraFacing]=useState("user");
@@ -668,7 +680,6 @@ function App(){
   const [codeInput,setCodeInput]=useState("");
   const [snapStatus,setSnapStatus]=useState("");
   const [snapMsg,setSnapMsg]=useState("");
-  const [copied,setCopied]=useState(false);
   const [sendingSnap,setSendingSnap]=useState(false);
   const [viewingSnap,setViewingSnap]=useState(null);
   const [celebMS,setCelebMS]=useState(null);
@@ -812,6 +823,107 @@ function App(){
     }catch{}
     setMsgSending(false);
   }
+
+  // Generate short public ID for this user
+  useEffect(()=>{
+    if(userId){
+      const shortId=userId.substring(0,6).toUpperCase();
+      setMyPublicId(shortId);
+      // Register in lookup table
+      const phone=authUser?authUser.phone:authPhone;
+      if(phone)FB.set("user_lookup/"+shortId,{phone,name:userName||authName,publicId:shortId,userId});
+    }
+  },[userId]);
+
+  // Load community posts
+  async function loadCommunity(){
+    try{
+      const r=await fetch("https://firestore.googleapis.com/v1/projects/unsmoke-app-92a39/databases/(default)/documents/community_posts?key=AIzaSyBy6CrePlG8499_tVBwqNw97ivycI142mI&orderBy=ts+desc&pageSize=30");
+      const data=await r.json();
+      const posts=(data.documents||[]).map(doc=>{
+        const d=doc.fields||{};
+        const pv=v=>{if(!v)return null;if(v.stringValue!==undefined)return v.stringValue;if(v.integerValue!==undefined)return parseInt(v.integerValue);if(v.booleanValue!==undefined)return v.booleanValue;if(v.arrayValue)return(v.arrayValue.values||[]).map(pv);return null;};
+        return{id:doc.name.split("/").pop(),name:pv(d.name),text:pv(d.text),days:pv(d.days),ts:pv(d.ts),type:pv(d.type),publicId:pv(d.publicId),likes:pv(d.likes)||0};
+      });
+      setCommunityPosts(posts.sort((a,b)=>(b.ts||0)-(a.ts||0)));
+    }catch{}
+  }
+
+  async function postToCommunity(text,type="post"){
+    if(!text.trim()||communityPosting)return;
+    setCommunityPosting(true);
+    const post={id:Date.now()+"",name:userName||authName,text:sanitize(text),days:d,ts:Date.now(),type,publicId:myPublicId,likes:0};
+    await FB.set("community_posts/"+post.id,post);
+    setCommunityInput("");
+    await loadCommunity();
+    setCommunityPosting(false);
+  }
+
+  async function likePost(postId,currentLikes){
+    await FB.merge("community_posts/"+postId,{likes:(currentLikes||0)+1});
+    setCommunityPosts(prev=>prev.map(p=>p.id===postId?{...p,likes:(p.likes||0)+1}:p));
+  }
+
+  async function addFriend(publicId){
+    const id=publicId.trim().toUpperCase();
+    if(!id){setFriendStatus("Enter a user ID");return;}
+    if(id===myPublicId){setFriendStatus("That is your own ID");return;}
+    setFriendStatus("Searching...");
+    const lookup=await FB.get("user_lookup/"+id);
+    if(!lookup){setFriendStatus("User not found. Check the ID and try again.");return;}
+    const alreadyFriend=friends.find(f=>f.publicId===id);
+    if(alreadyFriend){setFriendStatus("Already added");return;}
+    const newFriend={publicId:id,name:lookup.name||"User",phone:lookup.phone,addedAt:Date.now()};
+    const updated=[...friends,newFriend];
+    setFriends(updated);
+    const phone=authUser?authUser.phone:authPhone;
+    await FB.merge("users/"+phone,{friends:updated});
+    setFriendInput("");
+    setFriendStatus(lookup.name+" added!");
+    setTimeout(()=>setFriendStatus(""),3000);
+  }
+
+  async function openPeerChat(friend){
+    setPeerChat(friend);
+    setPeerMsgs([]);
+    const myPhone=authUser?authUser.phone:authPhone;
+    const chatId=[myPhone,friend.phone].sort().join("_");
+    const conv=await FB.get("peer_chats/"+chatId);
+    if(conv&&conv.messages)setPeerMsgs([...conv.messages].sort((a,b)=>a.ts-b.ts));
+  }
+
+  async function sendPeerMsg(){
+    if(!peerInput.trim()||peerSending||!peerChat)return;
+    const text=sanitize(peerInput.trim());
+    setPeerInput("");setPeerSending(true);
+    const myPhone=authUser?authUser.phone:authPhone;
+    const chatId=[myPhone,peerChat.phone].sort().join("_");
+    const msg={id:String(Date.now()),senderPhone:myPhone,senderName:userName||authName,text,ts:Date.now()};
+    const conv=await FB.get("peer_chats/"+chatId)||{};
+    const existing=conv.messages||[];
+    await FB.set("peer_chats/"+chatId,{...conv,messages:[...existing,msg],lastMessage:text,lastActivity:Date.now(),user1:myPhone,user2:peerChat.phone});
+    setPeerMsgs(prev=>[...prev,msg]);
+    setPeerSending(false);
+  }
+
+  // Load community on mount and when tab switches
+  useEffect(()=>{if(tab==="community")loadCommunity();},[tab]);
+  // Load friends from user data
+  useEffect(()=>{
+    const phone=authUser?authUser.phone:authPhone;
+    if(phone)FB.get("users/"+phone).then(ud=>{if(ud&&ud.friends)setFriends(ud.friends);});
+  },[authUser]);
+  // Poll peer chat
+  useEffect(()=>{
+    if(!peerChat)return;
+    const myPhone=authUser?authUser.phone:authPhone;
+    const chatId=[myPhone,peerChat.phone].sort().join("_");
+    const t=setInterval(async()=>{
+      const conv=await FB.get("peer_chats/"+chatId);
+      if(conv&&conv.messages)setPeerMsgs([...conv.messages].sort((a,b)=>a.ts-b.ts));
+    },5000);
+    return()=>clearInterval(t);
+  },[peerChat]);
 
   async function saveUD(fields){
     const phone=authUser?authUser.phone:authPhone;
@@ -1471,6 +1583,42 @@ function App(){
         </div>
       )}
 
+
+      {/* Peer Chat Overlay */}
+      {peerChat&&(
+        <div style={{position:"fixed",inset:0,zIndex:1001,background:C.bg,display:"flex",flexDirection:"column"}}>
+          <div style={{paddingTop:"max(48px,env(safe-area-inset-top,48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid "+C.border,display:"flex",alignItems:"center",gap:12,flexShrink:0,background:C.surfaceHi}}>
+            <button onClick={()=>setPeerChat(null)} style={{background:"none",border:"none",color:C.gold,fontSize:22,cursor:"pointer",padding:"0 8px 0 0"}}>←</button>
+            <div style={{width:38,height:38,borderRadius:"50%",background:"linear-gradient(135deg,"+C.orchid+","+C.gold+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,fontWeight:900,color:"#fff",flexShrink:0}}>{(peerChat.name||"?")[0].toUpperCase()}</div>
+            <div style={{flex:1}}>
+              <div style={{fontWeight:800,fontSize:15,color:C.text}}>{peerChat.name}</div>
+              <div style={{fontSize:10,color:C.sub}}>ID: {peerChat.publicId}</div>
+            </div>
+          </div>
+          <div style={{flex:1,overflowY:"auto",padding:"14px 16px",display:"flex",flexDirection:"column",gap:10}}>
+            {peerMsgs.length===0&&<div style={{textAlign:"center",padding:"40px 20px",color:C.muted,fontSize:13}}>Start the conversation. You are both on the same journey.</div>}
+            {peerMsgs.map(msg=>{
+              const myPhone=authUser?authUser.phone:authPhone;
+              const isMe=msg.senderPhone===myPhone;
+              return (
+                <div key={msg.id} style={{display:"flex",justifyContent:isMe?"flex-end":"flex-start"}}>
+                  <div style={{maxWidth:"78%"}}>
+                    <div style={{padding:"10px 14px",borderRadius:isMe?"18px 18px 4px 18px":"18px 18px 18px 4px",background:isMe?"linear-gradient(135deg,"+C.gold+","+C.amber+")":C.surface,color:isMe?"#fff":C.text,fontSize:13,lineHeight:1.65,border:isMe?"none":"1px solid "+C.border,boxShadow:isMe?"0 4px 12px rgba(160,114,10,0.2)":"0 1px 4px rgba(0,0,0,0.05)"}}>{msg.text}</div>
+                    <div style={{fontSize:9,color:C.muted,marginTop:3,textAlign:isMe?"right":"left"}}>{new Date(msg.ts).toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"})}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div style={{padding:"12px 16px",paddingBottom:"calc(env(safe-area-inset-bottom,0px)+12px)",borderTop:"1px solid "+C.border,background:C.surface,display:"flex",gap:10,flexShrink:0}}>
+            <input value={peerInput} onChange={e=>setPeerInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&sendPeerMsg()} placeholder={"Message "+peerChat.name+"..."} style={{flex:1,minWidth:0,background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:24,padding:"11px 16px",color:C.text,fontSize:14,outline:"none"}}/>
+            <button onClick={sendPeerMsg} disabled={peerSending||!peerInput.trim()} style={{background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:"50%",width:46,height:46,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0,opacity:peerSending||!peerInput.trim()?0.4:1}}>
+              <span style={{color:"#fff",fontSize:18,fontWeight:900}}>↑</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Profile overlay */}
       {showProfile&&(
         <div style={{position:"fixed",inset:0,zIndex:1005,background:"rgba(0,0,0,0.85)",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
@@ -1752,6 +1900,95 @@ function App(){
                 <span style={{color:"#fff",fontSize:18,fontWeight:900}}>↑</span>
               </button>
             </div>
+          </div>
+        )}
+
+
+        {tab==="community"&&(
+          <div style={{padding:"18px 16px"}}>
+
+            {/* Your ID card */}
+            <div style={{...glassCard(C.gold+"44",{marginBottom:14,background:"linear-gradient(135deg,rgba(160,114,10,0.05),rgba(160,114,10,0.02))"})}}>
+              <div style={{fontSize:9,color:C.gold,fontWeight:800,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:8}}>Your Unsmoke ID</div>
+              <div style={{display:"flex",alignItems:"center",gap:14}}>
+                <div style={{fontSize:28,fontWeight:900,color:C.gold,letterSpacing:"0.15em",fontVariantNumeric:"tabular-nums"}}>{myPublicId||"Loading..."}</div>
+                <button onClick={()=>{navigator.clipboard&&navigator.clipboard.writeText(myPublicId).catch(()=>{});setCopied(true);setTimeout(()=>setCopied(false),2000);}} style={{background:copied?C.emeraldFade:C.goldFade,border:"1px solid "+(copied?C.emerald:C.gold)+"44",borderRadius:20,padding:"6px 14px",color:copied?C.emerald:C.gold,fontSize:12,fontWeight:700,cursor:"pointer"}}>
+                  {copied?"Copied!":"Copy ID"}
+                </button>
+              </div>
+              <div style={{fontSize:11,color:C.sub,marginTop:6}}>Share this ID so others can find and add you</div>
+            </div>
+
+            {/* Add friend */}
+            <div style={{...glassCard(null,{marginBottom:14})}}>
+              <div style={{fontSize:12,fontWeight:800,color:C.text,marginBottom:10}}>Add a Friend by ID</div>
+              <div style={{display:"flex",gap:8}}>
+                <input value={friendInput} onChange={e=>setFriendInput(e.target.value.toUpperCase())} onKeyDown={e=>e.key==="Enter"&&addFriend(friendInput)} placeholder="Enter their ID e.g. A3B7C2" style={{flex:1,minWidth:0,background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:12,padding:"10px 14px",color:C.text,fontSize:14,outline:"none",letterSpacing:"0.1em",fontWeight:700}} maxLength={8}/>
+                <button onClick={()=>addFriend(friendInput)} style={{background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:12,padding:"10px 18px",color:"#fff",fontWeight:700,fontSize:13,cursor:"pointer",flexShrink:0}}>Add</button>
+              </div>
+              {friendStatus&&<div style={{fontSize:12,color:friendStatus.includes("not found")||friendStatus.includes("own")?C.ruby:C.emerald,marginTop:8,fontWeight:600}}>{friendStatus}</div>}
+            </div>
+
+            {/* Friends list */}
+            {friends.length>0&&(
+              <div style={{...glassCard(null,{marginBottom:14})}}>
+                <div style={{fontSize:10,color:C.sub,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:12}}>{friends.length} {friends.length===1?"Friend":"Friends"}</div>
+                {friends.map((friend,i)=>(
+                  <div key={friend.publicId} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 0",borderBottom:i<friends.length-1?"1px solid "+C.border:"none"}}>
+                    <div style={{width:38,height:38,borderRadius:"50%",background:"linear-gradient(135deg,"+C.orchid+"44,"+C.gold+"44)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,fontWeight:900,color:C.orchid,flexShrink:0}}>{(friend.name||"?")[0].toUpperCase()}</div>
+                    <div style={{flex:1}}>
+                      <div style={{fontWeight:700,fontSize:14,color:C.text}}>{friend.name}</div>
+                      <div style={{fontSize:10,color:C.sub,marginTop:1}}>ID: {friend.publicId}</div>
+                    </div>
+                    <button onClick={()=>openPeerChat(friend)} style={{background:C.orchidFade,border:"1px solid "+C.orchid+"44",borderRadius:20,padding:"6px 14px",color:C.orchid,fontSize:12,fontWeight:700,cursor:"pointer"}}>Chat</button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Community feed */}
+            <div style={{fontSize:16,fontWeight:900,color:C.text,marginBottom:4}}>Community Feed</div>
+            <div style={{color:C.sub,fontSize:12,marginBottom:12}}>Share your progress. Cheer others on.</div>
+
+            {/* Post box */}
+            <div style={{...glassCard(null,{marginBottom:14})}}>
+              <textarea value={communityInput} onChange={e=>setCommunityInput(e.target.value)} placeholder={"How are you doing today?"+String.fromCharCode(10)+"Share a win, a struggle, or a milestone."} style={{width:"100%",background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:12,padding:"12px 14px",color:C.text,fontSize:13,outline:"none",resize:"none",minHeight:72,lineHeight:1.65,boxSizing:"border-box",marginBottom:10}} maxLength={280}/>
+              <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+                {["Day "+d+" smoke-free! 🎉","Had a tough craving but resisted 💪","Just reached "+d+"d milestone 🏆"].map(quick=>(
+                  <button key={quick} onClick={()=>setCommunityInput(quick)} style={{background:C.goldFade,border:"1px solid "+C.gold+"44",borderRadius:20,padding:"5px 12px",color:C.gold,fontSize:11,cursor:"pointer",fontWeight:600}}>{quick}</button>
+                ))}
+              </div>
+              <button onClick={()=>postToCommunity(communityInput)} disabled={communityPosting||!communityInput.trim()} style={{width:"100%",marginTop:10,background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:12,padding:12,color:"#fff",fontWeight:700,fontSize:14,cursor:"pointer",opacity:communityPosting||!communityInput.trim()?0.4:1}}>
+                {communityPosting?"Posting...":"Post to Community"}
+              </button>
+            </div>
+
+            {/* Feed */}
+            {communityPosts.length===0&&(
+              <div style={{textAlign:"center",padding:"32px 20px",color:C.muted}}>
+                <div style={{fontSize:36,marginBottom:10}}>🌱</div>
+                <div style={{fontSize:14,fontWeight:700,color:C.text,marginBottom:6}}>Be the first to post</div>
+                <div style={{fontSize:12,color:C.sub}}>This community is just getting started. Share your journey.</div>
+              </div>
+            )}
+            {communityPosts.map(post=>(
+              <div key={post.id} style={{...glassCard(null,{marginBottom:10})}}>
+                <div style={{display:"flex",alignItems:"flex-start",gap:12,marginBottom:10}}>
+                  <div style={{width:36,height:36,borderRadius:"50%",background:"linear-gradient(135deg,"+C.gold+"44,"+C.orchid+"44)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:15,fontWeight:900,color:C.gold,flexShrink:0}}>{(post.name||"?")[0].toUpperCase()}</div>
+                  <div style={{flex:1}}>
+                    <div style={{display:"flex",alignItems:"center",gap:8}}>
+                      <div style={{fontWeight:700,fontSize:13,color:C.text}}>{post.name||"Anonymous"}</div>
+                      {post.days>0&&<div style={{background:C.goldFade,border:"1px solid "+C.gold+"44",borderRadius:20,padding:"1px 8px",fontSize:9,color:C.gold,fontWeight:700}}>{post.days}d smoke-free</div>}
+                    </div>
+                    <div style={{fontSize:10,color:C.muted,marginTop:2}}>{post.ts?new Date(post.ts).toLocaleDateString("en-IN",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}):""}</div>
+                  </div>
+                </div>
+                <div style={{fontSize:13,color:C.text,lineHeight:1.7,marginBottom:10}}>{post.text}</div>
+                <button onClick={()=>likePost(post.id,post.likes)} style={{background:"transparent",border:"none",color:C.sub,fontSize:13,cursor:"pointer",display:"flex",alignItems:"center",gap:5}}>
+                  <span>👏</span><span>{post.likes||0}</span><span style={{fontSize:11}}>Cheer</span>
+                </button>
+              </div>
+            ))}
           </div>
         )}
 
