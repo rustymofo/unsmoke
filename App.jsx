@@ -2251,14 +2251,14 @@ function App(){
       </div>
 
       {/* Tab bar */}
-      <div style={{display:"flex",borderTop:"1px solid "+C.border,background:C.surface,flexShrink:0}}>
+      <div style={{display:"flex",borderTop:"1px solid "+C.border,background:C.surface,flexShrink:0,paddingBottom:"env(safe-area-inset-bottom,0px)"}}>
         {TABS.map(t=>(
-          <button key={t.id} onClick={()=>{setTab(t.id);setBreathOn(false);}} style={{flex:1,padding:"9px 2px 11px",border:"none",background:"transparent",color:tab===t.id?C.accent:C.muted,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:2,fontSize:8,fontWeight:700,letterSpacing:"0.03em",textTransform:"uppercase"}}>
+          <button key={t.id} onClick={()=>{setTab(t.id);setBreathOn(false);}} style={{flex:1,padding:"10px 4px 14px",border:"none",background:"transparent",color:tab===t.id?C.gold:C.sub,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:4,fontWeight:700}}>
             <div style={{position:"relative",display:"inline-block"}}>
-              <span style={{fontSize:16}}>{t.icon}</span>
+              <span style={{fontSize:24}}>{t.icon}</span>
               {t.id==="messages"&&msgUnread>0&&<div style={{position:"absolute",top:-3,right:-4,width:7,height:7,borderRadius:"50%",background:C.ruby}}/>}
             </div>
-            <span>{t.label}</span>
+            <span style={{fontSize:10,letterSpacing:"0.02em",textTransform:"uppercase",marginTop:1}}>{t.label}</span>
           </button>
         ))}
       </div>
