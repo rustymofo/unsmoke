@@ -29,7 +29,7 @@ const card=(extra={})=>({
   boxShadow:"0 2px 12px rgba(0,0,0,0.06)",...extra,
 });
 function GoldBtn({children,onClick,disabled,outline,style={}}){
-  return <button onClick={onClick} disabled={disabled} style={{background:outline?"transparent":"linear-gradient(135deg,#A0720A,#B87000)",color:outline?"#A0720A":"#fff",border:outline?"1.5px solid #A0720A66":"none",borderRadius:14,padding:"14px 20px",fontWeight:700,fontSize:16,cursor:disabled?"not-allowed":"pointer",width:"100%",opacity:disabled?0.4:1,boxShadow:outline?"none":"0 4px 20px rgba(160,114,10,0.25)",...style}}>{children}</button>;
+  return <button onClick={onClick} disabled={disabled} style={{background:outline?"transparent":"linear-gradient(135deg,#A0720A,#B87000)",color:outline?"#A0720A":"#fff",border:outline?"1.5px solid #A0720A66":"none",borderRadius:14,padding:"14px 20px",fontWeight:700,fontSize:19,cursor:disabled?"not-allowed":"pointer",width:"100%",opacity:disabled?0.4:1,boxShadow:outline?"none":"0 4px 20px rgba(160,114,10,0.25)",...style}}>{children}</button>;
 }
 
 function parseDur(ms){const s=Math.floor(ms/1000);return{d:Math.floor(s/86400),h:Math.floor((s%86400)/3600),m:Math.floor((s%3600)/60),s:s%60};}
@@ -136,7 +136,7 @@ const FB={
 const crd=(x={})=>({background:C.surface,border:"1px solid "+C.border,borderRadius:14,padding:"16px 14px",...x});
 function Btn({children,onClick,disabled,ghost,style={}}){
   return (
-    <button onClick={onClick} disabled={disabled} style={{background:ghost?"transparent":C.accent,color:ghost?C.accent:"#fff",border:ghost?"1.5px solid "+C.accent:"none",borderRadius:11,padding:"13px 18px",fontWeight:700,fontSize:16,cursor:disabled?"not-allowed":"pointer",width:"100%",opacity:disabled?0.5:1,...style}}>
+    <button onClick={onClick} disabled={disabled} style={{background:ghost?"transparent":C.accent,color:ghost?C.accent:"#fff",border:ghost?"1.5px solid "+C.accent:"none",borderRadius:11,padding:"13px 18px",fontWeight:700,fontSize:19,cursor:disabled?"not-allowed":"pointer",width:"100%",opacity:disabled?0.5:1,...style}}>
       {children}
     </button>
   );
@@ -171,19 +171,19 @@ function AIChat({systemPrompt,welcomeMsg,avatar,name,subtitle,onClose}){
   return (
     <div style={{position:"absolute",inset:0,zIndex:999,background:C.bg,display:"flex",flexDirection:"column"}}>
       <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #E8DDD0",display:"flex",alignItems:"center",gap:12,flexShrink:0}}>
-        <div style={{width:40,height:40,borderRadius:"50%",background:"linear-gradient(135deg,#FF6534,#8B5CF6)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0}}>{avatar}</div>
-        <div style={{flex:1}}><div style={{fontWeight:800,fontSize:17,color:"#1A1208"}}>{name}</div><div style={{fontSize:17,color:"#00D9AA",marginTop:1}}>{subtitle}</div></div>
-        <button onClick={onClose} style={{background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:20,padding:"6px 14px",color:"#786858",fontSize:16,fontWeight:700,cursor:"pointer"}}>Close</button>
+        <div style={{width:40,height:40,borderRadius:"50%",background:"linear-gradient(135deg,#FF6534,#8B5CF6)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:34,flexShrink:0}}>{avatar}</div>
+        <div style={{flex:1}}><div style={{fontWeight:800,fontSize:30,color:"#1A1208"}}>{name}</div><div style={{fontSize:30,color:"#00D9AA",marginTop:1}}>{subtitle}</div></div>
+        <button onClick={onClose} style={{background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:20,padding:"6px 14px",color:"#786858",fontSize:19,fontWeight:700,cursor:"pointer"}}>Close</button>
       </div>
       <div style={{flex:1,overflowY:"auto",padding:16}}>
         {messages.map((msg,i)=>(
           <div key={i} style={{display:"flex",justifyContent:msg.role==="user"?"flex-end":"flex-start",marginBottom:12}}>
-            {msg.role==="assistant"&&<div style={{width:28,height:28,borderRadius:"50%",background:"linear-gradient(135deg,#FF6534,#8B5CF6)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:17,marginRight:8,flexShrink:0,alignSelf:"flex-end"}}>{avatar}</div>}
-            <div style={{maxWidth:"78%",padding:"11px 14px",borderRadius:msg.role==="user"?"14px 14px 4px 14px":"14px 14px 14px 4px",background:msg.role==="user"?"#FF6534":"#FFFFFF",color:"#1A1208",fontSize:17,lineHeight:1.65,border:msg.role==="user"?"none":"1px solid #E8DDD0"}}>{msg.content}</div>
+            {msg.role==="assistant"&&<div style={{width:28,height:28,borderRadius:"50%",background:"linear-gradient(135deg,#FF6534,#8B5CF6)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:30,marginRight:8,flexShrink:0,alignSelf:"flex-end"}}>{avatar}</div>}
+            <div style={{maxWidth:"78%",padding:"11px 14px",borderRadius:msg.role==="user"?"14px 14px 4px 14px":"14px 14px 14px 4px",background:msg.role==="user"?"#FF6534":"#FFFFFF",color:"#1A1208",fontSize:30,lineHeight:1.65,border:msg.role==="user"?"none":"1px solid #E8DDD0"}}>{msg.content}</div>
           </div>
         ))}
         {loading&&<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}>
-          <div style={{width:28,height:28,borderRadius:"50%",background:"linear-gradient(135deg,#FF6534,#8B5CF6)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:17}}>🤖</div>
+          <div style={{width:28,height:28,borderRadius:"50%",background:"linear-gradient(135deg,#FF6534,#8B5CF6)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24}}>🤖</div>
           <div style={{padding:"11px 14px",borderRadius:"14px 14px 14px 4px",background:"#FFFFFF",border:"1px solid #E8DDD0"}}>
             <div style={{display:"flex",gap:4}}>
               {[0,1,2].map(i=><div key={i} style={{width:6,height:6,borderRadius:"50%",background:"#786858",animation:"bounce 1s "+i*0.2+"s infinite"}}/>)}
@@ -193,8 +193,8 @@ function AIChat({systemPrompt,welcomeMsg,avatar,name,subtitle,onClose}){
         <div ref={endRef}/>
       </div>
       <div style={{padding:"12px 16px",borderTop:"1px solid #E8DDD0",display:"flex",gap:8,flexShrink:0}}>
-        <input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&send()} placeholder="Type a message..." style={{flex:1,background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:22,padding:"11px 16px",color:"#1A1208",fontSize:16,outline:"none"}}/>
-        <button onClick={send} disabled={loading||!input.trim()} style={{background:"#FF6534",border:"none",borderRadius:"50%",width:44,height:44,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",opacity:loading||!input.trim()?0.5:1,flexShrink:0,color:"#fff",fontSize:18}}>up</button>
+        <input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&send()} placeholder="Type a message..." style={{flex:1,background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:22,padding:"11px 16px",color:"#1A1208",fontSize:19,outline:"none"}}/>
+        <button onClick={send} disabled={loading||!input.trim()} style={{background:"#FF6534",border:"none",borderRadius:"50%",width:44,height:44,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",opacity:loading||!input.trim()?0.5:1,flexShrink:0,color:"#fff",fontSize:22}}>up</button>
       </div>
       <style>{"@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}"}</style>
     </div>
@@ -285,10 +285,10 @@ function VoiceCall({person,systemPrompt,avatar,onClose}){
       <div style={{width:"100%",padding:"16px 20px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
         <div style={{display:"flex",gap:6}}>
           {[["en-IN","EN-IN"],["hi-IN","हिंदी"]].map(([l,label])=>(
-            <button key={l} onClick={()=>setLang(l)} style={{background:lang===l?"rgba(0,217,170,0.15)":"transparent",border:"1px solid "+(lang===l?"#00D9AA":"#786858"),borderRadius:20,padding:"4px 10px",color:lang===l?"#00D9AA":"#786858",fontSize:17,fontWeight:700,cursor:"pointer"}}>{label}</button>
+            <button key={l} onClick={()=>setLang(l)} style={{background:lang===l?"rgba(0,217,170,0.15)":"transparent",border:"1px solid "+(lang===l?"#00D9AA":"#786858"),borderRadius:20,padding:"4px 10px",color:lang===l?"#00D9AA":"#786858",fontSize:30,fontWeight:700,cursor:"pointer"}}>{label}</button>
           ))}
         </div>
-        <div style={{fontSize:16,color:"#786858",fontVariantNumeric:"tabular-nums"}}>{pad2(mins)}:{pad2(secs)}</div>
+        <div style={{fontSize:19,color:"#786858",fontVariantNumeric:"tabular-nums"}}>{pad2(mins)}:{pad2(secs)}</div>
       </div>
       <div style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:20,width:"100%"}}>
         <div style={{position:"relative",width:140,height:140,display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -298,8 +298,8 @@ function VoiceCall({person,systemPrompt,avatar,onClose}){
           <div style={{width:140,height:140,borderRadius:"50%",background:"linear-gradient(135deg,#FF6534,#8B5CF6)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:56,zIndex:1}}>{avatar}</div>
         </div>
         <div style={{textAlign:"center"}}>
-          <div style={{fontWeight:900,fontSize:22,color:"#1A1208",marginBottom:4}}>{person==="saksham"?"Saksham":"AI Coach"}</div>
-          <div style={{fontSize:17,fontWeight:600,color:ended?"#786858":callState==="connecting"?"#FFB800":aiState==="listening"?"#FF6534":aiState==="thinking"?"#FFB800":aiState==="speaking"?"#00D9AA":"rgba(0,217,170,0.4)"}}>
+          <div style={{fontWeight:900,fontSize:34,color:"#1A1208",marginBottom:4}}>{person==="saksham"?"Saksham":"AI Coach"}</div>
+          <div style={{fontSize:30,fontWeight:600,color:ended?"#786858":callState==="connecting"?"#FFB800":aiState==="listening"?"#FF6534":aiState==="thinking"?"#FFB800":aiState==="speaking"?"#00D9AA":"rgba(0,217,170,0.4)"}}>
             {ended?"Call ended":callState==="connecting"?"Connecting...":aiState==="listening"?"Listening...":aiState==="thinking"?"Thinking...":aiState==="speaking"?"Speaking...":"Ready"}
           </div>
         </div>
@@ -307,7 +307,7 @@ function VoiceCall({person,systemPrompt,avatar,onClose}){
           <div style={{width:"100%",maxWidth:320,maxHeight:100,overflowY:"auto",padding:"0 20px"}}>
             {transcript.slice(-2).map((msg,i)=>(
               <div key={i} style={{marginBottom:6,textAlign:msg.role==="user"?"right":"left"}}>
-                <span style={{display:"inline-block",background:msg.role==="user"?"#FF6534":"#FFFFFF",border:msg.role==="assistant"?"1px solid #E8DDD0":"none",borderRadius:10,padding:"6px 12px",fontSize:16,color:"#1A1208",maxWidth:"85%",lineHeight:1.4}}>{msg.text}</span>
+                <span style={{display:"inline-block",background:msg.role==="user"?"#FF6534":"#FFFFFF",border:msg.role==="assistant"?"1px solid #E8DDD0":"none",borderRadius:10,padding:"6px 12px",fontSize:19,color:"#1A1208",maxWidth:"85%",lineHeight:1.4}}>{msg.text}</span>
               </div>
             ))}
           </div>
@@ -316,8 +316,8 @@ function VoiceCall({person,systemPrompt,avatar,onClose}){
       <div style={{width:"100%",padding:"0 24px 40px"}}>
         {ended?(
           <div style={{textAlign:"center"}}>
-            <div style={{fontSize:17,color:"#786858",marginBottom:16}}>{pad2(mins)}:{pad2(secs)} - {transcript.filter(t=>t.role==="user").length} exchanges</div>
-            <button onClick={onClose} style={{background:"#FF6534",border:"none",borderRadius:12,padding:"14px 40px",color:"#fff",fontWeight:700,fontSize:17,cursor:"pointer"}}>Done</button>
+            <div style={{fontSize:30,color:"#786858",marginBottom:16}}>{pad2(mins)}:{pad2(secs)} - {transcript.filter(t=>t.role==="user").length} exchanges</div>
+            <button onClick={onClose} style={{background:"#FF6534",border:"none",borderRadius:12,padding:"14px 40px",color:"#fff",fontWeight:700,fontSize:30,cursor:"pointer"}}>Done</button>
           </div>
         ):(
           <>
@@ -326,25 +326,25 @@ function VoiceCall({person,systemPrompt,avatar,onClose}){
                 {speechOK?(
                   <button onMouseDown={startRec} onTouchStart={startRec} onMouseUp={stopRec} onTouchEnd={stopRec}
                     disabled={aiState==="speaking"||aiState==="thinking"||callState==="connecting"}
-                    style={{width:72,height:72,borderRadius:"50%",background:isRecording?"#FF6534":"rgba(255,101,52,0.2)",border:"2px solid "+(isRecording?"#FF6534":"#786858"),display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,cursor:"pointer",opacity:aiState==="speaking"||aiState==="thinking"?0.4:1}}>
+                    style={{width:72,height:72,borderRadius:"50%",background:isRecording?"#FF6534":"rgba(255,101,52,0.2)",border:"2px solid "+(isRecording?"#FF6534":"#786858"),display:"flex",alignItems:"center",justifyContent:"center",fontSize:34,cursor:"pointer",opacity:aiState==="speaking"||aiState==="thinking"?0.4:1}}>
                     🎤
                   </button>
                 ):(
-                  <button onClick={()=>setUseText(true)} style={{background:"rgba(0,217,170,0.15)",border:"1px solid #00D9AA",borderRadius:12,padding:"12px 24px",color:"#00D9AA",fontWeight:700,fontSize:17,cursor:"pointer"}}>Use text input</button>
+                  <button onClick={()=>setUseText(true)} style={{background:"rgba(0,217,170,0.15)",border:"1px solid #00D9AA",borderRadius:12,padding:"12px 24px",color:"#00D9AA",fontWeight:700,fontSize:30,cursor:"pointer"}}>Use text input</button>
                 )}
-                <div style={{fontSize:17,color:"#C8B8A8"}}>{isRecording?"Release to send":"Hold mic to speak"}</div>
-                <button onClick={()=>setUseText(true)} style={{background:"none",border:"none",color:"#C8B8A8",fontSize:17,cursor:"pointer",textDecoration:"underline"}}>Type instead</button>
+                <div style={{fontSize:30,color:"#C8B8A8"}}>{isRecording?"Release to send":"Hold mic to speak"}</div>
+                <button onClick={()=>setUseText(true)} style={{background:"none",border:"none",color:"#C8B8A8",fontSize:30,cursor:"pointer",textDecoration:"underline"}}>Type instead</button>
               </div>
             ):(
               <div style={{marginBottom:16}}>
                 <div style={{display:"flex",gap:8,marginBottom:8}}>
-                  <input value={inputText} onChange={e=>setInputText(e.target.value)} onKeyDown={e=>e.key==="Enter"&&sendText()} placeholder="Type your message..." disabled={aiState==="speaking"||aiState==="thinking"} style={{flex:1,background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:22,padding:"11px 16px",color:"#1A1208",fontSize:17,outline:"none"}}/>
-                  <button onClick={sendText} disabled={!inputText.trim()||aiState==="speaking"||aiState==="thinking"} style={{background:"#FF6534",border:"none",borderRadius:"50%",width:44,height:44,color:"#fff",fontSize:18,cursor:"pointer",flexShrink:0,opacity:!inputText.trim()?0.5:1}}>up</button>
+                  <input value={inputText} onChange={e=>setInputText(e.target.value)} onKeyDown={e=>e.key==="Enter"&&sendText()} placeholder="Type your message..." disabled={aiState==="speaking"||aiState==="thinking"} style={{flex:1,background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:22,padding:"11px 16px",color:"#1A1208",fontSize:30,outline:"none"}}/>
+                  <button onClick={sendText} disabled={!inputText.trim()||aiState==="speaking"||aiState==="thinking"} style={{background:"#FF6534",border:"none",borderRadius:"50%",width:44,height:44,color:"#fff",fontSize:34,cursor:"pointer",flexShrink:0,opacity:!inputText.trim()?0.5:1}}>up</button>
                 </div>
-                {speechOK&&<button onClick={()=>setUseText(false)} style={{background:"none",border:"none",color:"#C8B8A8",fontSize:17,cursor:"pointer",textDecoration:"underline"}}>Use voice instead</button>}
+                {speechOK&&<button onClick={()=>setUseText(false)} style={{background:"none",border:"none",color:"#C8B8A8",fontSize:30,cursor:"pointer",textDecoration:"underline"}}>Use voice instead</button>}
               </div>
             )}
-            <button onClick={endCall} style={{width:"100%",background:"#FF3B30",border:"none",borderRadius:12,padding:14,color:"#fff",fontWeight:700,fontSize:17,cursor:"pointer",marginTop:8}}>End Call</button>
+            <button onClick={endCall} style={{width:"100%",background:"#FF3B30",border:"none",borderRadius:12,padding:14,color:"#fff",fontWeight:700,fontSize:30,cursor:"pointer",marginTop:8}}>End Call</button>
           </>
         )}
       </div>
@@ -367,12 +367,12 @@ function ScoreRing({score}){
             strokeLinecap="round" style={{transition:"stroke-dashoffset 1s ease"}}/>
         </svg>
         <div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
-          <div style={{fontSize:26,fontWeight:900,color,lineHeight:1}}>{score}</div>
-          <div style={{fontSize:16,color:C.sub,marginTop:1}}>/ 100</div>
+          <div style={{fontSize:32,fontWeight:900,color,lineHeight:1}}>{score}</div>
+          <div style={{fontSize:19,color:C.sub,marginTop:1}}>/ 100</div>
         </div>
       </div>
-      <div style={{fontSize:17,fontWeight:700,color,letterSpacing:"0.06em",textTransform:"uppercase"}}>{label}</div>
-      <div style={{fontSize:17,color:C.sub}}>Recovery score</div>
+      <div style={{fontSize:30,fontWeight:700,color,letterSpacing:"0.06em",textTransform:"uppercase"}}>{label}</div>
+      <div style={{fontSize:30,color:C.sub}}>Recovery score</div>
     </div>
   );
 }
@@ -436,30 +436,30 @@ function SakshamChat({userPhone, userName, d, healthScore, onClose}){
   return (
     <div style={{position:"fixed",inset:0,zIndex:999,background:"#F5F0E8",display:"flex",flexDirection:"column",overflow:"hidden"}}>
       <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #E8DDD0",display:"flex",alignItems:"center",gap:12,flexShrink:0,background:"linear-gradient(180deg,#FAF7F2,#F5F0E8)"}}>
-        <div style={{width:42,height:42,borderRadius:"50%",background:"linear-gradient(135deg,#C9A84C,#E8A020)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0,fontWeight:900,color:"#F5F0E8",boxShadow:"0 4px 12px rgba(201,168,76,0.3)"}}>S</div>
+        <div style={{width:42,height:42,borderRadius:"50%",background:"linear-gradient(135deg,#C9A84C,#E8A020)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:34,flexShrink:0,fontWeight:900,color:"#F5F0E8",boxShadow:"0 4px 12px rgba(201,168,76,0.3)"}}>S</div>
         <div style={{flex:1}}>
-          <div style={{fontWeight:800,fontSize:17,color:"#1A1208"}}>Saksham</div>
-          <div style={{fontSize:17,color:"#10C9A0",marginTop:1}}>Founder - Will respond soon</div>
+          <div style={{fontWeight:800,fontSize:30,color:"#1A1208"}}>Saksham</div>
+          <div style={{fontSize:30,color:"#10C9A0",marginTop:1}}>Founder - Will respond soon</div>
         </div>
-        <button onClick={onClose} style={{background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:20,padding:"6px 14px",color:"#68788A",fontSize:16,fontWeight:600,cursor:"pointer"}}>Close</button>
+        <button onClick={onClose} style={{background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:20,padding:"6px 14px",color:"#68788A",fontSize:19,fontWeight:600,cursor:"pointer"}}>Close</button>
       </div>
       <div style={{flex:1,overflowY:"auto",padding:"16px 16px"}}>
         {messages.map(msg=>(
           <div key={msg.id} style={{display:"flex",justifyContent:msg.role==="user"?"flex-end":"flex-start",marginBottom:14}}>
-            {msg.role==="saksham"&&<div style={{width:30,height:30,borderRadius:"50%",background:"linear-gradient(135deg,#C9A84C,#E8A020)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,marginRight:8,flexShrink:0,alignSelf:"flex-end",color:"#F5F0E8",fontWeight:900}}>S</div>}
+            {msg.role==="saksham"&&<div style={{width:30,height:30,borderRadius:"50%",background:"linear-gradient(135deg,#C9A84C,#E8A020)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:19,marginRight:8,flexShrink:0,alignSelf:"flex-end",color:"#F5F0E8",fontWeight:900}}>S</div>}
             <div style={{maxWidth:"78%"}}>
-              <div style={{padding:"12px 16px",borderRadius:msg.role==="user"?"18px 18px 4px 18px":"18px 18px 18px 4px",background:msg.role==="user"?"linear-gradient(135deg,#C9A84C,#E8A020)":"#FAF7F2",color:msg.role==="user"?"#F5F0E8":"#1A1208",fontSize:17,lineHeight:1.7,border:msg.role==="user"?"none":"1px solid #E8DDD0",boxShadow:msg.role==="user"?"0 4px 16px rgba(201,168,76,0.2)":"none"}}>{msg.text}</div>
-              {msg.ts>1000&&<div style={{fontSize:17,color:"#C8B8A8",marginTop:4,textAlign:msg.role==="user"?"right":"left"}}>{timeStr(msg.ts)}</div>}
+              <div style={{padding:"12px 16px",borderRadius:msg.role==="user"?"18px 18px 4px 18px":"18px 18px 18px 4px",background:msg.role==="user"?"linear-gradient(135deg,#C9A84C,#E8A020)":"#FAF7F2",color:msg.role==="user"?"#F5F0E8":"#1A1208",fontSize:30,lineHeight:1.7,border:msg.role==="user"?"none":"1px solid #E8DDD0",boxShadow:msg.role==="user"?"0 4px 16px rgba(201,168,76,0.2)":"none"}}>{msg.text}</div>
+              {msg.ts>1000&&<div style={{fontSize:30,color:"#C8B8A8",marginTop:4,textAlign:msg.role==="user"?"right":"left"}}>{timeStr(msg.ts)}</div>}
             </div>
           </div>
         ))}
-        {sending&&<div style={{textAlign:"left",padding:"8px 16px",fontSize:16,color:"#68788A"}}>Sending...</div>}
+        {sending&&<div style={{textAlign:"left",padding:"8px 16px",fontSize:19,color:"#68788A"}}>Sending...</div>}
         <div ref={endRef}/>
       </div>
       <div style={{padding:"12px 16px",paddingBottom:"calc(env(safe-area-inset-bottom, 0px) + 12px)",borderTop:"1px solid #E8DDD0",display:"flex",gap:10,flexShrink:0,background:"#FAF7F2"}}>
-        <input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&send()} placeholder="Message Saksham..." style={{flex:1,minWidth:0,background:"#FFFFFF",border:"1px solid #E8DDD0",borderRadius:24,padding:"12px 16px",color:"#1A1208",fontSize:16,outline:"none"}}/>
+        <input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&send()} placeholder="Message Saksham..." style={{flex:1,minWidth:0,background:"#FFFFFF",border:"1px solid #E8DDD0",borderRadius:24,padding:"12px 16px",color:"#1A1208",fontSize:19,outline:"none"}}/>
         <button onClick={send} disabled={sending||!input.trim()} style={{background:"linear-gradient(135deg,#C9A84C,#E8A020)",border:"none",borderRadius:"50%",width:46,height:46,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",opacity:sending||!input.trim()?0.4:1,flexShrink:0,boxShadow:"0 4px 12px rgba(201,168,76,0.3)"}}>
-          <span style={{color:"#F5F0E8",fontSize:16,fontWeight:900}}>up</span>
+          <span style={{color:"#F5F0E8",fontSize:19,fontWeight:900}}>up</span>
         </button>
       </div>
     </div>
@@ -1181,15 +1181,15 @@ function App(){
 
 
   const wrap={fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif",background:C.bg,color:C.text,height:"100svh",display:"flex",flexDirection:"column",overflow:"hidden",width:"100%",position:"fixed",top:0,left:0,right:0,bottom:0};
-  const inputStyle={background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:9,padding:"12px 13px",color:C.text,fontSize:16,width:"100%",boxSizing:"border-box",outline:"none"};
-  const lblStyle={color:C.sub,fontSize:17,fontWeight:700,letterSpacing:"0.09em",textTransform:"uppercase",marginBottom:5,display:"block"};
+  const inputStyle={background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:9,padding:"12px 13px",color:C.text,fontSize:19,width:"100%",boxSizing:"border-box",outline:"none"};
+  const lblStyle={color:C.sub,fontSize:30,fontWeight:700,letterSpacing:"0.09em",textTransform:"uppercase",marginBottom:5,display:"block"};
   const curB=PHASES.find(p=>p.phase===bPhase)||PHASES[0];
 
   if(!ready||authStep===null){
     return (
       <div style={Object.assign({},wrap,{alignItems:"center",justifyContent:"center",gap:12})}>
         <div style={{fontSize:36}}>🚭</div>
-        <div style={{color:C.sub,fontSize:17}}>Loading...</div>
+        <div style={{color:C.sub,fontSize:24}}>Loading...</div>
       </div>
     );
   }
@@ -1197,12 +1197,12 @@ function App(){
   // AUTH SCREENS
   if(authStep&&authStep!=="done"){
     const authWrap=Object.assign({},wrap,{alignItems:"center",justifyContent:"center",overflowY:"auto"});
-    const field={background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:11,padding:"13px 15px",color:C.text,fontSize:17,width:"100%",boxSizing:"border-box",outline:"none"};
+    const field={background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:11,padding:"13px 15px",color:C.text,fontSize:30,width:"100%",boxSizing:"border-box",outline:"none"};
     const brandHeader=(
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontSize:44,marginBottom:8}}>🚭</div>
-        <div style={{fontSize:26,fontWeight:900,background:"linear-gradient(135deg,"+C.accent+","+C.teal+")",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>Unsmoke</div>
-        <div style={{color:C.muted,fontSize:16,marginTop:3}}>with Saksham</div>
+        <div style={{fontSize:32,fontWeight:900,background:"linear-gradient(135deg,"+C.accent+","+C.teal+")",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>Unsmoke</div>
+        <div style={{color:C.muted,fontSize:19,marginTop:3}}>with Saksham</div>
       </div>
     );
 
@@ -1212,16 +1212,16 @@ function App(){
           <div style={{width:"100%",maxWidth:420,padding:"28px 22px"}}>
             {brandHeader}
             <div style={{textAlign:"center",marginBottom:28}}>
-              <div style={{fontSize:18,fontWeight:800,marginBottom:8}}>Start your smoke-free journey</div>
-              <div style={{color:C.sub,fontSize:17,lineHeight:1.7}}>Join thousands quitting with Saksham proven method. Track every second. Every rupee saved. Every milestone earned.</div>
+              <div style={{fontSize:34,fontWeight:800,marginBottom:8}}>Start your smoke-free journey</div>
+              <div style={{color:C.sub,fontSize:30,lineHeight:1.7}}>Join thousands quitting with Saksham proven method. Track every second. Every rupee saved. Every milestone earned.</div>
             </div>
-            <button onClick={()=>{setIsSignIn(true);setAuthStep("phone");}} style={{width:"100%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:13,padding:15,color:"#F5F0E8",fontWeight:800,fontSize:16,cursor:"pointer",marginBottom:10,marginTop:12,boxShadow:"0 4px 20px rgba(201,168,76,0.25)"}}>
+            <button onClick={()=>{setIsSignIn(true);setAuthStep("phone");}} style={{width:"100%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:13,padding:15,color:"#F5F0E8",fontWeight:800,fontSize:19,cursor:"pointer",marginBottom:10,marginTop:12,boxShadow:"0 4px 20px rgba(201,168,76,0.25)"}}>
               Sign In
             </button>
-            <button onClick={()=>{setIsSignIn(false);setAuthStep("phone");}} style={{width:"100%",background:"transparent",border:"1.5px solid "+C.gold+"55",borderRadius:13,padding:14,color:C.gold,fontWeight:700,fontSize:17,cursor:"pointer",marginBottom:14}}>
+            <button onClick={()=>{setIsSignIn(false);setAuthStep("phone");}} style={{width:"100%",background:"transparent",border:"1.5px solid "+C.gold+"55",borderRadius:13,padding:14,color:C.gold,fontWeight:700,fontSize:30,cursor:"pointer",marginBottom:14}}>
               Create Account
             </button>
-            <div style={{textAlign:"center",fontSize:17,color:C.muted}}>By continuing you agree to our Terms. We never share your data.</div>
+            <div style={{textAlign:"center",fontSize:30,color:C.muted}}>By continuing you agree to our Terms. We never share your data.</div>
           </div>
         </div>
       );
@@ -1233,23 +1233,23 @@ function App(){
           <div style={{width:"100%",maxWidth:420,padding:"28px 22px"}}>
             {brandHeader}
             <div style={{marginBottom:24}}>
-              <div style={{fontSize:20,fontWeight:800,marginBottom:5}}>{isSignIn?"Welcome back":"Enter your number"}</div>
-              <div style={{color:C.sub,fontSize:17}}>{isSignIn?"Enter your registered number to sign in.":"We will send a one-time code to verify."}</div>
-              <div style={{color:C.sub,fontSize:17}}>We will send a one-time code to verify.</div>
+              <div style={{fontSize:30,fontWeight:800,marginBottom:5}}>{isSignIn?"Welcome back":"Enter your number"}</div>
+              <div style={{color:C.sub,fontSize:24}}>{isSignIn?"Enter your registered number to sign in.":"We will send a one-time code to verify."}</div>
+              <div style={{color:C.sub,fontSize:24}}>We will send a one-time code to verify.</div>
             </div>
             <div style={{display:"flex",gap:8,marginBottom:16}}>
-              <div style={{background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:11,padding:"13px 14px",fontSize:17,fontWeight:700,color:C.sub,flexShrink:0}}>
+              <div style={{background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:11,padding:"13px 14px",fontSize:30,fontWeight:700,color:C.sub,flexShrink:0}}>
                 🇮🇳 +91
               </div>
               <input type="tel" inputMode="numeric" maxLength={10} placeholder="10-digit number"
                 value={authPhone} onChange={e=>setAuthPhone(e.target.value.replace(/\D/g,"").slice(0,10))}
                 onKeyDown={e=>e.key==="Enter"&&sendOTP()} style={Object.assign({},field,{flex:1})} autoFocus/>
             </div>
-            {authError&&<div style={{color:C.accent,fontSize:16,marginBottom:10,fontWeight:600}}>{authError}</div>}
-            <button onClick={sendOTP} disabled={authPhone.length<10} style={{width:"100%",background:C.accent,border:"none",borderRadius:13,padding:14,color:"#fff",fontWeight:800,fontSize:17,cursor:"pointer",marginBottom:12,opacity:authPhone.length<10?0.5:1}}>
+            {authError&&<div style={{color:C.accent,fontSize:19,marginBottom:10,fontWeight:600}}>{authError}</div>}
+            <button onClick={sendOTP} disabled={authPhone.length<10} style={{width:"100%",background:C.accent,border:"none",borderRadius:13,padding:14,color:"#fff",fontWeight:800,fontSize:30,cursor:"pointer",marginBottom:12,opacity:authPhone.length<10?0.5:1}}>
               Send OTP
             </button>
-            <button onClick={()=>setAuthStep("welcome")} style={{background:"none",border:"none",color:C.muted,fontSize:17,cursor:"pointer",width:"100%"}}>Back</button>
+            <button onClick={()=>setAuthStep("welcome")} style={{background:"none",border:"none",color:C.muted,fontSize:30,cursor:"pointer",width:"100%"}}>Back</button>
           </div>
         </div>
       );
@@ -1262,14 +1262,14 @@ function App(){
           <div style={{width:"100%",maxWidth:420,padding:"28px 22px"}}>
             {brandHeader}
             <div style={{marginBottom:20}}>
-              <div style={{fontSize:20,fontWeight:800,marginBottom:5}}>Verify your number</div>
-              <div style={{color:C.sub,fontSize:17}}>Code sent to +91 {authPhone}</div>
+              <div style={{fontSize:30,fontWeight:800,marginBottom:5}}>Verify your number</div>
+              <div style={{color:C.sub,fontSize:24}}>Code sent to +91 {authPhone}</div>
             </div>
             <div style={{background:C.amberFade,border:"1px solid "+C.amber+"44",borderRadius:12,padding:"12px 14px",marginBottom:20,display:"flex",gap:10,alignItems:"center"}}>
-              <span style={{fontSize:20}}>📱</span>
+              <span style={{fontSize:24}}>📱</span>
               <div>
-                <div style={{fontSize:17,color:C.amber,fontWeight:700,marginBottom:2}}>Demo Mode</div>
-                <div style={{fontSize:17,color:C.text}}>Your code: <span style={{fontWeight:900,fontSize:18,letterSpacing:"0.12em",color:C.amber}}>{authOtpCode}</span></div>
+                <div style={{fontSize:30,color:C.amber,fontWeight:700,marginBottom:2}}>Demo Mode</div>
+                <div style={{fontSize:30,color:C.text}}>Your code: <span style={{fontWeight:900,fontSize:34,letterSpacing:"0.12em",color:C.amber}}>{authOtpCode}</span></div>
               </div>
             </div>
             <div style={{display:"flex",gap:8,justifyContent:"center",marginBottom:16}}>
@@ -1277,16 +1277,16 @@ function App(){
                 <input key={idx} ref={otpRefs[idx]} type="text" inputMode="numeric" maxLength={1} value={val}
                   onChange={e=>handleOtpKey(idx,e.target.value)}
                   onKeyDown={e=>{if(e.key==="Backspace"&&!val&&idx>0)otpRefs[idx-1]&&otpRefs[idx-1].current&&otpRefs[idx-1].current.focus();}}
-                  style={{width:44,height:52,textAlign:"center",fontSize:22,fontWeight:900,background:val?C.tealFade:C.surfaceHi,border:"2px solid "+(val?C.teal:C.border),borderRadius:10,color:C.text,outline:"none"}}/>
+                  style={{width:44,height:52,textAlign:"center",fontSize:34,fontWeight:900,background:val?C.tealFade:C.surfaceHi,border:"2px solid "+(val?C.teal:C.border),borderRadius:10,color:C.text,outline:"none"}}/>
               ))}
             </div>
-            {authError&&<div style={{color:C.accent,fontSize:16,marginBottom:10,fontWeight:600,textAlign:"center"}}>{authError}</div>}
-            <button onClick={verifyOTP} disabled={!allFilled} style={{width:"100%",background:C.teal,border:"none",borderRadius:13,padding:14,color:"#F5F0E8",fontWeight:800,fontSize:17,cursor:"pointer",marginBottom:12,opacity:allFilled?1:0.5}}>
+            {authError&&<div style={{color:C.accent,fontSize:19,marginBottom:10,fontWeight:600,textAlign:"center"}}>{authError}</div>}
+            <button onClick={verifyOTP} disabled={!allFilled} style={{width:"100%",background:C.teal,border:"none",borderRadius:13,padding:14,color:"#F5F0E8",fontWeight:800,fontSize:30,cursor:"pointer",marginBottom:12,opacity:allFilled?1:0.5}}>
               Verify and Continue
             </button>
             <div style={{display:"flex",justifyContent:"space-between"}}>
-              <button onClick={()=>{setAuthStep("phone");setAuthOtpInput(["","","","","",""]);setAuthError("");}} style={{background:"none",border:"none",color:C.muted,fontSize:17,cursor:"pointer"}}>Change number</button>
-              <button onClick={sendOTP} style={{background:"none",border:"none",color:C.sub,fontSize:17,cursor:"pointer"}}>Resend code</button>
+              <button onClick={()=>{setAuthStep("phone");setAuthOtpInput(["","","","","",""]);setAuthError("");}} style={{background:"none",border:"none",color:C.muted,fontSize:30,cursor:"pointer"}}>Change number</button>
+              <button onClick={sendOTP} style={{background:"none",border:"none",color:C.sub,fontSize:30,cursor:"pointer"}}>Resend code</button>
             </div>
           </div>
         </div>
@@ -1299,8 +1299,8 @@ function App(){
           <div style={{width:"100%",maxWidth:420,padding:"28px 22px"}}>
             {brandHeader}
             <div style={{marginBottom:20}}>
-              <div style={{fontSize:20,fontWeight:800,marginBottom:5}}>Set up your profile</div>
-              <div style={{color:C.sub,fontSize:17}}>This is how friends will see you in streak snaps.</div>
+              <div style={{fontSize:30,fontWeight:800,marginBottom:5}}>Set up your profile</div>
+              <div style={{color:C.sub,fontSize:24}}>This is how friends will see you in streak snaps.</div>
             </div>
             <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginBottom:20}}>
               {!profileCam ? (
@@ -1308,18 +1308,18 @@ function App(){
                   <div onClick={startProfileCam} style={{width:100,height:100,borderRadius:"50%",background:"linear-gradient(135deg,"+C.accent+"44,"+C.purple+"44)",border:"3px solid "+(authPhoto?C.teal:C.border),display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",cursor:"pointer"}}>
                     {authPhoto?<img src={authPhoto} alt="Profile" style={{width:"100%",height:"100%",objectFit:"cover"}}/>:<span style={{fontSize:36}}>🧑</span>}
                   </div>
-                  <button onClick={startProfileCam} style={{position:"absolute",bottom:2,right:2,width:30,height:30,borderRadius:"50%",background:C.accent,border:"2px solid "+C.bg,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,cursor:"pointer",color:"#fff"}}>📸</button>
+                  <button onClick={startProfileCam} style={{position:"absolute",bottom:2,right:2,width:30,height:30,borderRadius:"50%",background:C.accent,border:"2px solid "+C.bg,display:"flex",alignItems:"center",justifyContent:"center",fontSize:19,cursor:"pointer",color:"#fff"}}>📸</button>
                 </div>
               ) : (
                 <div style={{width:"100%",marginBottom:12}}>
                   <div style={{position:"relative",width:"100%",paddingBottom:"100%",borderRadius:16,overflow:"hidden",background:"#000",border:"2px solid "+C.purple+"55"}}>
                     <video ref={profileVideoRef} autoPlay playsInline muted style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",transform:"scaleX(-1)"}}/>
                   </div>
-                  <button onClick={captureProfilePhoto} style={{width:"100%",marginTop:10,background:"linear-gradient(135deg,"+C.accent+","+C.purple+")",border:"none",borderRadius:12,padding:13,color:"#fff",fontWeight:800,fontSize:17,cursor:"pointer"}}>Take Photo</button>
-                  <button onClick={()=>{profileStreamRef.current&&profileStreamRef.current.getTracks().forEach(t=>t.stop());setProfileCam(false);}} style={{width:"100%",marginTop:8,background:"none",border:"none",color:C.muted,fontSize:17,cursor:"pointer"}}>Skip for now</button>
+                  <button onClick={captureProfilePhoto} style={{width:"100%",marginTop:10,background:"linear-gradient(135deg,"+C.accent+","+C.purple+")",border:"none",borderRadius:12,padding:13,color:"#fff",fontWeight:800,fontSize:30,cursor:"pointer"}}>Take Photo</button>
+                  <button onClick={()=>{profileStreamRef.current&&profileStreamRef.current.getTracks().forEach(t=>t.stop());setProfileCam(false);}} style={{width:"100%",marginTop:8,background:"none",border:"none",color:C.muted,fontSize:30,cursor:"pointer"}}>Skip for now</button>
                 </div>
               )}
-              {!profileCam&&<div style={{fontSize:16,color:C.muted}}>{authPhoto?"Tap photo to retake":"Tap to add a profile photo"}</div>}
+              {!profileCam&&<div style={{fontSize:19,color:C.muted}}>{authPhoto?"Tap photo to retake":"Tap to add a profile photo"}</div>}
             </div>
             {!profileCam&&(
               <>
@@ -1330,8 +1330,8 @@ function App(){
                     onKeyDown={e=>e.key==="Enter"&&saveAuthProfile()}
                     style={field} autoFocus/>
                 </div>
-                {authError&&<div style={{color:C.accent,fontSize:16,marginBottom:10,fontWeight:600}}>{authError}</div>}
-                <button onClick={saveAuthProfile} disabled={authLoading||!authName.trim()} style={{width:"100%",background:"linear-gradient(135deg,"+C.accent+","+C.teal+")",border:"none",borderRadius:13,padding:14,color:"#fff",fontWeight:800,fontSize:17,cursor:"pointer",marginBottom:10,opacity:!authName.trim()?0.5:1}}>
+                {authError&&<div style={{color:C.accent,fontSize:19,marginBottom:10,fontWeight:600}}>{authError}</div>}
+                <button onClick={saveAuthProfile} disabled={authLoading||!authName.trim()} style={{width:"100%",background:"linear-gradient(135deg,"+C.accent+","+C.teal+")",border:"none",borderRadius:13,padding:14,color:"#fff",fontWeight:800,fontSize:30,cursor:"pointer",marginBottom:10,opacity:!authName.trim()?0.5:1}}>
                   {authLoading?"Setting up...":"Lets go! 🚭"}
                 </button>
               </>
@@ -1352,46 +1352,46 @@ function App(){
           <div style={{width:"100%",maxWidth:420,padding:"24px 20px"}}>
             <div style={{textAlign:"center",marginBottom:32}}>
               <div style={{fontSize:48,marginBottom:10}}>🚭</div>
-              <div style={{fontSize:22,fontWeight:900,background:"linear-gradient(135deg,"+C.accent+","+C.teal+")",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>One last step</div>
-              <div style={{color:C.sub,fontSize:17,marginTop:6,lineHeight:1.6}}>Allow these permissions so Unsmoke can work properly. We never share your data.</div>
+              <div style={{fontSize:34,fontWeight:900,background:"linear-gradient(135deg,"+C.accent+","+C.teal+")",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>One last step</div>
+              <div style={{color:C.sub,fontSize:30,marginTop:6,lineHeight:1.6}}>Allow these permissions so Unsmoke can work properly. We never share your data.</div>
             </div>
             <div style={pBg}>
               <div style={{display:"flex",alignItems:"flex-start",gap:14}}>
-                <div style={{width:52,height:52,borderRadius:14,background:camPerm==="granted"?C.tealFade:camPerm==="denied"?C.accentFade:C.purpleFade,border:"1px solid "+(camPerm==="granted"?C.teal:camPerm==="denied"?C.accent:C.purple)+"44",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>
+                <div style={{width:52,height:52,borderRadius:14,background:camPerm==="granted"?C.tealFade:camPerm==="denied"?C.accentFade:C.purpleFade,border:"1px solid "+(camPerm==="granted"?C.teal:camPerm==="denied"?C.accent:C.purple)+"44",display:"flex",alignItems:"center",justifyContent:"center",fontSize:30,flexShrink:0}}>
                   {camPerm==="granted"?"✅":camPerm==="denied"?"📵":"📸"}
                 </div>
                 <div style={{flex:1}}>
-                  <div style={{fontWeight:800,fontSize:17,marginBottom:3}}>Camera</div>
-                  <div style={{color:C.sub,fontSize:16,lineHeight:1.6,marginBottom:12}}>
+                  <div style={{fontWeight:800,fontSize:30,marginBottom:3}}>Camera</div>
+                  <div style={{color:C.sub,fontSize:19,lineHeight:1.6,marginBottom:12}}>
                     {camPerm==="granted"?"Camera access granted. You can take selfies with your streak snaps.":camPerm==="denied"?"Camera blocked. You can still use the app, but cannot take snap photos.":"Take selfies to include with your streak snaps. Your photos never leave your device."}
                   </div>
-                  {camPerm===null&&<button onClick={askCamera} disabled={permLoading==="cam"} style={{background:"linear-gradient(135deg,"+C.purple+","+C.accent+")",border:"none",borderRadius:10,padding:"10px 20px",color:"#fff",fontWeight:700,fontSize:17,cursor:"pointer",opacity:permLoading==="cam"?0.6:1}}>{permLoading==="cam"?"Asking...":"Allow Camera"}</button>}
-                  {camPerm==="granted"&&<div style={{fontSize:16,color:C.teal,fontWeight:700}}>Allowed</div>}
-                  {camPerm==="denied"&&<button onClick={askCamera} style={{background:"none",border:"1px solid "+C.muted,borderRadius:10,padding:"8px 16px",color:C.muted,fontWeight:600,fontSize:16,cursor:"pointer"}}>Try again</button>}
+                  {camPerm===null&&<button onClick={askCamera} disabled={permLoading==="cam"} style={{background:"linear-gradient(135deg,"+C.purple+","+C.accent+")",border:"none",borderRadius:10,padding:"10px 20px",color:"#fff",fontWeight:700,fontSize:30,cursor:"pointer",opacity:permLoading==="cam"?0.6:1}}>{permLoading==="cam"?"Asking...":"Allow Camera"}</button>}
+                  {camPerm==="granted"&&<div style={{fontSize:19,color:C.teal,fontWeight:700}}>Allowed</div>}
+                  {camPerm==="denied"&&<button onClick={askCamera} style={{background:"none",border:"1px solid "+C.muted,borderRadius:10,padding:"8px 16px",color:C.muted,fontWeight:600,fontSize:19,cursor:"pointer"}}>Try again</button>}
                 </div>
               </div>
             </div>
             <div style={pBg}>
               <div style={{display:"flex",alignItems:"flex-start",gap:14}}>
-                <div style={{width:52,height:52,borderRadius:14,background:locPerm==="granted"?C.tealFade:locPerm==="denied"?C.accentFade:C.tealFade,border:"1px solid "+(locPerm==="granted"?C.teal:locPerm==="denied"?C.accent:C.teal)+"44",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>
+                <div style={{width:52,height:52,borderRadius:14,background:locPerm==="granted"?C.tealFade:locPerm==="denied"?C.accentFade:C.tealFade,border:"1px solid "+(locPerm==="granted"?C.teal:locPerm==="denied"?C.accent:C.teal)+"44",display:"flex",alignItems:"center",justifyContent:"center",fontSize:30,flexShrink:0}}>
                   {locPerm==="granted"?"✅":locPerm==="denied"?"📍":"🗺️"}
                 </div>
                 <div style={{flex:1}}>
-                  <div style={{fontWeight:800,fontSize:17,marginBottom:3}}>Location</div>
-                  <div style={{color:C.sub,fontSize:16,lineHeight:1.6,marginBottom:12}}>
+                  <div style={{fontWeight:800,fontSize:30,marginBottom:3}}>Location</div>
+                  <div style={{color:C.sub,fontSize:19,lineHeight:1.6,marginBottom:12}}>
                     {locPerm==="granted"?"Location access granted. We will find support groups and resources near you.":locPerm==="denied"?"Location blocked. Support group finder will not work, but everything else will.":"Find Saksham quit support groups near you and local NRT stores. Optional."}
                   </div>
-                  {locPerm===null&&<button onClick={askLocation} disabled={permLoading==="loc"} style={{background:"linear-gradient(135deg,"+C.teal+","+C.purple+")",border:"none",borderRadius:10,padding:"10px 20px",color:"#fff",fontWeight:700,fontSize:17,cursor:"pointer",opacity:permLoading==="loc"?0.6:1}}>{permLoading==="loc"?"Asking...":"Allow Location"}</button>}
-                  {locPerm==="granted"&&<div style={{fontSize:16,color:C.teal,fontWeight:700}}>Allowed</div>}
-                  {locPerm==="denied"&&<button onClick={askLocation} style={{background:"none",border:"1px solid "+C.muted,borderRadius:10,padding:"8px 16px",color:C.muted,fontWeight:600,fontSize:16,cursor:"pointer"}}>Try again</button>}
+                  {locPerm===null&&<button onClick={askLocation} disabled={permLoading==="loc"} style={{background:"linear-gradient(135deg,"+C.teal+","+C.purple+")",border:"none",borderRadius:10,padding:"10px 20px",color:"#fff",fontWeight:700,fontSize:30,cursor:"pointer",opacity:permLoading==="loc"?0.6:1}}>{permLoading==="loc"?"Asking...":"Allow Location"}</button>}
+                  {locPerm==="granted"&&<div style={{fontSize:19,color:C.teal,fontWeight:700}}>Allowed</div>}
+                  {locPerm==="denied"&&<button onClick={askLocation} style={{background:"none",border:"1px solid "+C.muted,borderRadius:10,padding:"8px 16px",color:C.muted,fontWeight:600,fontSize:19,cursor:"pointer"}}>Try again</button>}
                 </div>
               </div>
             </div>
             <div style={{background:C.tealFade,border:"1px solid "+C.teal+"22",borderRadius:12,padding:"12px 14px",marginBottom:20,display:"flex",gap:10,alignItems:"flex-start"}}>
-              <span style={{fontSize:16,flexShrink:0}}>🔒</span>
-              <div style={{fontSize:17,color:C.sub,lineHeight:1.6}}>Your data stays on your device. We do not store photos, location, or any personal information on our servers.</div>
+              <span style={{fontSize:19,flexShrink:0}}>🔒</span>
+              <div style={{fontSize:30,color:C.sub,lineHeight:1.6}}>Your data stays on your device. We do not store photos, location, or any personal information on our servers.</div>
             </div>
-            <button onClick={()=>setStep(4)} style={{width:"100%",background:C.accent,border:"none",borderRadius:13,padding:15,color:"#fff",fontWeight:800,fontSize:16,cursor:"pointer",marginBottom:10}}>
+            <button onClick={()=>setStep(4)} style={{width:"100%",background:C.accent,border:"none",borderRadius:13,padding:15,color:"#fff",fontWeight:800,fontSize:19,cursor:"pointer",marginBottom:10}}>
               {allAsked?"Lets go! 🚭":"Continue anyway"}
             </button>
           </div>
@@ -1404,13 +1404,13 @@ function App(){
         <div style={{maxWidth:420,margin:"0 auto",width:"100%",padding:28}}>
           <div style={{textAlign:"center",marginBottom:36}}>
             <div style={{fontSize:40,marginBottom:8}}>🚭</div>
-            <div style={{fontSize:24,fontWeight:900,background:"linear-gradient(135deg,"+C.accent+","+C.teal+")",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>Unsmoke</div>
-            <div style={{color:C.sub,fontSize:16,marginTop:2}}>with Saksham</div>
+            <div style={{fontSize:30,fontWeight:900,background:"linear-gradient(135deg,"+C.accent+","+C.teal+")",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>Unsmoke</div>
+            <div style={{color:C.sub,fontSize:19,marginTop:2}}>with Saksham</div>
           </div>
           {step===1&&(
             <>
-              <div style={{fontSize:20,fontWeight:800,marginBottom:5}}>When did you quit?</div>
-              <div style={{color:C.sub,fontSize:17,marginBottom:22,lineHeight:1.6}}>Set your quit date and we will track every second of your progress.</div>
+              <div style={{fontSize:30,fontWeight:800,marginBottom:5}}>When did you quit?</div>
+              <div style={{color:C.sub,fontSize:30,marginBottom:22,lineHeight:1.6}}>Set your quit date and we will track every second of your progress.</div>
               <div style={{marginBottom:14}}><label style={lblStyle}>Quit date</label><input type="date" style={inputStyle} value={sDate} onChange={e=>setSDate(e.target.value)}/></div>
               <div style={{marginBottom:22}}><label style={lblStyle}>Quit time</label><input type="time" style={inputStyle} value={sTime} onChange={e=>setSTime(e.target.value)}/></div>
               <Btn onClick={()=>setStep(2)} disabled={!sDate}>Next</Btn>
@@ -1419,8 +1419,8 @@ function App(){
           )}
           {step===2&&(
             <>
-              <div style={{fontSize:20,fontWeight:800,marginBottom:5}}>Your smoking habit</div>
-              <div style={{color:C.sub,fontSize:17,marginBottom:22,lineHeight:1.6}}>We will calculate exactly what you are saving.</div>
+              <div style={{fontSize:30,fontWeight:800,marginBottom:5}}>Your smoking habit</div>
+              <div style={{color:C.sub,fontSize:30,marginBottom:22,lineHeight:1.6}}>We will calculate exactly what you are saving.</div>
               <div style={{marginBottom:14}}><label style={lblStyle}>Cigarettes per day</label><input type="number" style={inputStyle} value={cpd} onChange={e=>setCpd(e.target.value)} min="1" max="100"/></div>
               <div style={{marginBottom:14}}><label style={lblStyle}>Price per pack (Rs)</label><input type="number" style={inputStyle} value={pp} onChange={e=>setPP(e.target.value)} min="10"/></div>
               <div style={{marginBottom:22}}><label style={lblStyle}>Cigarettes per pack</label><input type="number" style={inputStyle} value={cpp} onChange={e=>setCpp(e.target.value)} min="5" max="40"/></div>
@@ -1446,26 +1446,26 @@ function App(){
       {premiumScreen==="nrt"&&(
         <div style={{position:"absolute",inset:0,zIndex:999,background:"#F5F0E8",display:"flex",flexDirection:"column",overflow:"hidden"}}>
           <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #E8DDD0",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
-            <div><div style={{fontWeight:800,fontSize:17,color:"#1A1208"}}>NRT Step-Down Plan</div><div style={{fontSize:17,color:"#786858"}}>Saksham own protocol</div></div>
-            <button onClick={()=>setPremiumScreen(null)} style={{background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:20,padding:"6px 14px",color:"#786858",fontSize:16,fontWeight:700,cursor:"pointer"}}>Close</button>
+            <div><div style={{fontWeight:800,fontSize:30,color:"#1A1208"}}>NRT Step-Down Plan</div><div style={{fontSize:30,color:"#786858"}}>Saksham own protocol</div></div>
+            <button onClick={()=>setPremiumScreen(null)} style={{background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:20,padding:"6px 14px",color:"#786858",fontSize:19,fontWeight:700,cursor:"pointer"}}>Close</button>
           </div>
           <div style={{flex:1,overflowY:"auto",padding:"20px 16px"}}>
             <div style={{background:"rgba(255,184,0,0.1)",border:"1px solid #FFB80033",borderRadius:14,padding:"16px",marginBottom:16}}>
-              <div style={{fontSize:16,fontWeight:700,color:"#FFB800",marginBottom:12}}>Your smoking details</div>
-              <label style={{color:"#786858",fontSize:17,fontWeight:700,letterSpacing:"0.09em",textTransform:"uppercase",marginBottom:5,display:"block"}}>Cigarettes per day</label>
-              <input type="number" value={nrtCigsLocal} onChange={e=>setNrtCigsLocal(e.target.value)} min="1" max="80" style={{background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:9,padding:"12px 13px",color:"#1A1208",fontSize:16,width:"100%",boxSizing:"border-box",outline:"none"}}/>
+              <div style={{fontSize:19,fontWeight:700,color:"#FFB800",marginBottom:12}}>Your smoking details</div>
+              <label style={{color:"#786858",fontSize:30,fontWeight:700,letterSpacing:"0.09em",textTransform:"uppercase",marginBottom:5,display:"block"}}>Cigarettes per day</label>
+              <input type="number" value={nrtCigsLocal} onChange={e=>setNrtCigsLocal(e.target.value)} min="1" max="80" style={{background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:9,padding:"12px 13px",color:"#1A1208",fontSize:19,width:"100%",boxSizing:"border-box",outline:"none"}}/>
             </div>
-            <div style={{fontSize:17,color:"#786858",textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:12}}>Your personalized plan</div>
+            <div style={{fontSize:30,color:"#786858",textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:12}}>Your personalized plan</div>
             {nrtPlan.map((step,i)=>(
               <div key={i} style={{background:"#FFFFFF",border:"1px solid #E8DDD0",borderRadius:14,padding:"16px 14px",marginBottom:10,borderLeft:"3px solid "+(i===0?"#FF6534":i===1?"#FFB800":"#00D9AA")}}>
-                <div style={{fontSize:17,color:"#C8B8A8",marginBottom:4}}>{step.week}</div>
-                <div style={{fontWeight:800,fontSize:17,color:i===0?"#FF6534":i===1?"#FFB800":"#00D9AA",marginBottom:6}}>{step.patch}</div>
-                <div style={{fontSize:17,color:"#786858",lineHeight:1.6}}>{step.desc}</div>
+                <div style={{fontSize:30,color:"#C8B8A8",marginBottom:4}}>{step.week}</div>
+                <div style={{fontWeight:800,fontSize:30,color:i===0?"#FF6534":i===1?"#FFB800":"#00D9AA",marginBottom:6}}>{step.patch}</div>
+                <div style={{fontSize:30,color:"#786858",lineHeight:1.6}}>{step.desc}</div>
               </div>
             ))}
             <div style={{background:"rgba(139,92,246,0.1)",border:"1px solid #8B5CF633",borderRadius:14,padding:"16px",marginTop:4}}>
-              <div style={{fontSize:16,fontWeight:700,color:"#8B5CF6",marginBottom:6}}>Saksham note</div>
-              <div style={{fontSize:17,color:"#786858",lineHeight:1.7}}>The patch does the physical work. Your real job is breaking the habit loops. Saksham went cold turkey from Day 8 - but this is optional. If you feel strong, skip the patch and go cold turkey from Day 1.</div>
+              <div style={{fontSize:19,fontWeight:700,color:"#8B5CF6",marginBottom:6}}>Saksham note</div>
+              <div style={{fontSize:30,color:"#786858",lineHeight:1.7}}>The patch does the physical work. Your real job is breaking the habit loops. Saksham went cold turkey from Day 8 - but this is optional. If you feel strong, skip the patch and go cold turkey from Day 1.</div>
             </div>
           </div>
         </div>
@@ -1475,33 +1475,33 @@ function App(){
       {showFounderStory&&(
         <div style={{position:"fixed",inset:0,zIndex:997,background:"#F5F0E8",display:"flex",flexDirection:"column",overflow:"hidden"}}>
           <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #E8DDD0",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
-            <div><div style={{fontWeight:800,fontSize:17,color:"#1A1208"}}>Saksham Story</div><div style={{fontSize:17,color:"#786858"}}>@ssakshamchauhan</div></div>
-            <button onClick={()=>setShowFounderStory(false)} style={{background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:20,padding:"6px 14px",color:"#786858",fontSize:16,fontWeight:700,cursor:"pointer"}}>Close</button>
+            <div><div style={{fontWeight:800,fontSize:30,color:"#1A1208"}}>Saksham Story</div><div style={{fontSize:30,color:"#786858"}}>@ssakshamchauhan</div></div>
+            <button onClick={()=>setShowFounderStory(false)} style={{background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:20,padding:"6px 14px",color:"#786858",fontSize:19,fontWeight:700,cursor:"pointer"}}>Close</button>
           </div>
           <div style={{flex:1,overflowY:"auto",padding:"20px 16px"}}>
             <div style={{background:"linear-gradient(135deg,rgba(255,101,52,0.08),rgba(0,217,170,0.08))",border:"1px solid rgba(0,217,170,0.2)",borderRadius:16,padding:"20px 16px",marginBottom:20}}>
               <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:14}}>
-                <div style={{width:48,height:48,borderRadius:"50%",background:"linear-gradient(135deg,#FF6534,#00D9AA)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>🧑</div>
-                <div><div style={{fontWeight:800,fontSize:17,color:"#1A1208"}}>Saksham Singh Chauhan</div><div style={{color:"#786858",fontSize:16,marginTop:2}}>Founder - Delhi</div></div>
+                <div style={{width:48,height:48,borderRadius:"50%",background:"linear-gradient(135deg,#FF6534,#00D9AA)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:30,flexShrink:0}}>🧑</div>
+                <div><div style={{fontWeight:800,fontSize:30,color:"#1A1208"}}>Saksham Singh Chauhan</div><div style={{color:"#786858",fontSize:19,marginTop:2}}>Founder - Delhi</div></div>
               </div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
                 {[{v:String(founderDays),l:"days quit"},{v:"40",l:"cigs/day before"},{v:"12 yrs",l:"he smoked"}].map(({v,l})=>(
                   <div key={l} style={{textAlign:"center",background:"#FFFFFF",borderRadius:10,padding:"10px 6px"}}>
-                    <div style={{fontSize:16,fontWeight:900,color:"#00D9AA"}}>{v}</div>
-                    <div style={{fontSize:16,color:"#786858",marginTop:2}}>{l}</div>
+                    <div style={{fontSize:19,fontWeight:900,color:"#00D9AA"}}>{v}</div>
+                    <div style={{fontSize:19,color:"#786858",marginTop:2}}>{l}</div>
                   </div>
                 ))}
               </div>
               <div style={{marginTop:12,padding:"10px 12px",background:"rgba(255,184,0,0.08)",borderRadius:10,borderLeft:"3px solid #FFB800"}}>
-                <div style={{fontSize:16,color:"#FFB800",fontWeight:700}}>Oct 31, 2024 - Last cigarette</div>
-                <div style={{fontSize:17,color:"#786858",marginTop:2}}>219K views - 4,381 likes - 1,807 shares</div>
+                <div style={{fontSize:19,color:"#FFB800",fontWeight:700}}>Oct 31, 2024 - Last cigarette</div>
+                <div style={{fontSize:30,color:"#786858",marginTop:2}}>219K views - 4,381 likes - 1,807 shares</div>
               </div>
             </div>
             {FOUNDER_STORY.map((ch,i)=>(
               <div key={i} style={{background:"#FFFFFF",border:"1px solid #E8DDD0",borderRadius:14,padding:"16px 14px",marginBottom:14,borderColor:ch.color+"33"}}>
-                <div style={{fontSize:16,fontWeight:800,letterSpacing:"0.1em",color:ch.color,textTransform:"uppercase",marginBottom:8}}>{ch.label}</div>
-                <div style={{fontSize:16,fontWeight:800,color:"#1A1208",marginBottom:10,lineHeight:1.4}}>{ch.heading}</div>
-                <div style={{fontSize:17,color:"#786858",lineHeight:1.75,whiteSpace:"pre-line"}}>{ch.body}</div>
+                <div style={{fontSize:19,fontWeight:800,letterSpacing:"0.1em",color:ch.color,textTransform:"uppercase",marginBottom:8}}>{ch.label}</div>
+                <div style={{fontSize:19,fontWeight:800,color:"#1A1208",marginBottom:10,lineHeight:1.4}}>{ch.heading}</div>
+                <div style={{fontSize:30,color:"#786858",lineHeight:1.75,whiteSpace:"pre-line"}}>{ch.body}</div>
               </div>
             ))}
           </div>
@@ -1515,25 +1515,25 @@ function App(){
             <div style={{width:40,height:4,background:C.muted,borderRadius:2,margin:"0 auto 20px"}}/>
             <div style={{textAlign:"center",marginBottom:16}}>
               <div style={{fontSize:32,marginBottom:8}}>📲</div>
-              <div style={{fontSize:17,fontWeight:900,color:C.text,marginBottom:8}}>Add to Your Home Screen</div>
-              <div style={{fontSize:17,color:C.sub,lineHeight:1.7}}>For the best experience, install Unsmoke as an app on your phone. It works exactly like a real app.</div>
+              <div style={{fontSize:30,fontWeight:900,color:C.text,marginBottom:8}}>Add to Your Home Screen</div>
+              <div style={{fontSize:30,color:C.sub,lineHeight:1.7}}>For the best experience, install Unsmoke as an app on your phone. It works exactly like a real app.</div>
             </div>
             <div style={{background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:14,padding:"14px 16px",marginBottom:16}}>
               <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
-                <div style={{width:28,height:28,background:C.goldFade,border:"1px solid "+C.gold+"44",borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>1</div>
-                <div style={{fontSize:17,color:C.text}}>Tap the <strong>Share button</strong> at the bottom of Safari</div>
+                <div style={{width:28,height:28,background:C.goldFade,border:"1px solid "+C.gold+"44",borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontSize:19,flexShrink:0}}>1</div>
+                <div style={{fontSize:30,color:C.text}}>Tap the <strong>Share button</strong> at the bottom of Safari</div>
               </div>
               <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
-                <div style={{width:28,height:28,background:C.goldFade,border:"1px solid "+C.gold+"44",borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>2</div>
-                <div style={{fontSize:17,color:C.text}}>Scroll down and tap <strong>Add to Home Screen</strong></div>
+                <div style={{width:28,height:28,background:C.goldFade,border:"1px solid "+C.gold+"44",borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontSize:19,flexShrink:0}}>2</div>
+                <div style={{fontSize:30,color:C.text}}>Scroll down and tap <strong>Add to Home Screen</strong></div>
               </div>
               <div style={{display:"flex",alignItems:"center",gap:10}}>
-                <div style={{width:28,height:28,background:C.goldFade,border:"1px solid "+C.gold+"44",borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>3</div>
-                <div style={{fontSize:17,color:C.text}}>Tap <strong>Add</strong> — done. Unsmoke is now on your home screen.</div>
+                <div style={{width:28,height:28,background:C.goldFade,border:"1px solid "+C.gold+"44",borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontSize:19,flexShrink:0}}>3</div>
+                <div style={{fontSize:30,color:C.text}}>Tap <strong>Add</strong> — done. Unsmoke is now on your home screen.</div>
               </div>
             </div>
-            <button onClick={()=>{setShowHomePrompt(false);localStorage.setItem('prompted','1');}} style={{width:"100%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:14,padding:14,color:"#fff",fontWeight:800,fontSize:17,cursor:"pointer",marginBottom:8}}>Got it!</button>
-            <button onClick={()=>setShowHomePrompt(false)} style={{width:"100%",background:"none",border:"none",color:C.muted,fontSize:17,cursor:"pointer"}}>Continue in browser</button>
+            <button onClick={()=>{setShowHomePrompt(false);localStorage.setItem('prompted','1');}} style={{width:"100%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:14,padding:14,color:"#fff",fontWeight:800,fontSize:30,cursor:"pointer",marginBottom:8}}>Got it!</button>
+            <button onClick={()=>setShowHomePrompt(false)} style={{width:"100%",background:"none",border:"none",color:C.muted,fontSize:30,cursor:"pointer"}}>Continue in browser</button>
           </div>
         </div>
       )}
@@ -1544,32 +1544,32 @@ function App(){
         <div style={{position:"fixed",inset:0,zIndex:997,background:C.bg,display:"flex",flexDirection:"column",overflow:"hidden"}}>
           <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid "+C.border,display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0,background:C.surfaceHi}}>
             <div>
-              <div style={{fontSize:16,color:C.emerald,fontWeight:800,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:3}}>Day {(prepOpen||0)+1} of 7</div>
-              <div style={{fontWeight:900,fontSize:16,color:C.text}}>{PREP_DAYS[prepOpen||0].title}</div>
+              <div style={{fontSize:19,color:C.emerald,fontWeight:800,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:3}}>Day {(prepOpen||0)+1} of 7</div>
+              <div style={{fontWeight:900,fontSize:19,color:C.text}}>{PREP_DAYS[prepOpen||0].title}</div>
             </div>
-            <button onClick={()=>setPrepOpen(null)} style={{background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:20,padding:"6px 14px",color:C.sub,fontSize:16,fontWeight:600,cursor:"pointer"}}>Close</button>
+            <button onClick={()=>setPrepOpen(null)} style={{background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:20,padding:"6px 14px",color:C.sub,fontSize:19,fontWeight:600,cursor:"pointer"}}>Close</button>
           </div>
           <div style={{flex:1,overflowY:"auto",padding:"20px 18px"}}>
             <div style={{display:"flex",gap:8,marginBottom:16}}>
-              <div style={{background:C.emeraldFade,border:"1px solid "+C.emerald+"44",borderRadius:20,padding:"4px 12px",fontSize:17,color:C.emerald,fontWeight:700}}>{PREP_DAYS[prepOpen||0].duration}</div>
-              <div style={{background:C.goldFade,border:"1px solid "+C.gold+"44",borderRadius:20,padding:"4px 12px",fontSize:17,color:C.gold,fontWeight:700}}>{PREP_DAYS[prepOpen||0].type==="ceremony"?"Quit Day Ritual":"Reading"}</div>
+              <div style={{background:C.emeraldFade,border:"1px solid "+C.emerald+"44",borderRadius:20,padding:"4px 12px",fontSize:30,color:C.emerald,fontWeight:700}}>{PREP_DAYS[prepOpen||0].duration}</div>
+              <div style={{background:C.goldFade,border:"1px solid "+C.gold+"44",borderRadius:20,padding:"4px 12px",fontSize:30,color:C.gold,fontWeight:700}}>{PREP_DAYS[prepOpen||0].type==="ceremony"?"Quit Day Ritual":"Reading"}</div>
             </div>
-            <div style={{fontSize:16,color:C.text,lineHeight:1.85,marginBottom:20}}>{PREP_DAYS[prepOpen||0].content}</div>
+            <div style={{fontSize:19,color:C.text,lineHeight:1.85,marginBottom:20}}>{PREP_DAYS[prepOpen||0].content}</div>
             <div style={{background:C.goldFade,border:"1px solid "+C.gold+"33",borderRadius:14,padding:"16px",marginBottom:16}}>
-              <div style={{fontSize:17,color:C.gold,fontWeight:800,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:8}}>Today Exercise</div>
-              <div style={{fontSize:17,color:C.text,lineHeight:1.75}}>{PREP_DAYS[prepOpen||0].exercise}</div>
+              <div style={{fontSize:30,color:C.gold,fontWeight:800,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:8}}>Today Exercise</div>
+              <div style={{fontSize:30,color:C.text,lineHeight:1.75}}>{PREP_DAYS[prepOpen||0].exercise}</div>
             </div>
             <div style={{background:C.emeraldFade,border:"1px solid "+C.emerald+"33",borderRadius:14,padding:"14px",marginBottom:24,borderLeft:"3px solid "+C.emerald}}>
-              <div style={{fontSize:17,color:C.emerald,fontWeight:800,textTransform:"uppercase",marginBottom:6}}>Key Insight</div>
-              <div style={{fontSize:16,color:C.text,fontWeight:700,lineHeight:1.5}}>{PREP_DAYS[prepOpen||0].key}</div>
+              <div style={{fontSize:30,color:C.emerald,fontWeight:800,textTransform:"uppercase",marginBottom:6}}>Key Insight</div>
+              <div style={{fontSize:19,color:C.text,fontWeight:700,lineHeight:1.5}}>{PREP_DAYS[prepOpen||0].key}</div>
             </div>
             {!prepRead.includes(prepOpen||0)&&(
-              <button onClick={()=>{const u=[...prepRead,prepOpen||0];setPrepRead(u);localStorage.setItem("prep_read",JSON.stringify(u));if((prepOpen||0)<6)setPrepOpen((prepOpen||0)+1);else setPrepOpen(null);}} style={{width:"100%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:14,padding:14,color:"#fff",fontWeight:800,fontSize:17,cursor:"pointer",boxShadow:"0 4px 16px rgba(160,114,10,0.25)"}}>
+              <button onClick={()=>{const u=[...prepRead,prepOpen||0];setPrepRead(u);localStorage.setItem("prep_read",JSON.stringify(u));if((prepOpen||0)<6)setPrepOpen((prepOpen||0)+1);else setPrepOpen(null);}} style={{width:"100%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:14,padding:14,color:"#fff",fontWeight:800,fontSize:30,cursor:"pointer",boxShadow:"0 4px 16px rgba(160,114,10,0.25)"}}>
                 {(prepOpen||0)<6?"Mark complete and continue":"Complete the program"}
               </button>
             )}
             {prepRead.includes(prepOpen||0)&&(
-              <div style={{textAlign:"center",padding:"12px",color:C.emerald,fontWeight:700,fontSize:16}}>Day {(prepOpen||0)+1} completed ✓</div>
+              <div style={{textAlign:"center",padding:"12px",color:C.emerald,fontWeight:700,fontSize:19}}>Day {(prepOpen||0)+1} completed ✓</div>
             )}
           </div>
         </div>
@@ -1579,12 +1579,12 @@ function App(){
       {showJournal&&(
         <div style={{position:"fixed",inset:0,zIndex:997,background:C.bg,display:"flex",flexDirection:"column",overflow:"hidden"}}>
           <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid "+C.border,display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0,background:C.surfaceHi}}>
-            <div><div style={{fontWeight:900,fontSize:16,color:C.text}}>Quit Journal</div><div style={{fontSize:17,color:C.sub,marginTop:2}}>Your private space</div></div>
-            <button onClick={()=>setShowJournal(false)} style={{background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:20,padding:"6px 14px",color:C.sub,fontSize:16,fontWeight:600,cursor:"pointer"}}>Close</button>
+            <div><div style={{fontWeight:900,fontSize:19,color:C.text}}>Quit Journal</div><div style={{fontSize:30,color:C.sub,marginTop:2}}>Your private space</div></div>
+            <button onClick={()=>setShowJournal(false)} style={{background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:20,padding:"6px 14px",color:C.sub,fontSize:19,fontWeight:600,cursor:"pointer"}}>Close</button>
           </div>
           <div style={{flex:1,overflowY:"auto",padding:"16px 18px"}}>
             <div style={{marginBottom:16}}>
-              <textarea value={journalText} onChange={e=>setJournalText(e.target.value)} placeholder={"How are you feeling today? What was hard? What surprised you? This is private."+String.fromCharCode(10)+String.fromCharCode(10)+"Write anything."} style={{width:"100%",minHeight:140,background:C.surface,border:"1px solid "+C.border,borderRadius:14,padding:"14px",color:C.text,fontSize:16,outline:"none",resize:"vertical",lineHeight:1.7,boxSizing:"border-box"}}/>
+              <textarea value={journalText} onChange={e=>setJournalText(e.target.value)} placeholder={"How are you feeling today? What was hard? What surprised you? This is private."+String.fromCharCode(10)+String.fromCharCode(10)+"Write anything."} style={{width:"100%",minHeight:140,background:C.surface,border:"1px solid "+C.border,borderRadius:14,padding:"14px",color:C.text,fontSize:19,outline:"none",resize:"vertical",lineHeight:1.7,boxSizing:"border-box"}}/>
               <button onClick={async()=>{
                 if(!journalText.trim())return;
                 const entry={id:Date.now(),text:sanitize(journalText.trim()),ts:Date.now(),day:d};
@@ -1592,13 +1592,13 @@ function App(){
                 setJournalEntries(updated);setJournalText("");
                 const phone=authUser?authUser.phone:authPhone;
                 if(phone)await FB.merge("users/"+phone,{journalFull:updated});
-              }} style={{width:"100%",marginTop:10,background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:12,padding:13,color:"#fff",fontWeight:700,fontSize:16,cursor:"pointer"}}>Save Entry</button>
+              }} style={{width:"100%",marginTop:10,background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:12,padding:13,color:"#fff",fontWeight:700,fontSize:19,cursor:"pointer"}}>Save Entry</button>
             </div>
-            {journalEntries.length===0&&<div style={{textAlign:"center",padding:"32px 20px",color:C.muted,fontSize:17}}>No entries yet. Start writing.</div>}
+            {journalEntries.length===0&&<div style={{textAlign:"center",padding:"32px 20px",color:C.muted,fontSize:24}}>No entries yet. Start writing.</div>}
             {journalEntries.map(e=>(
               <div key={e.id} style={{background:C.surface,border:"1px solid "+C.border,borderRadius:14,padding:"14px 16px",marginBottom:10}}>
-                <div style={{fontSize:17,color:C.sub,marginBottom:8}}>{new Date(e.ts).toLocaleDateString("en-IN",{weekday:"short",day:"numeric",month:"short"})} · Day {e.day} smoke-free</div>
-                <div style={{fontSize:17,color:C.text,lineHeight:1.7,whiteSpace:"pre-line"}}>{e.text}</div>
+                <div style={{fontSize:30,color:C.sub,marginBottom:8}}>{new Date(e.ts).toLocaleDateString("en-IN",{weekday:"short",day:"numeric",month:"short"})} · Day {e.day} smoke-free</div>
+                <div style={{fontSize:30,color:C.text,lineHeight:1.7,whiteSpace:"pre-line"}}>{e.text}</div>
               </div>
             ))}
           </div>
@@ -1610,32 +1610,32 @@ function App(){
       {peerChat&&(
         <div style={{position:"fixed",inset:0,zIndex:1001,background:C.bg,display:"flex",flexDirection:"column"}}>
           <div style={{paddingTop:"max(48px,env(safe-area-inset-top,48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid "+C.border,display:"flex",alignItems:"center",gap:12,flexShrink:0,background:C.surfaceHi}}>
-            <button onClick={()=>setPeerChat(null)} style={{background:"none",border:"none",color:C.gold,fontSize:22,cursor:"pointer",padding:"0 8px 0 0"}}>←</button>
-            <div style={{width:38,height:38,borderRadius:"50%",background:"linear-gradient(135deg,"+C.orchid+","+C.gold+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,fontWeight:900,color:"#fff",flexShrink:0}}>{(peerChat.name||"?")[0].toUpperCase()}</div>
+            <button onClick={()=>setPeerChat(null)} style={{background:"none",border:"none",color:C.gold,fontSize:34,cursor:"pointer",padding:"0 8px 0 0"}}>←</button>
+            <div style={{width:38,height:38,borderRadius:"50%",background:"linear-gradient(135deg,"+C.orchid+","+C.gold+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:19,fontWeight:900,color:"#fff",flexShrink:0}}>{(peerChat.name||"?")[0].toUpperCase()}</div>
             <div style={{flex:1}}>
-              <div style={{fontWeight:800,fontSize:17,color:C.text}}>{peerChat.name}</div>
-              <div style={{fontSize:17,color:C.sub}}>ID: {peerChat.publicId}</div>
+              <div style={{fontWeight:800,fontSize:30,color:C.text}}>{peerChat.name}</div>
+              <div style={{fontSize:30,color:C.sub}}>ID: {peerChat.publicId}</div>
             </div>
           </div>
           <div style={{flex:1,overflowY:"auto",padding:"14px 16px",display:"flex",flexDirection:"column",gap:10}}>
-            {peerMsgs.length===0&&<div style={{textAlign:"center",padding:"40px 20px",color:C.muted,fontSize:17}}>Start the conversation. You are both on the same journey.</div>}
+            {peerMsgs.length===0&&<div style={{textAlign:"center",padding:"40px 20px",color:C.muted,fontSize:24}}>Start the conversation. You are both on the same journey.</div>}
             {peerMsgs.map(msg=>{
               const myPhone=authUser?authUser.phone:authPhone;
               const isMe=msg.senderPhone===myPhone;
               return (
                 <div key={msg.id} style={{display:"flex",justifyContent:isMe?"flex-end":"flex-start"}}>
                   <div style={{maxWidth:"78%"}}>
-                    <div style={{padding:"12px 16px",borderRadius:isMe?"18px 18px 4px 18px":"18px 18px 18px 4px",background:isMe?"linear-gradient(135deg,"+C.gold+","+C.amber+")":C.surface,color:isMe?"#fff":C.text,fontSize:17,lineHeight:1.65,border:isMe?"none":"1px solid "+C.border,boxShadow:isMe?"0 4px 12px rgba(160,114,10,0.2)":"0 1px 4px rgba(0,0,0,0.05)"}}>{msg.text}</div>
-                    <div style={{fontSize:16,color:C.muted,marginTop:3,textAlign:isMe?"right":"left"}}>{new Date(msg.ts).toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"})}</div>
+                    <div style={{padding:"12px 16px",borderRadius:isMe?"18px 18px 4px 18px":"18px 18px 18px 4px",background:isMe?"linear-gradient(135deg,"+C.gold+","+C.amber+")":C.surface,color:isMe?"#fff":C.text,fontSize:30,lineHeight:1.65,border:isMe?"none":"1px solid "+C.border,boxShadow:isMe?"0 4px 12px rgba(160,114,10,0.2)":"0 1px 4px rgba(0,0,0,0.05)"}}>{msg.text}</div>
+                    <div style={{fontSize:19,color:C.muted,marginTop:3,textAlign:isMe?"right":"left"}}>{new Date(msg.ts).toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"})}</div>
                   </div>
                 </div>
               );
             })}
           </div>
           <div style={{padding:"12px 16px",paddingBottom:"calc(env(safe-area-inset-bottom,0px)+12px)",borderTop:"1px solid "+C.border,background:C.surface,display:"flex",gap:10,flexShrink:0}}>
-            <input value={peerInput} onChange={e=>setPeerInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&sendPeerMsg()} placeholder={"Message "+peerChat.name+"..."} style={{flex:1,minWidth:0,background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:24,padding:"11px 16px",color:C.text,fontSize:16,outline:"none"}}/>
+            <input value={peerInput} onChange={e=>setPeerInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&sendPeerMsg()} placeholder={"Message "+peerChat.name+"..."} style={{flex:1,minWidth:0,background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:24,padding:"11px 16px",color:C.text,fontSize:19,outline:"none"}}/>
             <button onClick={sendPeerMsg} disabled={peerSending||!peerInput.trim()} style={{background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:"50%",width:46,height:46,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0,opacity:peerSending||!peerInput.trim()?0.4:1}}>
-              <span style={{color:"#fff",fontSize:18,fontWeight:900}}>↑</span>
+              <span style={{color:"#fff",fontSize:34,fontWeight:900}}>↑</span>
             </button>
           </div>
         </div>
@@ -1651,26 +1651,26 @@ function App(){
                 {authUser&&authUser.photo?<img src={authUser.photo} alt="p" style={{width:"100%",height:"100%",objectFit:"cover"}}/>:<span style={{fontSize:28}}>🧑</span>}
               </div>
               <div>
-                <div style={{fontWeight:900,fontSize:18}}>{authUser?authUser.name||authName:"User"}</div>
-                <div style={{fontSize:16,color:C.sub,marginTop:2}}>+91 {authUser?authUser.phone:authPhone}</div>
-                <div style={{fontSize:17,color:C.teal,marginTop:3,fontWeight:700}}>{streak} day streak - {d} days quit</div>
+                <div style={{fontWeight:900,fontSize:22}}>{authUser?authUser.name||authName:"User"}</div>
+                <div style={{fontSize:19,color:C.sub,marginTop:2}}>+91 {authUser?authUser.phone:authPhone}</div>
+                <div style={{fontSize:30,color:C.teal,marginTop:3,fontWeight:700}}>{streak} day streak - {d} days quit</div>
               </div>
             </div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:20}}>
               {[{v:d,l:"days quit",c:C.accent},{v:healthScore,l:"health score",c:C.teal},{v:"Rs "+money.toLocaleString("en-IN"),l:"saved",c:C.teal}].map(({v,l,c})=>(
                 <div key={l} style={{textAlign:"center",background:C.surfaceHi,borderRadius:12,padding:"12px 6px",border:"1px solid "+C.border}}>
-                  <div style={{fontSize:17,fontWeight:900,color:c}}>{v}</div>
-                  <div style={{fontSize:16,color:C.sub,marginTop:2}}>{l}</div>
+                  <div style={{fontSize:30,fontWeight:900,color:c}}>{v}</div>
+                  <div style={{fontSize:19,color:C.sub,marginTop:2}}>{l}</div>
                 </div>
               ))}
             </div>
-            <button onClick={()=>{setShowProfile(false);setShowPremium(true);}} style={{width:"100%",background:C.amberFade,border:"1px solid "+C.amber+"44",borderRadius:12,padding:13,color:C.amber,fontWeight:700,fontSize:16,cursor:"pointer",marginBottom:10}}>
+            <button onClick={()=>{setShowProfile(false);setShowPremium(true);}} style={{width:"100%",background:C.amberFade,border:"1px solid "+C.amber+"44",borderRadius:12,padding:13,color:C.amber,fontWeight:700,fontSize:19,cursor:"pointer",marginBottom:10}}>
               {isPremium?"Manage Premium":"Upgrade to Premium"}
             </button>
-            <button onClick={logout} style={{width:"100%",background:C.accentFade,border:"1px solid "+C.accent+"44",borderRadius:12,padding:13,color:C.accent,fontWeight:700,fontSize:16,cursor:"pointer",marginBottom:10}}>
+            <button onClick={logout} style={{width:"100%",background:C.accentFade,border:"1px solid "+C.accent+"44",borderRadius:12,padding:13,color:C.accent,fontWeight:700,fontSize:19,cursor:"pointer",marginBottom:10}}>
               Log out
             </button>
-            <button onClick={()=>setShowProfile(false)} style={{width:"100%",background:"none",border:"none",color:C.muted,fontSize:16,cursor:"pointer",padding:8}}>Cancel</button>
+            <button onClick={()=>setShowProfile(false)} style={{width:"100%",background:"none",border:"none",color:C.muted,fontSize:19,cursor:"pointer",padding:8}}>Cancel</button>
           </div>
         </div>
       )}
@@ -1679,21 +1679,21 @@ function App(){
       {viewingSnap&&(
         <div style={{position:"fixed",inset:0,zIndex:1000,background:"#000",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:24}}>
           <div style={{background:"linear-gradient(160deg,#F5F0E8,#EDE5D8)",border:"1px solid "+C.purple+"44",borderRadius:20,width:"100%",maxWidth:360,overflow:"hidden"}}>
-            {viewingSnap.photo&&<div style={{position:"relative",width:"100%",paddingBottom:"60%",overflow:"hidden"}}><img src={viewingSnap.photo} alt="snap" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}}/><div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom,transparent 50%,#F5F0E8 100%)"}}/><div style={{position:"absolute",bottom:12,left:0,right:0,textAlign:"center",color:"#fff",fontWeight:800,fontSize:18}}>{viewingSnap.senderName}</div></div>}
+            {viewingSnap.photo&&<div style={{position:"relative",width:"100%",paddingBottom:"60%",overflow:"hidden"}}><img src={viewingSnap.photo} alt="snap" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}}/><div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom,transparent 50%,#F5F0E8 100%)"}}/><div style={{position:"absolute",bottom:12,left:0,right:0,textAlign:"center",color:"#fff",fontWeight:800,fontSize:22}}>{viewingSnap.senderName}</div></div>}
             <div style={{padding:"20px 20px 24px",textAlign:"center"}}>
-              {!viewingSnap.photo&&<div style={{fontWeight:800,fontSize:18,marginBottom:16}}>{viewingSnap.senderName}</div>}
+              {!viewingSnap.photo&&<div style={{fontWeight:800,fontSize:34,marginBottom:16}}>{viewingSnap.senderName}</div>}
               <div style={{fontSize:60,fontWeight:900,color:C.accent,lineHeight:1}}>{viewingSnap.quitDays}</div>
-              <div style={{fontSize:17,color:C.sub,marginTop:4,marginBottom:16}}>days smoke-free</div>
+              <div style={{fontSize:30,color:C.sub,marginTop:4,marginBottom:16}}>days smoke-free</div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:16}}>
                 {[{v:viewingSnap.healthScore,l:"score",c:C.teal},{v:viewingSnap.cigsAvoided,l:"avoided",c:C.teal},{v:"Rs "+(viewingSnap.moneySaved||0).toLocaleString("en-IN"),l:"saved",c:C.teal}].map(({v,l,c})=>(
                   <div key={l} style={{background:"rgba(255,255,255,0.05)",borderRadius:10,padding:"8px 4px"}}>
-                    <div style={{fontSize:16,fontWeight:900,color:c}}>{v}</div>
+                    <div style={{fontSize:19,fontWeight:900,color:c}}>{v}</div>
                     <div style={{fontSize:8,color:C.sub,marginTop:2}}>{l}</div>
                   </div>
                 ))}
               </div>
-              {viewingSnap.message&&<div style={{fontSize:17,color:C.text,fontStyle:"italic",background:"rgba(255,255,255,0.04)",borderRadius:10,padding:"12px 16px",marginBottom:12}}>{viewingSnap.message}</div>}
-              <button onClick={()=>{handleSnapViewed();setViewingSnap(null);}} style={{background:C.teal,border:"none",borderRadius:11,padding:"12px 32px",fontWeight:700,fontSize:16,cursor:"pointer",color:"#F5F0E8"}}>Done</button>
+              {viewingSnap.message&&<div style={{fontSize:30,color:C.text,fontStyle:"italic",background:"rgba(255,255,255,0.04)",borderRadius:10,padding:"12px 16px",marginBottom:12}}>{viewingSnap.message}</div>}
+              <button onClick={()=>{handleSnapViewed();setViewingSnap(null);}} style={{background:C.teal,border:"none",borderRadius:11,padding:"12px 32px",fontWeight:700,fontSize:19,cursor:"pointer",color:"#F5F0E8"}}>Done</button>
             </div>
           </div>
         </div>
@@ -1701,20 +1701,20 @@ function App(){
 
       {celebMS&&!viewingSnap&&(
         <div style={{position:"fixed",top:60,left:"50%",transform:"translateX(-50%)",zIndex:995,background:"linear-gradient(135deg,"+C.teal+","+C.purple+")",borderRadius:14,padding:"12px 20px",textAlign:"center",boxShadow:"0 8px 32px rgba(0,0,0,0.5)",maxWidth:280,pointerEvents:"none"}}>
-          <div style={{fontWeight:800,fontSize:17,color:"#fff"}}>Milestone reached!</div>
-          <div style={{fontSize:16,color:"rgba(255,255,255,0.8)",marginTop:2}}>{celebMS.label}</div>
+          <div style={{fontWeight:800,fontSize:30,color:"#fff"}}>Milestone reached!</div>
+          <div style={{fontSize:19,color:"rgba(255,255,255,0.8)",marginTop:2}}>{celebMS.label}</div>
         </div>
       )}
 
       {showSlipped&&(
         <div style={{position:"fixed",inset:0,zIndex:996,background:"rgba(0,0,0,0.8)",display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
           <div style={crd({maxWidth:340,width:"100%",padding:24})}>
-            <div style={{fontSize:28,textAlign:"center",marginBottom:8}}>💙</div>
-            <div style={{fontSize:17,fontWeight:800,textAlign:"center",marginBottom:8}}>It is okay. One slip does not define you.</div>
-            <div style={{color:C.sub,fontSize:17,lineHeight:1.7,marginBottom:16}}>You have been smoke-free for <span style={{color:C.teal,fontWeight:700}}>{d}d {h}h</span>. That is real. One cigarette does not erase that.</div>
+            <div style={{fontSize:34,textAlign:"center",marginBottom:8}}>💙</div>
+            <div style={{fontSize:30,fontWeight:800,textAlign:"center",marginBottom:8}}>It is okay. One slip does not define you.</div>
+            <div style={{color:C.sub,fontSize:30,lineHeight:1.7,marginBottom:16}}>You have been smoke-free for <span style={{color:C.teal,fontWeight:700}}>{d}d {h}h</span>. That is real. One cigarette does not erase that.</div>
             <Btn onClick={()=>setShowSlipped(false)} style={{marginBottom:10,background:C.teal}}>I am still quit - it was one moment</Btn>
             <Btn ghost onClick={confirmSlipped}>Restart my timer from now</Btn>
-            <button onClick={()=>setShowSlipped(false)} style={{background:"none",border:"none",color:C.muted,fontSize:16,cursor:"pointer",width:"100%",marginTop:8}}>Close</button>
+            <button onClick={()=>setShowSlipped(false)} style={{background:"none",border:"none",color:C.muted,fontSize:19,cursor:"pointer",width:"100%",marginTop:8}}>Close</button>
           </div>
         </div>
       )}
@@ -1723,16 +1723,16 @@ function App(){
       <div style={{padding:"12px 16px 10px",display:"flex",justifyContent:"space-between",alignItems:"center",borderBottom:"1px solid "+C.border,flexShrink:0}}>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
           <button onClick={()=>setShowProfile(true)} style={{width:32,height:32,borderRadius:"50%",background:"linear-gradient(135deg,"+C.accent+","+C.purple+")",border:"2px solid "+C.teal+"44",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",cursor:"pointer",padding:0,flexShrink:0}}>
-            {authUser&&authUser.photo?<img src={authUser.photo} alt="p" style={{width:"100%",height:"100%",objectFit:"cover"}}/>:<span style={{fontSize:16}}>🧑</span>}
+            {authUser&&authUser.photo?<img src={authUser.photo} alt="p" style={{width:"100%",height:"100%",objectFit:"cover"}}/>:<span style={{fontSize:19}}>🧑</span>}
           </button>
           <div>
-            <div style={{fontWeight:900,fontSize:16,background:"linear-gradient(135deg,"+C.accent+","+C.teal+")",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",lineHeight:1}}>Unsmoke</div>
-            <div style={{color:"rgba(201,168,76,0.55)",fontSize:16,lineHeight:1,letterSpacing:"0.04em"}}>{authUser?authUser.name||authName:"with Saksham"}</div>
+            <div style={{fontWeight:900,fontSize:19,background:"linear-gradient(135deg,"+C.accent+","+C.teal+")",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",lineHeight:1}}>Unsmoke</div>
+            <div style={{color:"rgba(201,168,76,0.55)",fontSize:19,lineHeight:1,letterSpacing:"0.04em"}}>{authUser?authUser.name||authName:"with Saksham"}</div>
           </div>
         </div>
         <div style={{display:"flex",alignItems:"center",gap:6}}>
-          <div style={{fontSize:17,fontWeight:700,color:C.teal}}>🔥 {streak}d</div>
-          <button onClick={()=>setShowPremium(true)} style={{background:isPremium?"linear-gradient(135deg,"+C.gold+","+C.amber+")":C.amberFade,border:"1px solid "+C.gold+"44",borderRadius:20,padding:"5px 10px",color:isPremium?"#F5F0E8":C.gold,fontSize:17,fontWeight:800,cursor:"pointer"}}>
+          <div style={{fontSize:30,fontWeight:700,color:C.teal}}>🔥 {streak}d</div>
+          <button onClick={()=>setShowPremium(true)} style={{background:isPremium?"linear-gradient(135deg,"+C.gold+","+C.amber+")":C.amberFade,border:"1px solid "+C.gold+"44",borderRadius:20,padding:"5px 10px",color:isPremium?"#F5F0E8":C.gold,fontSize:30,fontWeight:800,cursor:"pointer"}}>
             {isPremium?"👑 PRO":"👑"}
           </button>
         </div>
@@ -1747,10 +1747,10 @@ function App(){
               <div style={{display:"flex",alignItems:"center",gap:16}}>
                 <ScoreRing score={healthScore}/>
                 <div style={{flex:1}}>
-                  <div style={{color:C.sub,fontSize:17,fontWeight:700,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:6}}>Smoke-free</div>
+                  <div style={{color:C.sub,fontSize:30,fontWeight:700,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:6}}>Smoke-free</div>
                   <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
                     {[{v:d,l:"d"},{v:h,l:"h"},{v:m,l:"m"},{v:s,l:"s"}].map(({v,l})=>(
-                      <div key={l}><span style={{fontSize:28,fontWeight:900,color:C.accent,fontVariantNumeric:"tabular-nums"}}>{pad(v)}</span><span style={{fontSize:17,color:C.sub,marginLeft:1}}>{l}</span></div>
+                      <div key={l}><span style={{fontSize:34,fontWeight:900,color:C.accent,fontVariantNumeric:"tabular-nums"}}>{pad(v)}</span><span style={{fontSize:30,color:C.sub,marginLeft:1}}>{l}</span></div>
                     ))}
                   </div>
                 </div>
@@ -1758,15 +1758,15 @@ function App(){
             </div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:10}}>
               {[{v:cigs,l:"not smoked",c:C.teal},{v:"Rs "+money.toLocaleString("en-IN"),l:"saved",c:C.teal},{v:streak+"d",l:"streak",c:C.purple}].map(({v,l,c})=>(
-                <div key={l} style={crd({textAlign:"center",padding:"12px 8px"})}><div style={{fontSize:16,fontWeight:900,color:c}}>{v}</div><div style={{color:C.sub,fontSize:16,marginTop:2}}>{l}</div></div>
+                <div key={l} style={crd({textAlign:"center",padding:"12px 8px"})}><div style={{fontSize:19,fontWeight:900,color:c}}>{v}</div><div style={{color:C.sub,fontSize:19,marginTop:2}}>{l}</div></div>
               ))}
             </div>
 
             {/* Sponsored Banner - image ads */}
             <div style={{marginBottom:12}}>
               <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}>
-                <div style={{fontSize:16,color:C.muted,letterSpacing:"0.08em",textTransform:"uppercase",fontWeight:700}}>{curBanner.tag}</div>
-                <div style={{fontSize:16,color:C.muted}}>Ad</div>
+                <div style={{fontSize:19,color:C.muted,letterSpacing:"0.08em",textTransform:"uppercase",fontWeight:700}}>{curBanner.tag}</div>
+                <div style={{fontSize:19,color:C.muted}}>Ad</div>
               </div>
               <div onClick={()=>window.open(curBanner.url,"_blank")} style={{background:C.surface,border:"1px solid "+C.border,borderRadius:16,overflow:"hidden",cursor:"pointer",boxShadow:"0 2px 8px rgba(0,0,0,0.06)"}}>
                 {curBanner.image?(
@@ -1777,9 +1777,9 @@ function App(){
                   </div>
                 )}
                 <div style={{padding:"12px 14px",borderTop:"1px solid "+C.border}}>
-                  <div style={{fontSize:17,color:curBanner.color,fontWeight:700,marginBottom:3}}>{curBanner.brand}</div>
-                  <div style={{fontWeight:700,fontSize:17,color:C.text,marginBottom:8,lineHeight:1.35}}>{curBanner.headline}</div>
-                  <div style={{display:"inline-block",background:curBanner.color,color:"#fff",borderRadius:20,padding:"4px 14px",fontSize:17,fontWeight:700}}>{curBanner.cta} →</div>
+                  <div style={{fontSize:30,color:curBanner.color,fontWeight:700,marginBottom:3}}>{curBanner.brand}</div>
+                  <div style={{fontWeight:700,fontSize:30,color:C.text,marginBottom:8,lineHeight:1.35}}>{curBanner.headline}</div>
+                  <div style={{display:"inline-block",background:curBanner.color,color:"#fff",borderRadius:20,padding:"4px 14px",fontSize:30,fontWeight:700}}>{curBanner.cta} →</div>
                 </div>
                 <div style={{display:"flex",justifyContent:"center",gap:5,padding:"8px 0"}}>
                   {BANNERS.map((_,bi)=>(
@@ -1787,18 +1787,18 @@ function App(){
                   ))}
                 </div>
               </div>
-              <div style={{textAlign:"center",marginTop:5,fontSize:16,color:C.muted}}>Advertise here → DM @ssakshamchauhan</div>
+              <div style={{textAlign:"center",marginTop:5,fontSize:19,color:C.muted}}>Advertise here → DM @ssakshamchauhan</div>
             </div>
 
             {/* AI Coach quick access */}
             <div onClick={()=>{setShowPremium(true);}} style={{...glassCard(C.emerald+"44",{marginBottom:12,cursor:"pointer",background:"linear-gradient(135deg,rgba(10,138,106,0.05),rgba(10,138,106,0.02))"})}}>
               <div style={{display:"flex",alignItems:"center",gap:14}}>
-                <div style={{width:46,height:46,borderRadius:"50%",background:"linear-gradient(135deg,"+C.emerald+",rgba(10,138,106,0.7))",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0,boxShadow:"0 4px 12px rgba(10,138,106,0.25)"}}>🤖</div>
+                <div style={{width:46,height:46,borderRadius:"50%",background:"linear-gradient(135deg,"+C.emerald+",rgba(10,138,106,0.7))",display:"flex",alignItems:"center",justifyContent:"center",fontSize:30,flexShrink:0,boxShadow:"0 4px 12px rgba(10,138,106,0.25)"}}>🤖</div>
                 <div style={{flex:1}}>
-                  <div style={{fontWeight:900,fontSize:17,color:C.text,marginBottom:2}}>AI Quit Coach</div>
-                  <div style={{fontSize:16,color:C.sub}}>24/7 — knows your exact journey. Ask anything.</div>
+                  <div style={{fontWeight:900,fontSize:30,color:C.text,marginBottom:2}}>AI Quit Coach</div>
+                  <div style={{fontSize:19,color:C.sub}}>24/7 — knows your exact journey. Ask anything.</div>
                 </div>
-                <span style={{color:C.emerald,fontSize:20}}>›</span>
+                <span style={{color:C.emerald,fontSize:24}}>›</span>
               </div>
             </div>
 
@@ -1806,16 +1806,16 @@ function App(){
             <div onClick={()=>setTab("messages")} style={{...glassCard(C.gold+"44",{marginBottom:12,cursor:"pointer",background:"linear-gradient(135deg,rgba(160,114,10,0.05),rgba(184,112,0,0.02))",boxShadow:"0 4px 16px rgba(160,114,10,0.10)"})}}>
               <div style={{display:"flex",alignItems:"center",gap:14}}>
                 <div style={{position:"relative",flexShrink:0}}>
-                  <div style={{width:50,height:50,borderRadius:"50%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,fontWeight:900,color:"#fff",boxShadow:"0 4px 12px rgba(160,114,10,0.25)"}}>S</div>
+                  <div style={{width:50,height:50,borderRadius:"50%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:34,fontWeight:900,color:"#fff",boxShadow:"0 4px 12px rgba(160,114,10,0.25)"}}>S</div>
                   <div style={{position:"absolute",bottom:1,right:1,width:12,height:12,borderRadius:"50%",background:C.emerald,border:"2px solid "+C.surface}}/>
                 </div>
                 <div style={{flex:1,minWidth:0}}>
-                  <div style={{fontWeight:900,fontSize:17,color:C.text,marginBottom:2}}>Chat with Saksham</div>
-                  <div style={{fontSize:16,color:C.sub,overflow:"hidden",whiteSpace:"nowrap",textOverflow:"ellipsis"}}>{msgThread.length>0?(msgThread[msgThread.length-1].role==="saksham"?"Saksham: ":"You: ")+msgThread[msgThread.length-1].text:"He reads every message — ask him anything"}</div>
+                  <div style={{fontWeight:900,fontSize:30,color:C.text,marginBottom:2}}>Chat with Saksham</div>
+                  <div style={{fontSize:19,color:C.sub,overflow:"hidden",whiteSpace:"nowrap",textOverflow:"ellipsis"}}>{msgThread.length>0?(msgThread[msgThread.length-1].role==="saksham"?"Saksham: ":"You: ")+msgThread[msgThread.length-1].text:"He reads every message — ask him anything"}</div>
                 </div>
                 <div style={{display:"flex",alignItems:"center",gap:8,flexShrink:0}}>
-                  {msgUnread>0&&<div style={{background:C.ruby,color:"#fff",borderRadius:20,padding:"2px 8px",fontSize:17,fontWeight:800}}>{msgUnread}</div>}
-                  <span style={{color:C.gold,fontSize:20}}>›</span>
+                  {msgUnread>0&&<div style={{background:C.ruby,color:"#fff",borderRadius:20,padding:"2px 8px",fontSize:30,fontWeight:800}}>{msgUnread}</div>}
+                  <span style={{color:C.gold,fontSize:24}}>›</span>
                 </div>
               </div>
             </div>
@@ -1824,40 +1824,40 @@ function App(){
               <div onClick={()=>setShowPremium(true)} style={crd({marginBottom:10,cursor:"pointer",background:C.amberFade,borderColor:C.gold+"44"})}>
                 <div style={{display:"flex",alignItems:"center",gap:12}}>
                   <div style={{fontSize:24}}>👑</div>
-                  <div style={{flex:1}}><div style={{fontWeight:800,fontSize:17,color:C.gold}}>AI Coach - Chat - NRT Plan</div><div style={{fontSize:16,color:C.sub,marginTop:2}}>Unlock Premium features</div></div>
-                  <span style={{color:C.gold,fontSize:16}}>›</span>
+                  <div style={{flex:1}}><div style={{fontWeight:800,fontSize:30,color:C.gold}}>AI Coach - Chat - NRT Plan</div><div style={{fontSize:19,color:C.sub,marginTop:2}}>Unlock Premium features</div></div>
+                  <span style={{color:C.gold,fontSize:19}}>›</span>
                 </div>
               </div>
             )}
             <div style={crd({marginBottom:10,background:C.amberFade,borderColor:C.amber+"33"})}>
-              <div style={{fontSize:17,color:C.amber,fontWeight:700,letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:6}}>Today challenge</div>
-              <div style={{fontSize:17,color:C.text,lineHeight:1.65}}>{challenge}</div>
+              <div style={{fontSize:30,color:C.amber,fontWeight:700,letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:6}}>Today challenge</div>
+              <div style={{fontSize:30,color:C.text,lineHeight:1.65}}>{challenge}</div>
             </div>
             <div style={crd({marginBottom:10})}>
-              <div style={{fontSize:17,color:C.sub,textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:10}}>Milestones</div>
+              <div style={{fontSize:30,color:C.sub,textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:10}}>Milestones</div>
               <div style={{display:"flex",flexWrap:"wrap",gap:7}}>
                 {ACHIEVEMENTS.map(a=>{
                   const u=elMin>=a.min;
-                  return <div key={a.id} style={{padding:"5px 11px",borderRadius:20,background:u?C.tealFade:C.surfaceHi,color:u?C.teal:C.muted,fontSize:17,border:"1px solid "+(u?C.teal+"44":C.border),fontWeight:u?700:400}}>{a.icon} {a.label}</div>;
+                  return <div key={a.id} style={{padding:"5px 11px",borderRadius:20,background:u?C.tealFade:C.surfaceHi,color:u?C.teal:C.muted,fontSize:30,border:"1px solid "+(u?C.teal+"44":C.border),fontWeight:u?700:400}}>{a.icon} {a.label}</div>;
                 })}
               </div>
             </div>
-            <button onClick={()=>setShowSlipped(true)} style={{background:"none",border:"none",color:C.muted,fontSize:16,cursor:"pointer",width:"100%",padding:"8px 0",textDecoration:"underline"}}>I slipped today</button>
+            <button onClick={()=>setShowSlipped(true)} style={{background:"none",border:"none",color:C.muted,fontSize:19,cursor:"pointer",width:"100%",padding:"8px 0",textDecoration:"underline"}}>I slipped today</button>
             {/* Founder story card */}
             <div onClick={()=>setShowFounderStory(true)} style={crd({marginTop:8,cursor:"pointer",background:"linear-gradient(135deg,rgba(255,101,52,0.07),rgba(139,92,246,0.07))",borderColor:C.accent+"33"})}>
               <div style={{display:"flex",alignItems:"center",gap:12}}>
-                <div style={{width:44,height:44,borderRadius:"50%",background:"linear-gradient(135deg,"+C.accent+","+C.purple+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0}}>🧑</div>
-                <div style={{flex:1}}><div style={{fontWeight:800,fontSize:16,color:C.text}}>Saksham Story</div><div style={{color:C.sub,fontSize:16,marginTop:2}}>2 packs a day. 12 years. Then Oct 31, 2024.</div></div>
-                <div style={{color:C.muted,fontSize:18}}>›</div>
+                <div style={{width:44,height:44,borderRadius:"50%",background:"linear-gradient(135deg,"+C.accent+","+C.purple+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:34,flexShrink:0}}>🧑</div>
+                <div style={{flex:1}}><div style={{fontWeight:800,fontSize:19,color:C.text}}>Saksham Story</div><div style={{color:C.sub,fontSize:19,marginTop:2}}>2 packs a day. 12 years. Then Oct 31, 2024.</div></div>
+                <div style={{color:C.muted,fontSize:22}}>›</div>
               </div>
             </div>
             {/* Premium quick access */}
             {isPremium&&(
               <div style={crd({marginTop:8})}>
-                <div style={{fontSize:17,color:C.gold,fontWeight:800,textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:10}}>👑 Premium</div>
+                <div style={{fontSize:30,color:C.gold,fontWeight:800,textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:10}}>👑 Premium</div>
                 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
                   {[{label:"💬 Chat Coach",screen:"coach",c:C.teal},{label:"💊 NRT Plan",screen:"nrt",c:C.amber}].map(({label,screen,c})=>(
-                    <button key={screen} onClick={()=>setPremiumScreen(screen)} style={{background:c+"22",border:"1px solid "+c+"44",borderRadius:10,padding:"10px 8px",color:c,fontWeight:700,fontSize:17,cursor:"pointer"}}>{label}</button>
+                    <button key={screen} onClick={()=>setPremiumScreen(screen)} style={{background:c+"22",border:"1px solid "+c+"44",borderRadius:10,padding:"10px 8px",color:c,fontWeight:700,fontSize:30,cursor:"pointer"}}>{label}</button>
                   ))}
                 </div>
               </div>
@@ -1872,14 +1872,14 @@ function App(){
             {/* Header */}
             <div style={{padding:"16px 18px 12px",borderBottom:"1px solid "+C.border,background:C.surface,flexShrink:0}}>
               <div style={{display:"flex",alignItems:"center",gap:14}}>
-                <div style={{width:46,height:46,borderRadius:"50%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,fontWeight:900,color:"#fff",flexShrink:0,boxShadow:"0 4px 14px rgba(160,114,10,0.25)"}}>S</div>
+                <div style={{width:46,height:46,borderRadius:"50%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:30,fontWeight:900,color:"#fff",flexShrink:0,boxShadow:"0 4px 14px rgba(160,114,10,0.25)"}}>S</div>
                 <div style={{flex:1}}>
-                  <div style={{fontWeight:900,fontSize:16,color:C.text}}>Saksham</div>
-                  <div style={{fontSize:17,color:C.emerald,marginTop:2,fontWeight:600}}>Founder · Unsmoke with Saksham</div>
+                  <div style={{fontWeight:900,fontSize:19,color:C.text}}>Saksham</div>
+                  <div style={{fontSize:30,color:C.emerald,marginTop:2,fontWeight:600}}>Founder · Unsmoke with Saksham</div>
                 </div>
-                <div style={{fontSize:17,color:C.sub,background:C.surfaceHi,padding:"4px 10px",borderRadius:20,border:"1px solid "+C.border}}>Responds same day</div>
+                <div style={{fontSize:30,color:C.sub,background:C.surfaceHi,padding:"4px 10px",borderRadius:20,border:"1px solid "+C.border}}>Responds same day</div>
               </div>
-              <div style={{marginTop:12,padding:"10px 12px",background:C.goldFade,borderRadius:10,border:"1px solid "+C.gold+"33",fontSize:16,color:C.sub,lineHeight:1.6}}>
+              <div style={{marginTop:12,padding:"10px 12px",background:C.goldFade,borderRadius:10,border:"1px solid "+C.gold+"33",fontSize:19,color:C.sub,lineHeight:1.6}}>
                 {d+" days smoke-free. Health score "+healthScore+"/100. Saksham reads every message personally."}
               </div>
             </div>
@@ -1889,20 +1889,20 @@ function App(){
               {msgThread.length===0&&(
                 <div style={{textAlign:"center",padding:"32px 20px",color:C.muted}}>
                   <div style={{fontSize:36,marginBottom:12}}>💬</div>
-                  <div style={{fontWeight:700,fontSize:16,color:C.text,marginBottom:6}}>Start a conversation with Saksham</div>
-                  <div style={{fontSize:17,color:C.sub,lineHeight:1.65}}>He quit after 12 years of 2 packs a day. Ask him anything about quitting. He reads every message.</div>
+                  <div style={{fontWeight:700,fontSize:19,color:C.text,marginBottom:6}}>Start a conversation with Saksham</div>
+                  <div style={{fontSize:30,color:C.sub,lineHeight:1.65}}>He quit after 12 years of 2 packs a day. Ask him anything about quitting. He reads every message.</div>
                 </div>
               )}
               {msgThread.map(msg=>(
                 <div key={msg.id||msg.ts} style={{display:"flex",justifyContent:msg.role==="user"?"flex-end":"flex-start",alignItems:"flex-end",gap:8}}>
                   {msg.role==="saksham"&&(
-                    <div style={{width:28,height:28,borderRadius:"50%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:17,fontWeight:900,color:"#fff",flexShrink:0}}>S</div>
+                    <div style={{width:28,height:28,borderRadius:"50%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:30,fontWeight:900,color:"#fff",flexShrink:0}}>S</div>
                   )}
                   <div style={{maxWidth:"78%"}}>
-                    <div style={{padding:"11px 15px",borderRadius:msg.role==="user"?"18px 18px 4px 18px":"18px 18px 18px 4px",background:msg.role==="user"?"linear-gradient(135deg,"+C.gold+","+C.amber+")":C.surface,color:msg.role==="user"?"#fff":C.text,fontSize:17,lineHeight:1.7,border:msg.role==="user"?"none":"1px solid "+C.border,boxShadow:msg.role==="user"?"0 4px 14px rgba(160,114,10,0.2)":"0 1px 4px rgba(0,0,0,0.06)"}}>
+                    <div style={{padding:"11px 15px",borderRadius:msg.role==="user"?"18px 18px 4px 18px":"18px 18px 18px 4px",background:msg.role==="user"?"linear-gradient(135deg,"+C.gold+","+C.amber+")":C.surface,color:msg.role==="user"?"#fff":C.text,fontSize:30,lineHeight:1.7,border:msg.role==="user"?"none":"1px solid "+C.border,boxShadow:msg.role==="user"?"0 4px 14px rgba(160,114,10,0.2)":"0 1px 4px rgba(0,0,0,0.06)"}}>
                       {msg.text}
                     </div>
-                    <div style={{fontSize:16,color:C.muted,marginTop:3,textAlign:msg.role==="user"?"right":"left",paddingLeft:msg.role==="saksham"?4:0,paddingRight:msg.role==="user"?4:0}}>
+                    <div style={{fontSize:19,color:C.muted,marginTop:3,textAlign:msg.role==="user"?"right":"left",paddingLeft:msg.role==="saksham"?4:0,paddingRight:msg.role==="user"?4:0}}>
                       {new Date(msg.ts).toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"})}
                     </div>
                   </div>
@@ -1910,16 +1910,16 @@ function App(){
               ))}
               {msgSending&&(
                 <div style={{display:"flex",justifyContent:"flex-end"}}>
-                  <div style={{padding:"10px 15px",borderRadius:"18px 18px 4px 18px",background:C.goldFade,border:"1px solid "+C.gold+"44",fontSize:17,color:C.sub}}>Sending...</div>
+                  <div style={{padding:"10px 15px",borderRadius:"18px 18px 4px 18px",background:C.goldFade,border:"1px solid "+C.gold+"44",fontSize:30,color:C.sub}}>Sending...</div>
                 </div>
               )}
             </div>
 
             {/* Input */}
             <div style={{padding:"12px 16px",paddingBottom:"calc(env(safe-area-inset-bottom,0px) + 12px)",borderTop:"1px solid "+C.border,background:C.surface,display:"flex",gap:10,flexShrink:0}}>
-              <input value={msgInput} onChange={e=>setMsgInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&sendMsg()} placeholder="Message Saksham..." style={{flex:1,minWidth:0,background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:24,padding:"11px 16px",color:C.text,fontSize:16,outline:"none"}}/>
+              <input value={msgInput} onChange={e=>setMsgInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&!e.shiftKey&&sendMsg()} placeholder="Message Saksham..." style={{flex:1,minWidth:0,background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:24,padding:"11px 16px",color:C.text,fontSize:19,outline:"none"}}/>
               <button onClick={sendMsg} disabled={msgSending||!msgInput.trim()} style={{background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:"50%",width:46,height:46,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",flexShrink:0,opacity:msgSending||!msgInput.trim()?0.4:1,boxShadow:"0 4px 12px rgba(160,114,10,0.3)"}}>
-                <span style={{color:"#fff",fontSize:18,fontWeight:900}}>↑</span>
+                <span style={{color:"#fff",fontSize:34,fontWeight:900}}>↑</span>
               </button>
             </div>
           </div>
@@ -1931,56 +1931,56 @@ function App(){
 
             {/* Your ID card */}
             <div style={{...glassCard(C.gold+"44",{marginBottom:14,background:"linear-gradient(135deg,rgba(160,114,10,0.05),rgba(160,114,10,0.02))"})}}>
-              <div style={{fontSize:16,color:C.gold,fontWeight:800,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:8}}>Your Unsmoke ID</div>
+              <div style={{fontSize:19,color:C.gold,fontWeight:800,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:8}}>Your Unsmoke ID</div>
               <div style={{display:"flex",alignItems:"center",gap:14}}>
-                <div style={{fontSize:28,fontWeight:900,color:C.gold,letterSpacing:"0.15em",fontVariantNumeric:"tabular-nums"}}>{myPublicId||"Loading..."}</div>
-                <button onClick={()=>{navigator.clipboard&&navigator.clipboard.writeText(myPublicId).catch(()=>{});setCopied(true);setTimeout(()=>setCopied(false),2000);}} style={{background:copied?C.emeraldFade:C.goldFade,border:"1px solid "+(copied?C.emerald:C.gold)+"44",borderRadius:20,padding:"6px 14px",color:copied?C.emerald:C.gold,fontSize:16,fontWeight:700,cursor:"pointer"}}>
+                <div style={{fontSize:34,fontWeight:900,color:C.gold,letterSpacing:"0.15em",fontVariantNumeric:"tabular-nums"}}>{myPublicId||"Loading..."}</div>
+                <button onClick={()=>{navigator.clipboard&&navigator.clipboard.writeText(myPublicId).catch(()=>{});setCopied(true);setTimeout(()=>setCopied(false),2000);}} style={{background:copied?C.emeraldFade:C.goldFade,border:"1px solid "+(copied?C.emerald:C.gold)+"44",borderRadius:20,padding:"6px 14px",color:copied?C.emerald:C.gold,fontSize:19,fontWeight:700,cursor:"pointer"}}>
                   {copied?"Copied!":"Copy ID"}
                 </button>
               </div>
-              <div style={{fontSize:17,color:C.sub,marginTop:6}}>Share this ID so others can find and add you</div>
+              <div style={{fontSize:30,color:C.sub,marginTop:6}}>Share this ID so others can find and add you</div>
             </div>
 
             {/* Add friend */}
             <div style={{...glassCard(null,{marginBottom:14})}}>
-              <div style={{fontSize:16,fontWeight:800,color:C.text,marginBottom:10}}>Add a Friend by ID</div>
+              <div style={{fontSize:19,fontWeight:800,color:C.text,marginBottom:10}}>Add a Friend by ID</div>
               <div style={{display:"flex",gap:8}}>
-                <input value={friendInput} onChange={e=>setFriendInput(e.target.value.toUpperCase())} onKeyDown={e=>e.key==="Enter"&&addFriend(friendInput)} placeholder="Enter their ID e.g. A3B7C2" style={{flex:1,minWidth:0,background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:12,padding:"12px 16px",color:C.text,fontSize:16,outline:"none",letterSpacing:"0.1em",fontWeight:700}} maxLength={8}/>
-                <button onClick={()=>addFriend(friendInput)} style={{background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:12,padding:"10px 18px",color:"#fff",fontWeight:700,fontSize:17,cursor:"pointer",flexShrink:0}}>Add</button>
+                <input value={friendInput} onChange={e=>setFriendInput(e.target.value.toUpperCase())} onKeyDown={e=>e.key==="Enter"&&addFriend(friendInput)} placeholder="Enter their ID e.g. A3B7C2" style={{flex:1,minWidth:0,background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:12,padding:"12px 16px",color:C.text,fontSize:19,outline:"none",letterSpacing:"0.1em",fontWeight:700}} maxLength={8}/>
+                <button onClick={()=>addFriend(friendInput)} style={{background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:12,padding:"10px 18px",color:"#fff",fontWeight:700,fontSize:30,cursor:"pointer",flexShrink:0}}>Add</button>
               </div>
-              {friendStatus&&<div style={{fontSize:16,color:friendStatus.includes("not found")||friendStatus.includes("own")?C.ruby:C.emerald,marginTop:8,fontWeight:600}}>{friendStatus}</div>}
+              {friendStatus&&<div style={{fontSize:19,color:friendStatus.includes("not found")||friendStatus.includes("own")?C.ruby:C.emerald,marginTop:8,fontWeight:600}}>{friendStatus}</div>}
             </div>
 
             {/* Friends list */}
             {friends.length>0&&(
               <div style={{...glassCard(null,{marginBottom:14})}}>
-                <div style={{fontSize:17,color:C.sub,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:12}}>{friends.length} {friends.length===1?"Friend":"Friends"}</div>
+                <div style={{fontSize:30,color:C.sub,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:12}}>{friends.length} {friends.length===1?"Friend":"Friends"}</div>
                 {friends.map((friend,i)=>(
                   <div key={friend.publicId} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 0",borderBottom:i<friends.length-1?"1px solid "+C.border:"none"}}>
-                    <div style={{width:38,height:38,borderRadius:"50%",background:"linear-gradient(135deg,"+C.orchid+"44,"+C.gold+"44)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,fontWeight:900,color:C.orchid,flexShrink:0}}>{(friend.name||"?")[0].toUpperCase()}</div>
+                    <div style={{width:38,height:38,borderRadius:"50%",background:"linear-gradient(135deg,"+C.orchid+"44,"+C.gold+"44)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:19,fontWeight:900,color:C.orchid,flexShrink:0}}>{(friend.name||"?")[0].toUpperCase()}</div>
                     <div style={{flex:1}}>
-                      <div style={{fontWeight:700,fontSize:16,color:C.text}}>{friend.name}</div>
-                      <div style={{fontSize:17,color:C.sub,marginTop:1}}>ID: {friend.publicId}</div>
+                      <div style={{fontWeight:700,fontSize:19,color:C.text}}>{friend.name}</div>
+                      <div style={{fontSize:30,color:C.sub,marginTop:1}}>ID: {friend.publicId}</div>
                     </div>
-                    <button onClick={()=>openPeerChat(friend)} style={{background:C.orchidFade,border:"1px solid "+C.orchid+"44",borderRadius:20,padding:"6px 14px",color:C.orchid,fontSize:16,fontWeight:700,cursor:"pointer"}}>Chat</button>
+                    <button onClick={()=>openPeerChat(friend)} style={{background:C.orchidFade,border:"1px solid "+C.orchid+"44",borderRadius:20,padding:"6px 14px",color:C.orchid,fontSize:19,fontWeight:700,cursor:"pointer"}}>Chat</button>
                   </div>
                 ))}
               </div>
             )}
 
             {/* Community feed */}
-            <div style={{fontSize:16,fontWeight:900,color:C.text,marginBottom:4}}>Community Feed</div>
-            <div style={{color:C.sub,fontSize:16,marginBottom:12}}>Share your progress. Cheer others on.</div>
+            <div style={{fontSize:19,fontWeight:900,color:C.text,marginBottom:4}}>Community Feed</div>
+            <div style={{color:C.sub,fontSize:19,marginBottom:12}}>Share your progress. Cheer others on.</div>
 
             {/* Post box */}
             <div style={{...glassCard(null,{marginBottom:14})}}>
-              <textarea value={communityInput} onChange={e=>setCommunityInput(e.target.value)} placeholder={"How are you doing today?"+String.fromCharCode(10)+"Share a win, a struggle, or a milestone."} style={{width:"100%",background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:12,padding:"12px 14px",color:C.text,fontSize:17,outline:"none",resize:"none",minHeight:72,lineHeight:1.65,boxSizing:"border-box",marginBottom:10}} maxLength={280}/>
+              <textarea value={communityInput} onChange={e=>setCommunityInput(e.target.value)} placeholder={"How are you doing today?"+String.fromCharCode(10)+"Share a win, a struggle, or a milestone."} style={{width:"100%",background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:12,padding:"12px 14px",color:C.text,fontSize:30,outline:"none",resize:"none",minHeight:72,lineHeight:1.65,boxSizing:"border-box",marginBottom:10}} maxLength={280}/>
               <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
                 {["Day "+d+" smoke-free! 🎉","Had a tough craving but resisted 💪","Just reached "+d+"d milestone 🏆"].map(quick=>(
-                  <button key={quick} onClick={()=>setCommunityInput(quick)} style={{background:C.goldFade,border:"1px solid "+C.gold+"44",borderRadius:20,padding:"5px 12px",color:C.gold,fontSize:17,cursor:"pointer",fontWeight:600}}>{quick}</button>
+                  <button key={quick} onClick={()=>setCommunityInput(quick)} style={{background:C.goldFade,border:"1px solid "+C.gold+"44",borderRadius:20,padding:"5px 12px",color:C.gold,fontSize:30,cursor:"pointer",fontWeight:600}}>{quick}</button>
                 ))}
               </div>
-              <button onClick={()=>postToCommunity(communityInput)} disabled={communityPosting||!communityInput.trim()} style={{width:"100%",marginTop:10,background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:12,padding:12,color:"#fff",fontWeight:700,fontSize:16,cursor:"pointer",opacity:communityPosting||!communityInput.trim()?0.4:1}}>
+              <button onClick={()=>postToCommunity(communityInput)} disabled={communityPosting||!communityInput.trim()} style={{width:"100%",marginTop:10,background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:12,padding:12,color:"#fff",fontWeight:700,fontSize:19,cursor:"pointer",opacity:communityPosting||!communityInput.trim()?0.4:1}}>
                 {communityPosting?"Posting...":"Post to Community"}
               </button>
             </div>
@@ -1989,25 +1989,25 @@ function App(){
             {communityPosts.length===0&&(
               <div style={{textAlign:"center",padding:"32px 20px",color:C.muted}}>
                 <div style={{fontSize:36,marginBottom:10}}>🌱</div>
-                <div style={{fontSize:16,fontWeight:700,color:C.text,marginBottom:6}}>Be the first to post</div>
-                <div style={{fontSize:16,color:C.sub}}>This community is just getting started. Share your journey.</div>
+                <div style={{fontSize:19,fontWeight:700,color:C.text,marginBottom:6}}>Be the first to post</div>
+                <div style={{fontSize:19,color:C.sub}}>This community is just getting started. Share your journey.</div>
               </div>
             )}
             {communityPosts.map(post=>(
               <div key={post.id} style={{...glassCard(null,{marginBottom:10})}}>
                 <div style={{display:"flex",alignItems:"flex-start",gap:12,marginBottom:10}}>
-                  <div style={{width:36,height:36,borderRadius:"50%",background:"linear-gradient(135deg,"+C.gold+"44,"+C.orchid+"44)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:17,fontWeight:900,color:C.gold,flexShrink:0}}>{(post.name||"?")[0].toUpperCase()}</div>
+                  <div style={{width:36,height:36,borderRadius:"50%",background:"linear-gradient(135deg,"+C.gold+"44,"+C.orchid+"44)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:30,fontWeight:900,color:C.gold,flexShrink:0}}>{(post.name||"?")[0].toUpperCase()}</div>
                   <div style={{flex:1}}>
                     <div style={{display:"flex",alignItems:"center",gap:8}}>
-                      <div style={{fontWeight:700,fontSize:17,color:C.text}}>{post.name||"Anonymous"}</div>
-                      {post.days>0&&<div style={{background:C.goldFade,border:"1px solid "+C.gold+"44",borderRadius:20,padding:"1px 8px",fontSize:16,color:C.gold,fontWeight:700}}>{post.days}d smoke-free</div>}
+                      <div style={{fontWeight:700,fontSize:30,color:C.text}}>{post.name||"Anonymous"}</div>
+                      {post.days>0&&<div style={{background:C.goldFade,border:"1px solid "+C.gold+"44",borderRadius:20,padding:"1px 8px",fontSize:19,color:C.gold,fontWeight:700}}>{post.days}d smoke-free</div>}
                     </div>
-                    <div style={{fontSize:17,color:C.muted,marginTop:2}}>{post.ts?new Date(post.ts).toLocaleDateString("en-IN",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}):""}</div>
+                    <div style={{fontSize:30,color:C.muted,marginTop:2}}>{post.ts?new Date(post.ts).toLocaleDateString("en-IN",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}):""}</div>
                   </div>
                 </div>
-                <div style={{fontSize:17,color:C.text,lineHeight:1.7,marginBottom:10}}>{post.text}</div>
-                <button onClick={()=>likePost(post.id,post.likes)} style={{background:"transparent",border:"none",color:C.sub,fontSize:17,cursor:"pointer",display:"flex",alignItems:"center",gap:5}}>
-                  <span>👏</span><span>{post.likes||0}</span><span style={{fontSize:17}}>Cheer</span>
+                <div style={{fontSize:30,color:C.text,lineHeight:1.7,marginBottom:10}}>{post.text}</div>
+                <button onClick={()=>likePost(post.id,post.likes)} style={{background:"transparent",border:"none",color:C.sub,fontSize:30,cursor:"pointer",display:"flex",alignItems:"center",gap:5}}>
+                  <span>👏</span><span>{post.likes||0}</span><span style={{fontSize:24}}>Cheer</span>
                 </button>
               </div>
             ))}
@@ -2016,12 +2016,12 @@ function App(){
 
         {tab==="sos"&&(
           <div style={{padding:"16px 14px"}}>
-            <div style={{fontSize:18,fontWeight:800,marginBottom:3}}>Craving Toolkit</div>
-            <div style={{color:C.sub,fontSize:17,marginBottom:16}}>Every craving passes in under 5 minutes.</div>
+            <div style={{fontSize:34,fontWeight:800,marginBottom:3}}>Craving Toolkit</div>
+            <div style={{color:C.sub,fontSize:30,marginBottom:16}}>Every craving passes in under 5 minutes.</div>
             <div style={crd({marginBottom:10})}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-                <div><div style={{fontWeight:700,fontSize:17,marginBottom:2}}>5-Minute Timer</div><div style={{color:C.sub,fontSize:16}}>Ride it out. It will pass.</div></div>
-                {cSec<300&&<div style={{fontSize:22,fontWeight:900,color:C.accent,fontVariantNumeric:"tabular-nums"}}>{pad(Math.floor(cSec/60))}:{pad(cSec%60)}</div>}
+                <div><div style={{fontWeight:700,fontSize:30,marginBottom:2}}>5-Minute Timer</div><div style={{color:C.sub,fontSize:19}}>Ride it out. It will pass.</div></div>
+                {cSec<300&&<div style={{fontSize:34,fontWeight:900,color:C.accent,fontVariantNumeric:"tabular-nums"}}>{pad(Math.floor(cSec/60))}:{pad(cSec%60)}</div>}
               </div>
               {cSec<300&&<div style={{marginTop:10,height:4,background:C.border,borderRadius:4}}><div style={{height:4,background:cSec===0?C.teal:C.accent,borderRadius:4,width:((300-cSec)/300*100)+"%",transition:"width 1s linear"}}/></div>}
               <div style={{marginTop:10,display:"flex",gap:8}}>
@@ -2029,27 +2029,27 @@ function App(){
               </div>
             </div>
             <div style={crd({marginBottom:10})}>
-              <div style={{fontWeight:700,fontSize:17,marginBottom:2}}>4-7-8 Breathing</div>
-              <div style={{color:C.sub,fontSize:16,marginBottom:14}}>Activates your parasympathetic system. Dissolves anxiety.</div>
+              <div style={{fontWeight:700,fontSize:30,marginBottom:2}}>4-7-8 Breathing</div>
+              <div style={{color:C.sub,fontSize:19,marginBottom:14}}>Activates your parasympathetic system. Dissolves anxiety.</div>
               {breathOn?(
                 <div style={{textAlign:"center",padding:"8px 0"}}>
                   <div style={{width:100,height:100,borderRadius:"50%",margin:"0 auto 14px",background:"radial-gradient(circle,"+curB.color+"20,transparent)",border:"3px solid "+curB.color,display:"flex",alignItems:"center",justifyContent:"center",transition:bPhase==="inhale"?"transform 4s ease-in-out":"none",transform:bPhase==="exhale"?"scale(0.82)":"scale(1.28)"}}>
-                    <span style={{color:curB.color,fontSize:17,fontWeight:700}}>{curB.label}</span>
+                    <span style={{color:curB.color,fontSize:30,fontWeight:700}}>{curB.label}</span>
                   </div>
-                  <div style={{color:C.sub,fontSize:17}}>4s inhale - 7s hold - 8s exhale</div>
-                  <button onClick={()=>{setBreathOn(false);setBStep(0);setBPhase("inhale");}} style={{background:"transparent",color:C.accent,border:"1.5px solid "+C.accent,borderRadius:11,padding:"9px 22px",fontWeight:600,fontSize:17,cursor:"pointer",marginTop:12}}>Stop</button>
+                  <div style={{color:C.sub,fontSize:24}}>4s inhale - 7s hold - 8s exhale</div>
+                  <button onClick={()=>{setBreathOn(false);setBStep(0);setBPhase("inhale");}} style={{background:"transparent",color:C.accent,border:"1.5px solid "+C.accent,borderRadius:11,padding:"9px 22px",fontWeight:600,fontSize:30,cursor:"pointer",marginTop:12}}>Stop</button>
                 </div>
               ):(
                 <Btn onClick={()=>{setBreathOn(true);setBStep(0);}}>Begin Breathing</Btn>
               )}
             </div>
             <div style={crd()}>
-              <div style={{fontWeight:700,fontSize:17,marginBottom:2}}>Flip the Script</div>
-              <div style={{color:C.sub,fontSize:16,marginBottom:12}}>CBT in 10 seconds. Tap what you are thinking right now.</div>
+              <div style={{fontWeight:700,fontSize:30,marginBottom:2}}>Flip the Script</div>
+              <div style={{color:C.sub,fontSize:19,marginBottom:12}}>CBT in 10 seconds. Tap what you are thinking right now.</div>
               {REFRAMES.map((r,i)=>(
                 <div key={i} onClick={()=>setRfOpen(rfOpen===i?null:i)} style={{background:rfOpen===i?C.accentFade:C.surfaceHi,border:"1px solid "+(rfOpen===i?C.accent+"55":C.border),borderRadius:10,padding:"11px 13px",cursor:"pointer",marginBottom:8}}>
-                  <div style={{fontWeight:600,fontSize:17,color:rfOpen===i?C.text:C.sub}}>{r.trigger}</div>
-                  {rfOpen===i&&<div style={{marginTop:7,color:C.teal,fontSize:17,lineHeight:1.6}}>{r.reframe}</div>}
+                  <div style={{fontWeight:600,fontSize:30,color:rfOpen===i?C.text:C.sub}}>{r.trigger}</div>
+                  {rfOpen===i&&<div style={{marginTop:7,color:C.teal,fontSize:30,lineHeight:1.6}}>{r.reframe}</div>}
                 </div>
               ))}
             </div>
@@ -2059,13 +2059,13 @@ function App(){
 
         {tab==="wellness"&&(
           <div style={{padding:"20px 18px"}}>
-            <div style={{fontSize:21,fontWeight:900,marginBottom:4,letterSpacing:"-0.02em",color:C.text}}>Wellness</div>
-            <div style={{color:C.sub,fontSize:17,marginBottom:16}}>Exercise and food — your daily quit toolkit.</div>
+            <div style={{fontSize:32,fontWeight:900,marginBottom:4,letterSpacing:"-0.02em",color:C.text}}>Wellness</div>
+            <div style={{color:C.sub,fontSize:30,marginBottom:16}}>Exercise and food — your daily quit toolkit.</div>
 
             {/* Exercise section */}
             <div style={{display:"flex",gap:8,marginBottom:14}}>
               {["today","week"].map(t=>(
-                <button key={t} onClick={()=>setExTab(t)} style={{flex:1,padding:"9px",borderRadius:12,border:"1px solid "+(exTab===t?C.gold+"55":C.border),background:exTab===t?C.goldFade:"transparent",color:exTab===t?C.gold:C.sub,fontWeight:700,fontSize:16,cursor:"pointer",textTransform:"capitalize"}}>{t==="today"?"Today Workout":"Weekly Plan"}</button>
+                <button key={t} onClick={()=>setExTab(t)} style={{flex:1,padding:"9px",borderRadius:12,border:"1px solid "+(exTab===t?C.gold+"55":C.border),background:exTab===t?C.goldFade:"transparent",color:exTab===t?C.gold:C.sub,fontWeight:700,fontSize:19,cursor:"pointer",textTransform:"capitalize"}}>{t==="today"?"Today Workout":"Weekly Plan"}</button>
               ))}
             </div>
 
@@ -2073,22 +2073,22 @@ function App(){
               <div style={{...glassCard(null,{marginBottom:14})}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:14}}>
                   <div>
-                    <div style={{fontSize:16,color:C.emerald,fontWeight:800,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:4}}>{todayExercise.day} — {todayExercise.duration}</div>
-                    <div style={{fontWeight:900,fontSize:18,color:C.text,letterSpacing:"-0.01em"}}>{todayExercise.theme}</div>
+                    <div style={{fontSize:19,color:C.emerald,fontWeight:800,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:4}}>{todayExercise.day} — {todayExercise.duration}</div>
+                    <div style={{fontWeight:900,fontSize:34,color:C.text,letterSpacing:"-0.01em"}}>{todayExercise.theme}</div>
                   </div>
                   {exDone.length===todayExercise.moves.length&&<span style={{fontSize:22}}>🏆</span>}
                 </div>
                 {todayExercise.moves.map((move,i)=>(
                   <div key={i} onClick={()=>setExDone(d=>d.includes(i)?d.filter(x=>x!==i):[...d,i])} style={{display:"flex",gap:12,alignItems:"flex-start",padding:"12px 0",borderBottom:i<todayExercise.moves.length-1?"1px solid "+C.border:"none",cursor:"pointer"}}>
-                    <div style={{width:26,height:26,borderRadius:"50%",background:exDone.includes(i)?"linear-gradient(135deg,"+C.gold+","+C.amber+")":C.surfaceHi,border:"1.5px solid "+(exDone.includes(i)?C.gold:C.border),display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:17,fontWeight:900,color:exDone.includes(i)?"#fff":C.muted,marginTop:2}}>{exDone.includes(i)?"✓":i+1}</div>
+                    <div style={{width:26,height:26,borderRadius:"50%",background:exDone.includes(i)?"linear-gradient(135deg,"+C.gold+","+C.amber+")":C.surfaceHi,border:"1.5px solid "+(exDone.includes(i)?C.gold:C.border),display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:30,fontWeight:900,color:exDone.includes(i)?"#fff":C.muted,marginTop:2}}>{exDone.includes(i)?"✓":i+1}</div>
                     <div style={{flex:1}}>
-                      <div style={{fontWeight:700,fontSize:16,color:C.text,marginBottom:2,textDecoration:exDone.includes(i)?"line-through":"none",opacity:exDone.includes(i)?0.5:1}}>{move.name}</div>
-                      <div style={{fontSize:17,color:C.gold,fontWeight:600,marginBottom:3}}>{move.reps}</div>
-                      <div style={{fontSize:17,color:C.sub,lineHeight:1.5}}>{move.why}</div>
+                      <div style={{fontWeight:700,fontSize:19,color:C.text,marginBottom:2,textDecoration:exDone.includes(i)?"line-through":"none",opacity:exDone.includes(i)?0.5:1}}>{move.name}</div>
+                      <div style={{fontSize:30,color:C.gold,fontWeight:600,marginBottom:3}}>{move.reps}</div>
+                      <div style={{fontSize:30,color:C.sub,lineHeight:1.5}}>{move.why}</div>
                     </div>
                   </div>
                 ))}
-                <div style={{marginTop:14,padding:"12px 16px",background:C.emeraldFade,borderRadius:12,border:"1px solid "+C.emerald+"33",fontSize:16,color:C.emerald,fontWeight:600}}>
+                <div style={{marginTop:14,padding:"12px 16px",background:C.emeraldFade,borderRadius:12,border:"1px solid "+C.emerald+"33",fontSize:19,color:C.emerald,fontWeight:600}}>
                   Tip: Any craving that hits during exercise — do 10 more jumping jacks. By the time you finish, it will have passed.
                 </div>
               </div>
@@ -2100,16 +2100,16 @@ function App(){
                   <div key={i} style={{...glassCard(null,{marginBottom:10,borderColor:i===new Date().getDay()-1?C.gold+"44":C.border,background:i===new Date().getDay()-1?C.goldFade:"linear-gradient(135deg,"+C.surfaceHi+","+C.surface+")"})}}>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                       <div>
-                        <div style={{fontSize:17,color:C.sub,marginBottom:2}}>{day.day}</div>
-                        <div style={{fontWeight:800,fontSize:16,color:C.text}}>{day.theme}</div>
+                        <div style={{fontSize:30,color:C.sub,marginBottom:2}}>{day.day}</div>
+                        <div style={{fontWeight:800,fontSize:19,color:C.text}}>{day.theme}</div>
                       </div>
-                      <div style={{fontSize:17,color:C.gold,background:C.goldFade,padding:"4px 10px",borderRadius:20,fontWeight:700}}>{day.duration}</div>
+                      <div style={{fontSize:30,color:C.gold,background:C.goldFade,padding:"4px 10px",borderRadius:20,fontWeight:700}}>{day.duration}</div>
                     </div>
                     <div style={{marginTop:8,display:"flex",flexWrap:"wrap",gap:5}}>
                       {day.moves.slice(0,3).map((m,j)=>(
-                        <span key={j} style={{fontSize:17,color:C.sub,background:C.surfaceHi,padding:"2px 8px",borderRadius:20,border:"1px solid "+C.border}}>{m.name}</span>
+                        <span key={j} style={{fontSize:30,color:C.sub,background:C.surfaceHi,padding:"2px 8px",borderRadius:20,border:"1px solid "+C.border}}>{m.name}</span>
                       ))}
-                      {day.moves.length>3&&<span style={{fontSize:17,color:C.muted}}>+{day.moves.length-3} more</span>}
+                      {day.moves.length>3&&<span style={{fontSize:30,color:C.muted}}>+{day.moves.length-3} more</span>}
                     </div>
                   </div>
                 ))}
@@ -2117,20 +2117,20 @@ function App(){
             )}
 
             {/* Diet section */}
-            <div style={{fontSize:17,fontWeight:800,color:C.text,marginBottom:4,marginTop:8}}>Eat This When Craving Hits</div>
-            <div style={{color:C.sub,fontSize:16,marginBottom:12}}>These foods actively disrupt craving signals.</div>
+            <div style={{fontSize:30,fontWeight:800,color:C.text,marginBottom:4,marginTop:8}}>Eat This When Craving Hits</div>
+            <div style={{color:C.sub,fontSize:19,marginBottom:12}}>These foods actively disrupt craving signals.</div>
             <div style={{display:"flex",gap:8,marginBottom:12}}>
               {["veg","nonveg"].map(t=>(
-                <button key={t} onClick={()=>setDietTab(t)} style={{flex:1,padding:"9px",borderRadius:12,border:"1px solid "+(dietTab===t?C.emerald+"55":C.border),background:dietTab===t?C.emeraldFade:"transparent",color:dietTab===t?C.emerald:C.sub,fontWeight:700,fontSize:16,cursor:"pointer"}}>{t==="veg"?"🥦 Vegetarian":"🍗 Non-Veg"}</button>
+                <button key={t} onClick={()=>setDietTab(t)} style={{flex:1,padding:"9px",borderRadius:12,border:"1px solid "+(dietTab===t?C.emerald+"55":C.border),background:dietTab===t?C.emeraldFade:"transparent",color:dietTab===t?C.emerald:C.sub,fontWeight:700,fontSize:19,cursor:"pointer"}}>{t==="veg"?"🥦 Vegetarian":"🍗 Non-Veg"}</button>
               ))}
             </div>
             {(dietTab==="veg"?VEG_FOODS:NONVEG_FOODS).map((food,i)=>(
               <div key={i} style={{...glassCard(null,{marginBottom:10,padding:"14px"})}}>
                 <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
-                  <div style={{fontSize:28,flexShrink:0,marginTop:2}}>{food.emoji}</div>
+                  <div style={{fontSize:34,flexShrink:0,marginTop:2}}>{food.emoji}</div>
                   <div>
-                    <div style={{fontWeight:800,fontSize:16,color:C.text,marginBottom:5}}>{food.name}</div>
-                    <div style={{fontSize:16,color:C.sub,lineHeight:1.65}}>{food.reason}</div>
+                    <div style={{fontWeight:800,fontSize:19,color:C.text,marginBottom:5}}>{food.name}</div>
+                    <div style={{fontSize:19,color:C.sub,lineHeight:1.65}}>{food.reason}</div>
                   </div>
                 </div>
               </div>
@@ -2140,18 +2140,18 @@ function App(){
 
         {tab==="journey"&&(
           <div style={{padding:"16px 14px"}}>
-            <div style={{fontSize:18,fontWeight:800,marginBottom:3}}>Your Journey</div>
-            <div style={{color:C.sub,fontSize:17,marginBottom:14}}>Every smoke-free day, tracked.</div>
+            <div style={{fontSize:34,fontWeight:800,marginBottom:3}}>Your Journey</div>
+            <div style={{color:C.sub,fontSize:30,marginBottom:14}}>Every smoke-free day, tracked.</div>
             <div style={{position:"relative"}}>
               <div style={{position:"absolute",left:19,top:0,bottom:0,width:2,background:C.border,zIndex:0}}/>
               {MILESTONES.map((ms,i)=>{
                 const isDone=elMin>=ms.min,isNext=nextMS===ms;
                 return (
                   <div key={i} style={{display:"flex",gap:12,marginBottom:12,position:"relative"}}>
-                    <div style={{width:40,height:40,borderRadius:"50%",background:isDone?C.teal:C.surface,border:"2px solid "+(isDone?C.teal:C.border),display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,zIndex:1,fontSize:17,color:isDone?"#F5F0E8":"inherit",fontWeight:900}}>{isDone?"v":"o"}</div>
+                    <div style={{width:40,height:40,borderRadius:"50%",background:isDone?C.teal:C.surface,border:"2px solid "+(isDone?C.teal:C.border),display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,zIndex:1,fontSize:30,color:isDone?"#F5F0E8":"inherit",fontWeight:900}}>{isDone?"v":"o"}</div>
                     <div style={crd({flex:1,padding:"11px 13px",borderColor:isNext?C.teal+"55":isDone?C.teal+"22":C.border,background:isNext?"rgba(0,217,170,0.05)":C.surface})}>
-                      <div style={{fontWeight:700,fontSize:17,color:isDone?C.text:C.sub}}>{ms.label}</div>
-                      <div style={{color:C.muted,fontSize:17,marginTop:2}}>{msLabel(ms.min)}</div>
+                      <div style={{fontWeight:700,fontSize:30,color:isDone?C.text:C.sub}}>{ms.label}</div>
+                      <div style={{color:C.muted,fontSize:30,marginTop:2}}>{msLabel(ms.min)}</div>
                     </div>
                   </div>
                 );
@@ -2162,23 +2162,23 @@ function App(){
 
         {tab==="mindset"&&(
           <div style={{padding:"16px 14px"}}>
-            <div style={{fontSize:18,fontWeight:800,marginBottom:3}}>Mindset</div>
-            <div style={{color:C.sub,fontSize:17,marginBottom:14}}>CBT lessons and daily mood.</div>
+            <div style={{fontSize:34,fontWeight:800,marginBottom:3}}>Mindset</div>
+            <div style={{color:C.sub,fontSize:30,marginBottom:14}}>CBT lessons and daily mood.</div>
             <div style={crd({marginBottom:12})}>
-              <div style={{fontSize:16,fontWeight:700,color:C.sub,textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:10}}>How are you feeling today?</div>
+              <div style={{fontSize:19,fontWeight:700,color:C.sub,textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:10}}>How are you feeling today?</div>
               <div style={{display:"flex",justifyContent:"space-between"}}>
                 {MOODS.map(mo=>(
                   <button key={mo.v} onClick={()=>setMood(mo.v)} style={{flex:1,padding:"10px 4px",background:todayMood===mo.v?C.tealFade:"transparent",border:"1px solid "+(todayMood===mo.v?C.teal:C.border),borderRadius:10,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:3}}>
-                    <span style={{fontSize:22}}>{mo.e}</span><span style={{fontSize:16,color:todayMood===mo.v?C.teal:C.muted,fontWeight:700}}>{mo.l}</span>
+                    <span style={{fontSize:22}}>{mo.e}</span><span style={{fontSize:19,color:todayMood===mo.v?C.teal:C.muted,fontWeight:700}}>{mo.l}</span>
                   </button>
                 ))}
               </div>
             </div>
             <div style={crd({marginBottom:12,background:C.purpleFade,borderColor:C.purple+"33"})}>
-              <div style={{fontSize:17,color:C.purple,fontWeight:700,letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:6}}>Today mindset</div>
-              <div style={{color:C.text,fontSize:17,lineHeight:1.7,fontStyle:"italic"}}>{quote}</div>
+              <div style={{fontSize:30,color:C.purple,fontWeight:700,letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:6}}>Today mindset</div>
+              <div style={{color:C.text,fontSize:30,lineHeight:1.7,fontStyle:"italic"}}>{quote}</div>
             </div>
-            <div style={{fontSize:17,color:C.sub,marginBottom:6}}>{read.length}/{LESSONS.length} lessons read</div>
+            <div style={{fontSize:30,color:C.sub,marginBottom:6}}>{read.length}/{LESSONS.length} lessons read</div>
             <div style={{height:3,background:C.border,borderRadius:4,marginBottom:12}}><div style={{height:3,background:C.purple,borderRadius:4,width:(read.length/LESSONS.length*100)+"%"}}/></div>
             {LESSONS.map((l,i)=>{
               const isRead=read.includes(i),isOpen=lsnOpen===i;
@@ -2187,18 +2187,18 @@ function App(){
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
                     <div style={{flex:1}}>
                       <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:6}}>
-                        <span style={{fontSize:16,fontWeight:800,letterSpacing:"0.08em",color:l.color,background:l.color+"22",padding:"2px 8px",borderRadius:20}}>{l.tag}</span>
-                        {isRead&&<span style={{fontSize:16,color:C.teal,fontWeight:700}}>READ</span>}
+                        <span style={{fontSize:19,fontWeight:800,letterSpacing:"0.08em",color:l.color,background:l.color+"22",padding:"2px 8px",borderRadius:20}}>{l.tag}</span>
+                        {isRead&&<span style={{fontSize:19,color:C.teal,fontWeight:700}}>READ</span>}
                       </div>
-                      <div style={{fontWeight:700,fontSize:16}}>{l.title}</div>
+                      <div style={{fontWeight:700,fontSize:19}}>{l.title}</div>
                     </div>
-                    <div style={{color:C.muted,fontSize:18,marginLeft:8}}>{isOpen?"-":"+"}</div>
+                    <div style={{color:C.muted,fontSize:34,marginLeft:8}}>{isOpen?"-":"+"}</div>
                   </div>
                   {isOpen&&<div style={{marginTop:12,paddingTop:12,borderTop:"1px solid "+C.border}}>
-                    <div style={{color:C.sub,fontSize:17,lineHeight:1.75}}>{l.body}</div>
+                    <div style={{color:C.sub,fontSize:30,lineHeight:1.75}}>{l.body}</div>
                     <div style={{marginTop:12,padding:"11px 13px",background:l.color+"14",borderRadius:10,borderLeft:"3px solid "+l.color}}>
-                      <div style={{fontSize:17,color:l.color,fontWeight:800,textTransform:"uppercase",marginBottom:4}}>Key Insight</div>
-                      <div style={{fontSize:17,color:C.text,fontWeight:600}}>{l.key}</div>
+                      <div style={{fontSize:30,color:l.color,fontWeight:800,textTransform:"uppercase",marginBottom:4}}>Key Insight</div>
+                      <div style={{fontSize:30,color:C.text,fontWeight:600}}>{l.key}</div>
                     </div>
                   </div>}
                 </div>
@@ -2210,37 +2210,37 @@ function App(){
         {tab==="log"&&(
           <div style={{padding:"16px 14px"}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
-              <div style={{fontSize:18,fontWeight:800}}>Insights</div>
-              <button onClick={()=>setShowForm(f=>!f)} style={{background:"transparent",color:C.accent,border:"1.5px solid "+C.accent,borderRadius:11,padding:"7px 13px",fontWeight:600,fontSize:16,cursor:"pointer"}}>{showForm?"Cancel":"+ Log craving"}</button>
+              <div style={{fontSize:34,fontWeight:800}}>Insights</div>
+              <button onClick={()=>setShowForm(f=>!f)} style={{background:"transparent",color:C.accent,border:"1.5px solid "+C.accent,borderRadius:11,padding:"7px 13px",fontWeight:600,fontSize:19,cursor:"pointer"}}>{showForm?"Cancel":"+ Log craving"}</button>
             </div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:12}}>
-              <div style={crd({textAlign:"center"})}><div style={{fontSize:22,fontWeight:900,color:C.teal}}>{entries.length>0?Math.round(resRate*100):"-"}%</div><div style={{color:C.sub,fontSize:17,marginTop:2}}>cravings resisted</div></div>
-              <div style={crd({textAlign:"center"})}><div style={{fontSize:22,fontWeight:900,color:C.purple}}>{streak}</div><div style={{color:C.sub,fontSize:17,marginTop:2}}>day streak</div></div>
+              <div style={crd({textAlign:"center"})}><div style={{fontSize:34,fontWeight:900,color:C.teal}}>{entries.length>0?Math.round(resRate*100):"-"}%</div><div style={{color:C.sub,fontSize:30,marginTop:2}}>cravings resisted</div></div>
+              <div style={crd({textAlign:"center"})}><div style={{fontSize:34,fontWeight:900,color:C.purple}}>{streak}</div><div style={{color:C.sub,fontSize:30,marginTop:2}}>day streak</div></div>
             </div>
             {showForm&&(
               <div style={crd({marginBottom:12})}>
-                <div style={{fontWeight:700,fontSize:16,marginBottom:12}}>What triggered this craving?</div>
+                <div style={{fontWeight:700,fontSize:19,marginBottom:12}}>What triggered this craving?</div>
                 <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:14}}>
-                  {TRIGGERS.map(t=><button key={t} onClick={()=>setLTags(tags=>tags.includes(t)?tags.filter(x=>x!==t):[...tags,t])} style={{padding:"5px 12px",borderRadius:20,border:"1px solid "+(lTags.includes(t)?C.accent:C.border),background:lTags.includes(t)?C.accentFade:"transparent",color:lTags.includes(t)?C.accent:C.sub,cursor:"pointer",fontSize:16}}>{t}</button>)}
+                  {TRIGGERS.map(t=><button key={t} onClick={()=>setLTags(tags=>tags.includes(t)?tags.filter(x=>x!==t):[...tags,t])} style={{padding:"5px 12px",borderRadius:20,border:"1px solid "+(lTags.includes(t)?C.accent:C.border),background:lTags.includes(t)?C.accentFade:"transparent",color:lTags.includes(t)?C.accent:C.sub,cursor:"pointer",fontSize:19}}>{t}</button>)}
                 </div>
-                <div style={{fontSize:17,color:C.sub,fontWeight:700,textTransform:"uppercase",marginBottom:5}}>Intensity: {lInt}/10</div>
+                <div style={{fontSize:30,color:C.sub,fontWeight:700,textTransform:"uppercase",marginBottom:5}}>Intensity: {lInt}/10</div>
                 <input type="range" min="1" max="10" value={lInt} onChange={e=>setLInt(+e.target.value)} style={{width:"100%",marginBottom:12,accentColor:C.accent}}/>
                 <div style={{display:"flex",gap:8,marginBottom:12}}>
-                  <button onClick={()=>setLRes(true)} style={{flex:1,padding:10,borderRadius:9,border:"1px solid "+(lRes?C.teal:C.border),background:lRes?C.tealFade:"transparent",color:lRes?C.teal:C.sub,cursor:"pointer",fontWeight:700,fontSize:16}}>Resisted</button>
-                  <button onClick={()=>setLRes(false)} style={{flex:1,padding:10,borderRadius:9,border:"1px solid "+(!lRes?C.accent:C.border),background:!lRes?C.accentFade:"transparent",color:!lRes?C.accent:C.sub,cursor:"pointer",fontWeight:700,fontSize:16}}>Gave in</button>
+                  <button onClick={()=>setLRes(true)} style={{flex:1,padding:10,borderRadius:9,border:"1px solid "+(lRes?C.teal:C.border),background:lRes?C.tealFade:"transparent",color:lRes?C.teal:C.sub,cursor:"pointer",fontWeight:700,fontSize:19}}>Resisted</button>
+                  <button onClick={()=>setLRes(false)} style={{flex:1,padding:10,borderRadius:9,border:"1px solid "+(!lRes?C.accent:C.border),background:!lRes?C.accentFade:"transparent",color:!lRes?C.accent:C.sub,cursor:"pointer",fontWeight:700,fontSize:19}}>Gave in</button>
                 </div>
-                <textarea placeholder="Notes (optional)" value={lNote} onChange={e=>setLNote(e.target.value)} style={{background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:9,padding:"11px 13px",color:C.text,fontSize:17,width:"100%",boxSizing:"border-box",outline:"none",minHeight:50,resize:"vertical",marginBottom:10}}/>
+                <textarea placeholder="Notes (optional)" value={lNote} onChange={e=>setLNote(e.target.value)} style={{background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:9,padding:"11px 13px",color:C.text,fontSize:30,width:"100%",boxSizing:"border-box",outline:"none",minHeight:50,resize:"vertical",marginBottom:10}}/>
                 <Btn onClick={saveEntry} disabled={lTags.length===0}>Save Entry</Btn>
               </div>
             )}
-            {entries.length===0&&!showForm&&<div style={{textAlign:"center",padding:"32px 20px",color:C.muted}}><div style={{fontSize:32,marginBottom:8}}>📊</div><div style={{fontSize:17}}>No craving logs yet. Tap + Log craving when one hits.</div></div>}
+            {entries.length===0&&!showForm&&<div style={{textAlign:"center",padding:"32px 20px",color:C.muted}}><div style={{fontSize:32,marginBottom:8}}>📊</div><div style={{fontSize:24}}>No craving logs yet. Tap + Log craving when one hits.</div></div>}
             {entries.map(e=>(
               <div key={e.id} style={crd({marginBottom:8})}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:6}}>
-                  <div style={{display:"flex",flexWrap:"wrap",gap:5,flex:1}}>{e.tags.map(t=><span key={t} style={{fontSize:17,padding:"2px 9px",borderRadius:20,background:C.surfaceHi,color:C.sub}}>{t}</span>)}</div>
-                  <span style={{fontSize:17,fontWeight:800,color:e.resisted?C.teal:C.accent,marginLeft:8}}>{e.resisted?"Resisted":"Gave in"}</span>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:5,flex:1}}>{e.tags.map(t=><span key={t} style={{fontSize:30,padding:"2px 9px",borderRadius:20,background:C.surfaceHi,color:C.sub}}>{t}</span>)}</div>
+                  <span style={{fontSize:30,fontWeight:800,color:e.resisted?C.teal:C.accent,marginLeft:8}}>{e.resisted?"Resisted":"Gave in"}</span>
                 </div>
-                <span style={{fontSize:17,color:C.sub}}>Intensity: {e.intensity}/10</span>
+                <span style={{fontSize:30,color:C.sub}}>Intensity: {e.intensity}/10</span>
               </div>
             ))}
           </div>
@@ -2258,7 +2258,7 @@ function App(){
               <span style={{fontSize:24}}>{t.icon}</span>
               {t.id==="messages"&&msgUnread>0&&<div style={{position:"absolute",top:-3,right:-4,width:7,height:7,borderRadius:"50%",background:C.ruby}}/>}
             </div>
-            <span style={{fontSize:17,letterSpacing:"0.02em",textTransform:"uppercase",marginTop:1}}>{t.label}</span>
+            <span style={{fontSize:30,letterSpacing:"0.02em",textTransform:"uppercase",marginTop:1}}>{t.label}</span>
           </button>
         ))}
       </div>
@@ -2266,53 +2266,53 @@ function App(){
       {showPremium&&(
         <div style={{position:"fixed",inset:0,zIndex:998,background:"#F5F0E8",display:"flex",flexDirection:"column",overflow:"hidden"}}>
           <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid #E8DDD0",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
-            <div><div style={{fontWeight:900,fontSize:16,color:"#FFD700"}}>👑 Unsmoke Premium</div><div style={{fontSize:17,color:"#786858",marginTop:1}}>Rs 299/month</div></div>
-            <button onClick={()=>setShowPremium(false)} style={{background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:20,padding:"6px 14px",color:"#786858",fontSize:16,fontWeight:700,cursor:"pointer"}}>Close</button>
+            <div><div style={{fontWeight:900,fontSize:19,color:"#FFD700"}}>👑 Unsmoke Premium</div><div style={{fontSize:30,color:"#786858",marginTop:1}}>Rs 299/month</div></div>
+            <button onClick={()=>setShowPremium(false)} style={{background:"#FAF7F2",border:"1px solid #E8DDD0",borderRadius:20,padding:"6px 14px",color:"#786858",fontSize:19,fontWeight:700,cursor:"pointer"}}>Close</button>
           </div>
           <div style={{flex:1,overflowY:"auto",padding:"20px 16px"}}>
             <div style={{textAlign:"center",marginBottom:24}}>
               <div style={{fontSize:40,marginBottom:8}}>👑</div>
-              <div style={{fontSize:20,fontWeight:900,color:"#FFD700",marginBottom:4}}>Unlock everything.</div>
-              <div style={{fontSize:17,color:"#786858",lineHeight:1.6}}>Features no other quit-smoking app offers.</div>
+              <div style={{fontSize:30,fontWeight:900,color:"#FFD700",marginBottom:4}}>Unlock everything.</div>
+              <div style={{fontSize:30,color:"#786858",lineHeight:1.6}}>Features no other quit-smoking app offers.</div>
             </div>
             <a href="tel:+918950695379" style={{display:"flex",alignItems:"center",gap:14,background:"#FFFFFF",border:"1px solid #E8DDD0",borderRadius:16,padding:"16px",marginBottom:14,textDecoration:"none",boxShadow:"0 2px 8px rgba(0,0,0,0.06)"}}>
-              <div style={{width:46,height:46,borderRadius:"50%",background:"linear-gradient(135deg,#A0720A,#B87000)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>📞</div>
+              <div style={{width:46,height:46,borderRadius:"50%",background:"linear-gradient(135deg,#A0720A,#B87000)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:34,flexShrink:0}}>📞</div>
               <div style={{flex:1}}>
-                <div style={{fontWeight:900,fontSize:17,color:"#1A1208",marginBottom:2}}>Call Saksham</div>
-                <div style={{fontSize:16,color:"#786858"}}>+91 89506 95379 — Tap to call</div>
+                <div style={{fontWeight:900,fontSize:30,color:"#1A1208",marginBottom:2}}>Call Saksham</div>
+                <div style={{fontSize:19,color:"#786858"}}>+91 89506 95379 — Tap to call</div>
               </div>
-              <span style={{color:"#A0720A",fontSize:20}}>›</span>
+              <span style={{color:"#A0720A",fontSize:24}}>›</span>
             </a>
-            <div style={{fontSize:17,color:"#00D9AA",fontWeight:800,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:10,marginTop:6}}>Chat</div>
+            <div style={{fontSize:30,color:"#00D9AA",fontWeight:800,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:10,marginTop:6}}>Chat</div>
             {[{icon:"🤖",color:"#00D9AA",title:"AI Quit Coach",desc:"24/7 chat that knows your journey. "+d+" days, score "+healthScore+".",screen:"coach"},{icon:"S",color:"#C9A84C",title:"Chat with Saksham",desc:"Message the founder directly. He reads and responds personally.",screen:"saksham"},{icon:"💊",color:"#FFB800",title:"NRT Step-Down Calculator",desc:"Personalized nicotine patch plan based on Saksham own protocol.",screen:"nrt"}].map(({icon,color,title,desc,screen})=>(
               <div key={title} onClick={()=>{if(isPremium){setShowPremium(false);setPremiumScreen(screen);}}} style={{background:"#FFFFFF",border:"1px solid #E8DDD0",borderRadius:14,padding:"16px 14px",marginBottom:10,cursor:isPremium?"pointer":"default"}}>
                 <div style={{display:"flex",alignItems:"center",gap:12}}>
-                  <div style={{width:44,height:44,borderRadius:12,background:color+"22",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>{icon}</div>
-                  <div style={{flex:1}}><div style={{fontWeight:800,fontSize:16,color:"#1A1208"}}>{title}</div><div style={{color:"#786858",fontSize:16,marginTop:2}}>{desc}</div></div>
-                  {isPremium&&<span style={{color,fontSize:18}}>go</span>}
+                  <div style={{width:44,height:44,borderRadius:12,background:color+"22",display:"flex",alignItems:"center",justifyContent:"center",fontSize:34,flexShrink:0}}>{icon}</div>
+                  <div style={{flex:1}}><div style={{fontWeight:800,fontSize:19,color:"#1A1208"}}>{title}</div><div style={{color:"#786858",fontSize:19,marginTop:2}}>{desc}</div></div>
+                  {isPremium&&<span style={{color,fontSize:22}}>go</span>}
                 </div>
               </div>
             ))}
-            <div style={{fontSize:17,color:"#C8B8A8",fontWeight:800,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:10,marginTop:6}}>Coming soon</div>
+            <div style={{fontSize:30,color:"#C8B8A8",fontWeight:800,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:10,marginTop:6}}>Coming soon</div>
             {[{icon:"🔮",title:"Craving Prediction Engine",desc:"AI warns you 30 min before your next high-risk window."},{icon:"🤝",title:"Accountability Partner",desc:"Get paired with a quitter at your exact day count."},{icon:"📜",title:"Milestone Certificates",desc:"Download real smoke-free certificates at 1 week, 1 month, 1 year."},{icon:"🧬",title:"Personalized DNA Recovery",desc:"Maps exactly what your body is repairing, based on how long you smoked."}].map(({icon,title,desc})=>(
               <div key={title} style={{background:"#FFFFFF",border:"1px solid #E8DDD0",borderRadius:14,padding:"14px",marginBottom:8,opacity:0.6,display:"flex",gap:12,alignItems:"flex-start"}}>
-                <span style={{fontSize:20,flexShrink:0}}>{icon}</span>
-                <div><div style={{display:"flex",alignItems:"center",gap:8,marginBottom:3}}><div style={{fontWeight:700,fontSize:17,color:"#1A1208"}}>{title}</div><span style={{fontSize:16,color:"#C8B8A8",background:"#FAF7F2",padding:"2px 7px",borderRadius:20}}>SOON</span></div><div style={{color:"#786858",fontSize:16}}>{desc}</div></div>
+                <span style={{fontSize:30,flexShrink:0}}>{icon}</span>
+                <div><div style={{display:"flex",alignItems:"center",gap:8,marginBottom:3}}><div style={{fontWeight:700,fontSize:30,color:"#1A1208"}}>{title}</div><span style={{fontSize:19,color:"#C8B8A8",background:"#FAF7F2",padding:"2px 7px",borderRadius:20}}>SOON</span></div><div style={{color:"#786858",fontSize:19}}>{desc}</div></div>
               </div>
             ))}
             <div style={{marginTop:12,marginBottom:20}}>
               {!isPremium?(
                 <div>
                   <div style={{background:"rgba(255,184,0,0.1)",border:"1px solid rgba(255,215,0,0.3)",borderRadius:14,padding:"20px 16px",marginBottom:12,textAlign:"center"}}>
-                    <div style={{fontSize:28,fontWeight:900,color:"#FFD700",marginBottom:4}}>Rs 299<span style={{fontSize:16,fontWeight:400,color:"#786858"}}>/month</span></div>
-                    <div style={{fontSize:16,color:"#786858"}}>or Rs 1,999/year — save 44%</div>
+                    <div style={{fontSize:34,fontWeight:900,color:"#FFD700",marginBottom:4}}>Rs 299<span style={{fontSize:19,fontWeight:400,color:"#786858"}}>/month</span></div>
+                    <div style={{fontSize:19,color:"#786858"}}>or Rs 1,999/year — save 44%</div>
                   </div>
-                  <button onClick={unlockPremium} style={{background:"linear-gradient(135deg,#FFD700,#FFB800)",color:"#F5F0E8",border:"none",borderRadius:12,padding:14,fontWeight:900,fontSize:17,cursor:"pointer",width:"100%",marginBottom:8}}>👑 Unlock Premium</button>
-                  <div style={{textAlign:"center",fontSize:17,color:"#C8B8A8"}}>Demo mode: tap to unlock all features</div>
+                  <button onClick={unlockPremium} style={{background:"linear-gradient(135deg,#FFD700,#FFB800)",color:"#F5F0E8",border:"none",borderRadius:12,padding:14,fontWeight:900,fontSize:30,cursor:"pointer",width:"100%",marginBottom:8}}>👑 Unlock Premium</button>
+                  <div style={{textAlign:"center",fontSize:30,color:"#C8B8A8"}}>Demo mode: tap to unlock all features</div>
                 </div>
               ):(
                 <div style={{background:"rgba(0,217,170,0.1)",border:"1px solid rgba(0,217,170,0.3)",borderRadius:14,padding:16,textAlign:"center"}}>
-                  <div style={{fontWeight:800,color:"#00D9AA",fontSize:16}}>Premium active — tap any feature above</div>
+                  <div style={{fontWeight:800,color:"#00D9AA",fontSize:19}}>Premium active — tap any feature above</div>
                 </div>
               )}
             </div>
