@@ -1942,14 +1942,14 @@ function AppInner(){
               <div style={{fontSize:20,fontWeight:900,color:"#FFD700",marginBottom:4}}>Unlock everything.</div>
               <div style={{fontSize:13,color:"#786858",lineHeight:1.6}}>Features no other quit-smoking app offers.</div>
             </div>
-            <div style={{fontSize:10,color:"#00D9AA",fontWeight:800,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:10}}>Voice Calls</div>
-            <div style={{background:"linear-gradient(135deg,rgba(0,217,170,0.08),rgba(139,92,246,0.08))",border:"1px solid rgba(0,217,170,0.25)",borderRadius:14,padding:"16px 14px",marginBottom:10}}>
-              <div style={{fontWeight:800,fontSize:14,color:"#1A1208",marginBottom:4}}>📞 AI Voice Calls</div>
-              <div style={{color:"#786858",fontSize:12,marginBottom:12}}>Real phone call UI. Speaks Indian English or Hindi. Powered by Claude. No other quit app offers this.</div>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-                <a href="tel:+918950695379" style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,background:"rgba(201,168,76,0.15)",border:"1px solid rgba(201,168,76,0.3)",borderRadius:10,padding:"10px 8px",color:"#C9A84C",fontWeight:700,fontSize:12,textDecoration:"none"}}>📞 Call Saksham</a>
+            <a href="tel:+918950695379" style={{display:"flex",alignItems:"center",gap:14,background:"#FFFFFF",border:"1px solid #E8DDD0",borderRadius:16,padding:"16px",marginBottom:14,textDecoration:"none",boxShadow:"0 2px 8px rgba(0,0,0,0.06)"}}>
+              <div style={{width:46,height:46,borderRadius:"50%",background:"linear-gradient(135deg,#A0720A,#B87000)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>📞</div>
+              <div style={{flex:1}}>
+                <div style={{fontWeight:900,fontSize:15,color:"#1A1208",marginBottom:2}}>Call Saksham</div>
+                <div style={{fontSize:12,color:"#786858"}}>+91 89506 95379 — Tap to call</div>
               </div>
-            </div>
+              <span style={{color:"#A0720A",fontSize:20}}>›</span>
+            </a>
             <div style={{fontSize:10,color:"#00D9AA",fontWeight:800,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:10,marginTop:6}}>Chat</div>
             {[{icon:"🤖",color:"#00D9AA",title:"AI Quit Coach",desc:"24/7 chat that knows your journey. "+d+" days, score "+healthScore+".",screen:"coach"},{icon:"S",color:"#C9A84C",title:"Chat with Saksham",desc:"Message the founder directly. He reads and responds personally.",screen:"saksham"},{icon:"💊",color:"#FFB800",title:"NRT Step-Down Calculator",desc:"Personalized nicotine patch plan based on Saksham own protocol.",screen:"nrt"}].map(({icon,color,title,desc,screen})=>(
               <div key={title} onClick={()=>{if(isPremium){setShowPremium(false);setPremiumScreen(screen);}}} style={{background:"#FFFFFF",border:"1px solid #E8DDD0",borderRadius:14,padding:"16px 14px",marginBottom:10,cursor:isPremium?"pointer":"default"}}>
