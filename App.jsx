@@ -1434,7 +1434,7 @@ function App(){
   }
 
   // MAIN APP
-  const TABS=[{id:"home",icon:"🏠",label:"Home"},{id:"sos",icon:"🆘",label:"SOS"},{id:"journey",icon:"🗓",label:"Journey"},{id:"mindset",icon:"🧠",label:"Mindset"},{id:"log",icon:"📊",label:"Insights"},];
+  const TABS=[{id:"home",icon:"🏠",label:"Home"},{id:"messages",icon:"💬",label:"Messages"},{id:"community",icon:"🤝",label:"Community"},{id:"sos",icon:"🆘",label:"SOS"},{id:"journey",icon:"🗓",label:"Journey"}];
 
   return (
     <div style={wrap}>
