@@ -1,252 +1,602 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Unsmoke Admin</title>
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box;}
-    body{background:#07080F;color:#EDF1FF;font-family:-apple-system,BlinkMacSystemFont,sans-serif;height:100vh;display:flex;flex-direction:column;}
-    .login{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:16px;padding:24px;}
-    .login h1{font-size:22px;font-weight:900;color:#C9A84C;}
-    .login p{color:#68788A;font-size:13px;}
-    .login input{background:#131825;border:1px solid #1A2035;border-radius:12px;padding:14px 18px;color:#EDF1FF;font-size:15px;width:100%;max-width:320px;outline:none;}
-    .login button{background:linear-gradient(135deg,#C9A84C,#E8A020);border:none;border-radius:12px;padding:14px;color:#07080F;font-weight:800;font-size:15px;cursor:pointer;width:100%;max-width:320px;}
-    .header{padding:16px 20px;border-bottom:1px solid #1A2035;display:flex;justify-content:space-between;align-items:center;background:#131825;flex-shrink:0;}
-    .header h1{font-size:16px;font-weight:900;color:#C9A84C;}
-    .header span{font-size:11px;color:#68788A;}
-    .layout{display:flex;flex:1;overflow:hidden;}
-    .sidebar{width:280px;border-right:1px solid #1A2035;overflow-y:auto;flex-shrink:0;}
-    .user-card{padding:14px 16px;border-bottom:1px solid #1A2035;cursor:pointer;transition:background 0.15s;}
-    .user-card:hover,.user-card.active{background:#131825;}
-    .user-name{font-weight:700;font-size:14px;color:#EDF1FF;}
-    .user-meta{font-size:11px;color:#68788A;margin-top:3px;}
-    .user-last{font-size:12px;color:#C9A84C;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-    .unread{display:inline-block;background:#C9A84C;color:#07080F;border-radius:20px;padding:1px 8px;font-size:10px;font-weight:800;margin-left:6px;}
-    .chat{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-    .chat-header{padding:14px 18px;border-bottom:1px solid #1A2035;background:#131825;}
-    .chat-header h2{font-size:15px;font-weight:800;}
-    .chat-header p{font-size:11px;color:#68788A;margin-top:2px;}
-    .messages{flex:1;overflow-y:auto;padding:16px;}
-    .msg{display:flex;justify-content:flex-start;margin-bottom:14px;}
-    .msg.saksham{justify-content:flex-end;}
-    .bubble{max-width:75%;padding:11px 15px;border-radius:18px;font-size:13px;line-height:1.65;}
-    .bubble.user{background:#131825;border:1px solid #1A2035;border-radius:18px 18px 18px 4px;}
-    .bubble.saksham{background:linear-gradient(135deg,#C9A84C,#E8A020);color:#07080F;border-radius:18px 18px 4px 18px;}
-    .time{font-size:10px;color:#2A3455;margin-top:4px;text-align:right;}
-    .input-area{padding:12px 16px;border-top:1px solid #1A2035;display:flex;gap:10px;background:#131825;}
-    .input-area input{flex:1;background:#0D1018;border:1px solid #1A2035;border-radius:24px;padding:11px 16px;color:#EDF1FF;font-size:14px;outline:none;}
-    .input-area button{background:linear-gradient(135deg,#C9A84C,#E8A020);border:none;border-radius:50%;width:44px;height:44px;color:#07080F;font-weight:900;font-size:16px;cursor:pointer;flex-shrink:0;}
-    .empty{flex:1;display:flex;align-items:center;justify-content:center;color:#2A3455;font-size:14px;}
-    .stat-tag{display:inline-block;background:#1A2035;border-radius:20px;padding:3px 10px;font-size:10px;color:#68788A;margin-right:6px;margin-top:4px;}
-    .refresh-btn{background:#1A2035;border:1px solid #1A2035;border-radius:20px;padding:5px 12px;color:#68788A;font-size:11px;cursor:pointer;}
-    .online-dot{width:8px;height:8px;border-radius:50%;background:#10C9A0;display:inline-block;margin-right:5px;}
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>Unsmoke Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="DENY">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{background:#07080F;color:#EDF1FF;font-family:-apple-system,BlinkMacSystemFont,sans-serif;height:100svh;display:flex;flex-direction:column;overflow:hidden;}
+.login-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100svh;padding:32px;}
+.login-logo{font-size:52px;margin-bottom:16px;}
+.login-title{font-size:26px;font-weight:900;color:#C9A84C;margin-bottom:6px;}
+.login-sub{font-size:13px;color:#68788A;margin-bottom:36px;}
+.login-input{background:#131825;border:1px solid #1A2035;border-radius:16px;padding:16px;color:#EDF1FF;font-size:22px;width:100%;max-width:280px;outline:none;text-align:center;letter-spacing:0.3em;margin-bottom:14px;}
+.login-btn{background:linear-gradient(135deg,#C9A84C,#E8A020);border:none;border-radius:14px;padding:15px;color:#07080F;font-weight:800;font-size:16px;cursor:pointer;width:100%;max-width:280px;}
+.login-err{color:#E85D75;font-size:13px;margin-top:10px;}
+#app{display:none;flex-direction:column;height:100svh;}
+.header{padding:14px 18px;background:#131825;border-bottom:1px solid #1A2035;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.header h1{font-size:17px;font-weight:900;color:#C9A84C;}
+.header p{font-size:10px;color:#68788A;margin-top:2px;}
+.header-right{display:flex;gap:8px;align-items:center;}
+.refresh-btn{background:#1A2035;border:none;border-radius:20px;padding:7px 16px;color:#68788A;font-size:12px;cursor:pointer;}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#10C9A0;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.tabs{display:flex;border-bottom:1px solid #1A2035;background:#0D1018;flex-shrink:0;}
+.tab{flex:1;padding:12px 4px;border:none;background:transparent;color:#68788A;font-size:10px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:0.07em;position:relative;}
+.tab.active{color:#C9A84C;}
+.tab.active::after{content:"";position:absolute;bottom:0;left:15%;right:15%;height:2px;background:linear-gradient(90deg,#C9A84C,#E8A020);border-radius:2px 2px 0 0;}
+.ubadge{display:inline-block;background:#E85D75;color:#fff;border-radius:10px;padding:1px 6px;font-size:9px;margin-left:3px;vertical-align:middle;font-weight:800;}
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+
+/* OVERVIEW STATS */
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 14px 0;}
+.kpi{background:linear-gradient(135deg,#131825,#0D1018);border:1px solid #1A2035;border-radius:16px;padding:16px;}
+.kpi .val{font-size:28px;font-weight:900;line-height:1;letter-spacing:-0.02em;}
+.kpi .lbl{font-size:10px;color:#68788A;margin-top:5px;}
+.kpi.gold .val{color:#C9A84C;}
+.kpi.teal .val{color:#10C9A0;}
+.kpi.purple .val{color:#9B72CF;}
+.kpi.ruby .val{color:#E85D75;}
+
+/* LIVE USER CARDS */
+.live-section{padding:14px;}
+.live-title{font-size:10px;color:#68788A;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;font-weight:700;}
+.user-card{background:#131825;border:1px solid #1A2035;border-radius:16px;padding:14px;margin-bottom:10px;cursor:pointer;}
+.user-card:active{opacity:0.8;}
+.user-card-top{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#C9A84C22,#9B72CF22);border:1.5px solid #C9A84C33;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#C9A84C;flex-shrink:0;overflow:hidden;}
+.avatar img{width:100%;height:100%;object-fit:cover;}
+.user-name-row{flex:1;}
+.user-name{font-weight:800;font-size:14px;color:#EDF1FF;}
+.user-phone{font-size:10px;color:#68788A;margin-top:2px;}
+.user-tags{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap;}
+.tag{padding:2px 8px;border-radius:20px;font-size:9px;font-weight:700;}
+.tag.days{background:#C9A84C15;border:1px solid #C9A84C33;color:#C9A84C;}
+.tag.pro{background:#9B72CF15;border:1px solid #9B72CF33;color:#9B72CF;}
+.tag.streak{background:#10C9A015;border:1px solid #10C9A033;color:#10C9A0;}
+.tag.risk{background:#E85D7515;border:1px solid #E85D7533;color:#E85D75;}
+.tag.unread{background:#E85D75;color:#fff;}
+
+/* STATS GRID */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.stat-box{background:#0D1018;border-radius:10px;padding:8px 6px;text-align:center;}
+.stat-box .sv{font-size:15px;font-weight:900;color:#C9A84C;}
+.stat-box .sl{font-size:8px;color:#68788A;margin-top:2px;letter-spacing:0.03em;}
+.stat-box.teal .sv{color:#10C9A0;}
+.stat-box.purple .sv{color:#9B72CF;}
+.stat-box.ruby .sv{color:#E85D75;}
+
+/* HEALTH BAR */
+.health-row{display:flex;align-items:center;gap:8px;margin-top:10px;}
+.health-label{font-size:9px;color:#68788A;width:60px;flex-shrink:0;}
+.health-bar{flex:1;height:5px;background:#1A2035;border-radius:3px;overflow:hidden;}
+.health-fill{height:5px;border-radius:3px;transition:width 0.5s ease;}
+.health-val{font-size:10px;font-weight:700;width:28px;text-align:right;flex-shrink:0;}
+
+/* MOOD ROW */
+.mood-row{display:flex;gap:3px;margin-top:8px;align-items:flex-end;height:24px;}
+.mood-bar{flex:1;border-radius:2px;background:#C9A84C;min-height:2px;}
+
+/* DETAIL OVERLAY */
+.overlay{display:none;position:fixed;inset:0;background:#07080F;z-index:20;flex-direction:column;}
+.overlay.open{display:flex;}
+.overlay-header{padding:14px 16px;border-bottom:1px solid #1A2035;background:#131825;display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.back-btn{background:none;border:none;color:#C9A84C;font-size:22px;cursor:pointer;padding:0 8px 0 0;}
+.overlay-content{flex:1;overflow-y:auto;}
+.detail-section{padding:14px 16px;border-bottom:1px solid #1A2035;}
+.section-title{font-size:10px;color:#68788A;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;font-weight:700;}
+.info-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #1A2035;}
+.info-row:last-child{border-bottom:none;}
+.info-key{font-size:12px;color:#68788A;}
+.info-val{font-size:12px;color:#EDF1FF;font-weight:600;}
+.big-stat{text-align:center;padding:16px 8px;background:#0D1018;border-radius:14px;}
+.big-stat .bv{font-size:32px;font-weight:900;color:#C9A84C;line-height:1;}
+.big-stat .bl{font-size:10px;color:#68788A;margin-top:4px;}
+.big-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;}
+.action-btn{width:100%;background:#131825;border:1px solid #1A2035;border-radius:13px;padding:14px;color:#EDF1FF;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:8px;text-align:left;display:flex;align-items:center;gap:10px;}
+.action-btn.gold{border-color:#C9A84C33;color:#C9A84C;}
+.action-btn.teal{border-color:#10C9A033;color:#10C9A0;}
+
+/* CHAT */
+.chat-overlay{display:none;position:fixed;inset:0;background:#07080F;z-index:30;flex-direction:column;}
+.chat-overlay.open{display:flex;}
+.chat-header{padding:14px 16px;border-bottom:1px solid #1A2035;background:#131825;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.chat-msgs{flex:1;overflow-y:auto;padding:14px;}
+.msg-row{display:flex;margin-bottom:12px;}
+.msg-row.user{justify-content:flex-start;}
+.msg-row.saksham{justify-content:flex-end;}
+.bubble{max-width:80%;padding:10px 14px;border-radius:16px;font-size:13px;line-height:1.65;}
+.bubble.user{background:#131825;border:1px solid #1A2035;border-radius:16px 16px 16px 4px;}
+.bubble.saksham{background:linear-gradient(135deg,#C9A84C,#E8A020);color:#07080F;border-radius:16px 16px 4px 16px;font-weight:500;}
+.msg-time{font-size:9px;color:#2A3455;margin-top:3px;}
+.chat-input-row{padding:10px 14px;border-top:1px solid #1A2035;background:#131825;display:flex;gap:8px;flex-shrink:0;}
+.chat-input-row input{flex:1;min-width:0;background:#0D1018;border:1px solid #1A2035;border-radius:22px;padding:11px 16px;color:#EDF1FF;font-size:14px;outline:none;}
+.send-btn{background:linear-gradient(135deg,#C9A84C,#E8A020);border:none;border-radius:50%;width:44px;height:44px;color:#07080F;font-weight:900;font-size:20px;cursor:pointer;flex-shrink:0;}
+.empty{padding:40px 20px;text-align:center;color:#2A3455;font-size:13px;}
+.perf-bar{height:3px;border-radius:2px;margin-top:8px;background:#1A2035;}
+.perf-fill{height:3px;border-radius:2px;}
+</style>
 </head>
 <body>
 
-<div id="login" class="login">
-  <h1>Unsmoke Admin</h1>
-  <p>Saksham only</p>
-  <input type="password" id="pin" placeholder="Enter PIN" onkeydown="if(event.key==='Enter')checkPin()"/>
-  <button onclick="checkPin()">Sign In</button>
-  <p id="pin-err" style="color:#E85D75;font-size:12px;"></p>
+<div class="login-wrap" id="loginWrap">
+  <div class="login-logo">🚭</div>
+  <div class="login-title">Unsmoke Admin</div>
+  <div class="login-sub">Saksham only</div>
+  <input class="login-input" type="password" id="pinInput" placeholder="· · · ·" maxlength="4" inputmode="numeric" onkeydown="if(event.key==='Enter')checkPin()"/>
+  <button class="login-btn" onclick="checkPin()">Enter</button>
+  <div class="login-err" id="pinErr"></div>
 </div>
 
-<div id="app" style="display:none;flex-direction:column;height:100vh;">
+<div id="app">
   <div class="header">
     <div>
       <h1>Unsmoke Admin</h1>
-      <span id="last-refresh">Loading users...</span>
+      <p id="lastUpdate">Loading...</p>
     </div>
-    <button class="refresh-btn" onclick="loadUsers()">Refresh</button>
+    <div class="header-right">
+      <div class="live-dot"></div>
+      <button class="refresh-btn" onclick="loadAll()">Refresh</button>
+    </div>
   </div>
-  <div class="layout">
-    <div class="sidebar" id="sidebar">
-      <div style="padding:12px 16px;border-bottom:1px solid #1A2035;font-size:10px;color:#68788A;text-transform:uppercase;letter-spacing:0.1em;">Users</div>
+  <div class="tabs">
+    <button class="tab active" id="tab-overview" onclick="switchTab('overview')">Overview</button>
+    <button class="tab" id="tab-users" onclick="switchTab('users')">Live Stats</button>
+    <button class="tab" id="tab-messages" onclick="switchTab('messages')">Messages <span class="ubadge" id="unreadBadge" style="display:none">0</span></button>
+  </div>
+  <div class="content" id="content"></div>
+</div>
+
+<!-- USER DETAIL -->
+<div class="overlay" id="detailOverlay">
+  <div class="overlay-header">
+    <button class="back-btn" onclick="closeDetail()">←</button>
+    <div style="flex:1">
+      <div style="font-weight:800;font-size:16px" id="detailName"></div>
+      <div style="font-size:11px;color:#68788A;margin-top:2px" id="detailSub"></div>
     </div>
-    <div class="chat" id="chat-area">
-      <div class="empty">Select a conversation</div>
+    <button class="refresh-btn" onclick="openChat(currentDetailPhone)">💬 Chat</button>
+  </div>
+  <div class="overlay-content" id="detailContent"></div>
+</div>
+
+<!-- CHAT -->
+<div class="chat-overlay" id="chatOverlay">
+  <div class="chat-header">
+    <button class="back-btn" onclick="closeChat()">←</button>
+    <div style="flex:1">
+      <div style="font-weight:800;font-size:15px" id="chatName"></div>
+      <div style="font-size:11px;color:#68788A;margin-top:2px" id="chatSub"></div>
     </div>
+    <button class="refresh-btn" onclick="loadChatMsgs()">↻</button>
+  </div>
+  <div class="chat-msgs" id="chatMsgs"></div>
+  <div class="chat-input-row">
+    <input id="replyInput" placeholder="Reply as Saksham..." onkeydown="if(event.key==='Enter')sendReply()"/>
+    <button class="send-btn" onclick="sendReply()">↑</button>
   </div>
 </div>
 
 <script>
-const FB_KEY = "AIzaSyBy6CrePlG8499_tVBwqNw97ivycI142mI";
-const FB_BASE = "https://firestore.googleapis.com/v1/projects/unsmoke-app-92a39/databases/(default)/documents";
-const ADMIN_PIN = "1234";
-let currentUser = null;
-let allUsers = [];
+const FB_KEY="AIzaSyBy6CrePlG8499_tVBwqNw97ivycI142mI";
+const FB="https://firestore.googleapis.com/v1/projects/unsmoke-app-92a39/databases/(default)/documents";
+let users=[],convs=[],currentTab="overview",currentChatPhone=null,currentDetailPhone=null;
 
-function checkPin(){
-  const pin = document.getElementById("pin").value;
-  if(pin === ADMIN_PIN){
-    document.getElementById("login").style.display = "none";
-    document.getElementById("app").style.display = "flex";
-    loadUsers();
-    setInterval(loadUsers, 8000);
-  } else {
-    document.getElementById("pin-err").textContent = "Wrong PIN";
-  }
-}
-
-async function fbGet(path){
-  try{
-    const r = await fetch(FB_BASE+"/"+path+"?key="+FB_KEY);
-    if(!r.ok) return null;
-    return parseDoc(await r.json());
-  }catch{return null;}
-}
-
-async function fbSet(path, data){
-  try{
-    await fetch(FB_BASE+"/"+path+"?key="+FB_KEY, {
-      method:"PATCH", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify(toDoc(data))
-    });
-  }catch{}
-}
-
-async function fbList(collection){
-  try{
-    const r = await fetch(FB_BASE+"/"+collection+"?key="+FB_KEY);
-    if(!r.ok) return [];
-    const data = await r.json();
-    return (data.documents||[]).map(d=>({...parseDoc(d), _id: d.name.split("/").pop()}));
-  }catch{return [];}
-}
-
-function parseVal(v){
-  if(v.stringValue!==undefined) return v.stringValue;
-  if(v.booleanValue!==undefined) return v.booleanValue;
-  if(v.integerValue!==undefined) return parseInt(v.integerValue);
-  if(v.doubleValue!==undefined) return v.doubleValue;
-  if(v.nullValue!==undefined) return null;
-  if(v.arrayValue) return (v.arrayValue.values||[]).map(parseVal);
-  if(v.mapValue) return parseDoc(v.mapValue);
+function pv(v){
+  if(v.stringValue!==undefined)return v.stringValue;
+  if(v.booleanValue!==undefined)return v.booleanValue;
+  if(v.integerValue!==undefined)return parseInt(v.integerValue);
+  if(v.doubleValue!==undefined)return v.doubleValue;
+  if(v.nullValue!==undefined)return null;
+  if(v.arrayValue)return(v.arrayValue.values||[]).map(pv);
+  if(v.mapValue)return pd(v.mapValue);
   return null;
 }
-function parseDoc(doc){
-  if(!doc||!doc.fields) return null;
-  const r={};
-  Object.entries(doc.fields).forEach(([k,v])=>{r[k]=parseVal(v);});
-  return r;
-}
-function toVal(v){
-  if(v===null||v===undefined) return{nullValue:null};
-  if(typeof v==="boolean") return{booleanValue:v};
-  if(typeof v==="number") return Number.isInteger(v)&&Math.abs(v)<2e15?{integerValue:String(v)}:{doubleValue:v};
-  if(typeof v==="string") return{stringValue:v};
-  if(Array.isArray(v)) return{arrayValue:{values:v.map(toVal)}};
-  if(typeof v==="object"){const f={};Object.entries(v).forEach(([k,val])=>{if(val!==undefined)f[k]=toVal(val);});return{mapValue:{fields:f}};}
+function pd(d){if(!d||!d.fields)return null;const r={};Object.entries(d.fields).forEach(([k,v])=>{r[k]=pv(v);});return r;}
+function tv(v){
+  if(v===null||v===undefined)return{nullValue:null};
+  if(typeof v==="boolean")return{booleanValue:v};
+  if(typeof v==="number")return Number.isInteger(v)&&Math.abs(v)<2e15?{integerValue:String(v)}:{doubleValue:v};
+  if(typeof v==="string")return{stringValue:v};
+  if(Array.isArray(v))return{arrayValue:{values:v.map(tv)}};
+  if(typeof v==="object"){const f={};Object.entries(v).forEach(([k,val])=>{if(val!==undefined)f[k]=tv(val);});return{mapValue:{fields:f}};}
   return{stringValue:String(v)};
 }
-function toDoc(data){const f={};Object.entries(data).forEach(([k,v])=>{if(v!==undefined)f[k]=toVal(v);});return{fields:f};}
+function td(d){const f={};Object.entries(d).forEach(([k,v])=>{if(v!==undefined)f[k]=tv(v);});return{fields:f};}
 
-async function loadUsers(){
-  const users = await fbList("users");
-  const convs = await fbList("conversations");
-  const convMap = {};
-  convs.forEach(c=>{ if(c&&c.userPhone) convMap[c.userPhone]=c; });
-  
-  allUsers = users.filter(u=>u&&u.phone).map(u=>({
-    ...u,
-    conv: convMap[u.phone] || null
-  })).sort((a,b)=>{
-    const aTime = a.conv ? a.conv.lastActivity||0 : 0;
-    const bTime = b.conv ? b.conv.lastActivity||0 : 0;
-    return bTime - aTime;
-  });
+async function fbGet(path){try{const r=await fetch(FB+"/"+path+"?key="+FB_KEY);if(!r.ok)return null;return pd(await r.json());}catch{return null;}}
+async function fbSet(path,data){try{await fetch(FB+"/"+path+"?key="+FB_KEY,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify(td(data))});}catch{}}
+async function fbList(col){try{const r=await fetch(FB+"/"+col+"?key="+FB_KEY);if(!r.ok)return[];const d=await r.json();return(d.documents||[]).map(doc=>({...pd(doc),_id:doc.name.split("/").pop()}));}catch{return[];}}
 
-  const sidebar = document.getElementById("sidebar");
-  const inner = allUsers.map(u=>{
-    const unread = u.conv&&u.conv.unread>0 ? `<span class="unread">${u.conv.unread}</span>` : "";
-    const lastMsg = u.conv&&u.conv.lastMessage ? `<div class="user-last">${u.conv.lastMessage}</div>` : "";
-    const isActive = currentUser && currentUser.phone === u.phone ? "active" : "";
-    const daysSince = u.quitTS ? Math.floor((Date.now()-u.quitTS)/86400000) : 0;
-    return `<div class="user-card ${isActive}" onclick="selectUser('${u.phone}')">
-      <div class="user-name">${u.name||"Unknown"}${unread}</div>
-      <div class="user-meta">${u.phone} · ${daysSince}d smoke-free</div>
-      ${lastMsg}
-    </div>`;
-  }).join("");
-  sidebar.innerHTML = '<div style="padding:12px 16px;border-bottom:1px solid #1A2035;font-size:10px;color:#68788A;text-transform:uppercase;letter-spacing:0.1em;">'+allUsers.length+' Users</div>' + inner;
-  
-  document.getElementById("last-refresh").textContent = "Updated "+new Date().toLocaleTimeString();
-  
-  if(currentUser) loadChat(currentUser.phone);
+const CORRECT_HASH="e7e6126cbbe891e3d725ec65bfe34a9a73d4961efada4e1a08e2d9b331cb0a4b";
+const SALT="unsmoke_admin_2024_secure";
+let failedAttempts=0,lockoutUntil=0;
+
+async function hashPin(pin){
+  const data=new TextEncoder().encode(pin+SALT);
+  const buf=await crypto.subtle.digest("SHA-256",data);
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
 }
 
-async function selectUser(phone){
-  const user = allUsers.find(u=>u.phone===phone);
-  if(!user) return;
-  currentUser = user;
-  loadChat(phone);
-  // Mark as read
-  if(user.conv&&user.conv.unread>0){
-    await fbSet("conversations/"+phone, {...user.conv, unread:0});
+async function checkPin(){
+  const now=Date.now();
+  if(now<lockoutUntil){
+    const mins=Math.ceil((lockoutUntil-now)/60000);
+    document.getElementById("pinErr").textContent="Locked. Try again in "+mins+" min.";
+    return;
+  }
+  const pin=document.getElementById("pinInput").value;
+  if(!pin){return;}
+  const hash=await hashPin(pin);
+  if(hash===CORRECT_HASH){
+    failedAttempts=0;
+    // Store session with 8-hour expiry
+    sessionStorage.setItem("admin_auth",JSON.stringify({ok:true,exp:Date.now()+8*3600000}));
+    document.getElementById("loginWrap").style.display="none";
+    document.getElementById("app").style.display="flex";
+    loadAll();
+    setInterval(loadAll,8000);
+    // Auto-logout after 8 hours
+    setTimeout(()=>{location.reload();},8*3600000);
+  }else{
+    failedAttempts++;
+    document.getElementById("pinInput").value="";
+    if(failedAttempts>=5){
+      lockoutUntil=Date.now()+30*60000;
+      document.getElementById("pinErr").textContent="Too many attempts. Locked for 30 minutes.";
+    }else{
+      document.getElementById("pinErr").textContent="Wrong PIN. "+(5-failedAttempts)+" attempts left.";
+    }
   }
 }
 
-async function loadChat(phone){
-  const conv = await fbGet("conversations/"+phone);
-  const user = allUsers.find(u=>u.phone===phone)||{};
-  const msgs = conv&&conv.messages ? conv.messages.sort((a,b)=>a.ts-b.ts) : [];
-  const daysSince = user.quitTS ? Math.floor((Date.now()-user.quitTS)/86400000) : 0;
-  
-  document.getElementById("chat-area").innerHTML = `
-    <div class="chat-header">
-      <h2>${user.name||"Unknown"} <span style="color:#68788A;font-size:12px;font-weight:400">${phone}</span></h2>
-      <p>
-        <span class="stat-tag">${daysSince}d smoke-free</span>
-        <span class="stat-tag">Score: ${user.healthScore||"-"}</span>
-        <span class="stat-tag">Premium: ${user.premium?"Yes":"No"}</span>
-      </p>
+// Check existing session
+(function(){
+  try{
+    const s=JSON.parse(sessionStorage.getItem("admin_auth")||"null");
+    if(s&&s.ok&&Date.now()<s.exp){
+      document.getElementById("loginWrap").style.display="none";
+      document.getElementById("app").style.display="flex";
+      loadAll();setInterval(loadAll,8000);
+    }
+  }catch{}
+})();
+
+document.addEventListener("keydown",e=>{if(e.key==="Enter"&&document.activeElement===document.getElementById("pinInput"))checkPin();});
+
+function days(ts){return ts?Math.floor((Date.now()-ts)/86400000):0;}
+function ta(ts){if(!ts)return"—";const s=Math.floor((Date.now()-ts)/1000);if(s<60)return"just now";if(s<3600)return Math.floor(s/60)+"m ago";if(s<86400)return Math.floor(s/3600)+"h ago";return Math.floor(s/86400)+"d ago";}
+function ttime(ts){return new Date(ts).toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"});}
+function money(u){const d=days(u.quitTS);const cigs=Math.floor((d*1440/1440)*(u.cpd||20));return Math.floor((cigs/(u.cpp||20))*(u.pp||300));}
+function healthScore(u){
+  const d=days(u.quitTS);
+  const milestones=[20,480,1440,2880,4320,20160,43800,131400,525600];
+  const elMin=d*1440;
+  const achieved=milestones.filter(m=>elMin>=m).length;
+  const journal=u.journal||[];
+  const resisted=journal.filter(e=>e.resisted).length;
+  const resRate=journal.length>0?resisted/journal.length:0.75;
+  const lessonScore=(u.lessonsRead||[]).length/6;
+  return Math.min(100,Math.round((achieved/milestones.length)*65+lessonScore*15+resRate*20));
+}
+function getTopTrigger(journal){
+  if(!journal||!journal.length)return null;
+  const c={};journal.forEach(e=>(e.tags||[]).forEach(t=>c[t]=(c[t]||0)+1));
+  const sorted=Object.entries(c).sort((a,b)=>b[1]-a[1]);
+  return sorted[0]?sorted[0][0]:null;
+}
+function riskLevel(u){
+  const d=days(u.quitTS);
+  const journal=u.journal||[];
+  const recent=journal.filter(e=>Date.now()-e.ts<86400000*3);
+  const recentSlips=recent.filter(e=>!e.resisted).length;
+  const moods=Object.values(u.moods||{}).slice(-3);
+  const avgMood=moods.length?moods.reduce((a,b)=>a+b,0)/moods.length:3;
+  if(recentSlips>=2||avgMood<2)return"high";
+  if(recentSlips>=1||avgMood<2.5||d<7)return"medium";
+  return"low";
+}
+function perfColor(score){return score>=70?"#10C9A0":score>=40?"#C9A84C":"#E85D75";}
+function perfLabel(score){return score>=70?"Doing well":score>=40?"On track":"Needs support";}
+
+async function loadAll(){
+  const [u,c]=await Promise.all([fbList("users"),fbList("conversations")]);
+  users=(u||[]).filter(x=>x&&x.phone);
+  convs=(c||[]).filter(x=>x&&x.userPhone);
+  const total=convs.reduce((s,c)=>s+(c.unread||0),0);
+  const badge=document.getElementById("unreadBadge");
+  if(total>0){badge.textContent=total;badge.style.display="inline-block";}else badge.style.display="none";
+  document.getElementById("lastUpdate").textContent="Live · "+new Date().toLocaleTimeString();
+  renderTab();
+  if(currentChatPhone)loadChatMsgs();
+}
+
+function switchTab(name){
+  currentTab=name;
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  document.getElementById("tab-"+name).classList.add("active");
+  renderTab();
+}
+function renderTab(){
+  if(currentTab==="overview")renderOverview();
+  else if(currentTab==="users")renderLiveStats();
+  else renderMessages();
+}
+
+function renderOverview(){
+  const premium=users.filter(u=>u.premium).length;
+  const activeToday=users.filter(u=>u.quitTS&&days(u.quitTS)>=1).length;
+  const totalCigsAvoided=users.filter(u=>u.quitTS).reduce((s,u)=>s+Math.floor((days(u.quitTS)*(u.cpd||20))),0);
+  const totalMoneySaved=users.filter(u=>u.quitTS).reduce((s,u)=>s+money(u),0);
+  const avgScore=users.filter(u=>u.quitTS).length>0?Math.round(users.filter(u=>u.quitTS).reduce((s,u)=>s+healthScore(u),0)/users.filter(u=>u.quitTS).length):0;
+  const atRisk=users.filter(u=>riskLevel(u)==="high").length;
+  const unread=convs.reduce((s,c)=>s+(c.unread||0),0);
+
+  document.getElementById("content").innerHTML=`
+    <div class="kpi-grid">
+      <div class="kpi gold"><div class="val">${users.length}</div><div class="lbl">Total Users</div></div>
+      <div class="kpi teal"><div class="val">${activeToday}</div><div class="lbl">Have quit dates set</div></div>
+      <div class="kpi purple"><div class="val">${premium}</div><div class="lbl">Premium</div></div>
+      <div class="kpi ruby"><div class="val">${atRisk}</div><div class="lbl">Need attention</div></div>
     </div>
-    <div class="messages" id="messages">
-      ${msgs.length===0 ? '<div style="text-align:center;color:#2A3455;font-size:13px;padding:40px">No messages yet</div>' : ''}
-      ${msgs.map(m=>`
-        <div class="msg ${m.role}">
-          <div>
-            <div class="bubble ${m.role}">${m.text}</div>
-            <div class="time">${new Date(m.ts).toLocaleTimeString()}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px 14px 0">
+      <div class="kpi teal" style="grid-column:1"><div class="val" style="font-size:20px">${totalCigsAvoided.toLocaleString("en-IN")}</div><div class="lbl">Total cigs avoided</div></div>
+      <div class="kpi gold"><div class="val" style="font-size:18px">Rs ${totalMoneySaved.toLocaleString("en-IN")}</div><div class="lbl">Total saved by users</div></div>
+    </div>
+
+    <div class="live-section">
+      <div class="live-title">Performance overview — ${users.filter(u=>u.quitTS).length} active users</div>
+      ${users.filter(u=>u.quitTS).sort((a,b)=>healthScore(b)-healthScore(a)).map(u=>{
+        const hs=healthScore(u);
+        const d=days(u.quitTS);
+        const risk=riskLevel(u);
+        const conv=convs.find(c=>c.userPhone===u.phone);
+        return `<div class="user-card" onclick="showDetail('${u.phone}')">
+          <div class="user-card-top">
+            <div class="avatar">${u.photo?`<img src="${u.photo}"/>`:(u.name||"?")[0].toUpperCase()}</div>
+            <div class="user-name-row">
+              <div class="user-name">${u.name||"Unknown"}</div>
+              <div class="user-phone">${u.phone}</div>
+              <div class="user-tags">
+                <span class="tag days">${d}d</span>
+                ${u.premium?'<span class="tag pro">PRO</span>':""}
+                ${risk==="high"?'<span class="tag risk">⚠ At risk</span>':""}
+                ${(conv?.unread||0)>0?`<span class="tag unread">${conv.unread} new</span>`:""}
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:22px;font-weight:900;color:${perfColor(hs)}">${hs}</div>
+              <div style="font-size:9px;color:#68788A">score</div>
+            </div>
           </div>
-        </div>
-      `).join("")}
-    </div>
-    <div class="input-area">
-      <input id="reply-input" placeholder="Reply as Saksham..." onkeydown="if(event.key==='Enter')sendReply()"/>
-      <button onclick="sendReply()">↑</button>
-    </div>
-  `;
-  
-  const msgs_div = document.getElementById("messages");
-  if(msgs_div) msgs_div.scrollTop = msgs_div.scrollHeight;
+          <div class="health-row">
+            <div class="health-label" style="font-size:8px;color:#68788A">Health</div>
+            <div class="health-bar"><div class="health-fill" style="width:${hs}%;background:${perfColor(hs)}"></div></div>
+            <div class="health-val" style="color:${perfColor(hs)};font-size:9px">${perfLabel(hs)}</div>
+          </div>
+        </div>`;
+      }).join("")}
+      ${unread>0?`
+      <div style="margin-top:14px">
+        <div class="live-title">Unread messages (${unread})</div>
+        ${convs.filter(c=>c.unread>0).map(c=>`
+          <div class="user-card" onclick="openChat('${c.userPhone}')">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="font-weight:700;font-size:13px">${c.userName||c.userPhone}</div>
+                <div style="font-size:11px;color:#68788A;margin-top:3px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:240px">${c.lastMessage||""}</div>
+              </div>
+              <span class="tag unread">${c.unread}</span>
+            </div>
+          </div>`).join("")}
+      </div>`:""}
+    </div>`;
 }
 
+function renderLiveStats(){
+  const sorted=users.filter(u=>u.quitTS).sort((a,b)=>healthScore(b)-healthScore(a));
+  document.getElementById("content").innerHTML=`
+    <div class="live-section">
+      <div class="live-title">Live user stats — updates every 8s</div>
+      ${sorted.length===0?'<div class="empty">No users with quit dates yet</div>':''}
+      ${sorted.map(u=>{
+        const hs=healthScore(u);
+        const d=days(u.quitTS);
+        const journal=u.journal||[];
+        const resisted=journal.filter(e=>e.resisted).length;
+        const resRate=journal.length>0?Math.round(resisted/journal.length*100):null;
+        const moneySaved=money(u);
+        const cigsAvoided=Math.floor(d*(u.cpd||20));
+        const moods=Object.values(u.moods||{}).slice(-7);
+        const avgMood=moods.length?Math.round(moods.reduce((a,b)=>a+b,0)/moods.length*10)/10:null;
+        const topTrig=getTopTrigger(journal);
+        const risk=riskLevel(u);
+        const conv=convs.find(c=>c.userPhone===u.phone);
+        const lastActive=conv?.lastActivity||u.createdAt||null;
+
+        return `<div class="user-card" onclick="showDetail('${u.phone}')">
+          <div class="user-card-top">
+            <div class="avatar">${u.photo?`<img src="${u.photo}"/>`:(u.name||"?")[0].toUpperCase()}</div>
+            <div class="user-name-row">
+              <div class="user-name">${u.name||"Unknown"}</div>
+              <div class="user-phone">${u.phone} · Last active ${ta(lastActive)}</div>
+              <div class="user-tags">
+                <span class="tag days">${d} days</span>
+                ${risk==="high"?'<span class="tag risk">⚠ At risk</span>':risk==="medium"?'<span class="tag" style="background:#E8A02015;border:1px solid #E8A02033;color:#E8A020">Watch</span>':""}
+                ${u.premium?'<span class="tag pro">PRO</span>':""}
+                ${(conv?.unread||0)>0?`<span class="tag unread">${conv.unread}</span>`:""}
+              </div>
+            </div>
+          </div>
+
+          <div class="stat-grid">
+            <div class="stat-box"><div class="sv" style="color:${perfColor(hs)}">${hs}</div><div class="sl">Health</div></div>
+            <div class="stat-box teal"><div class="sv">${cigsAvoided}</div><div class="sl">Not smoked</div></div>
+            <div class="stat-box"><div class="sv">Rs ${moneySaved>999?(moneySaved/1000).toFixed(1)+"k":moneySaved}</div><div class="sl">Saved</div></div>
+            <div class="stat-box purple"><div class="sv">${resRate!==null?resRate+"%":"—"}</div><div class="sl">Resisted</div></div>
+          </div>
+
+          <div class="health-row" style="margin-top:10px">
+            <div class="health-label">Score</div>
+            <div class="health-bar"><div class="health-fill" style="width:${hs}%;background:linear-gradient(90deg,${perfColor(hs)},#C9A84C)"></div></div>
+            <div class="health-val" style="color:${perfColor(hs)}">${hs}%</div>
+          </div>
+
+          ${moods.length>0?`
+          <div style="margin-top:10px">
+            <div style="font-size:8px;color:#68788A;margin-bottom:4px">MOOD LAST ${moods.length} DAYS ${avgMood?'· avg '+avgMood:''}</div>
+            <div class="mood-row">
+              ${moods.map(v=>`<div class="mood-bar" style="height:${Math.max(2,(v/5)*20)}px;opacity:${0.3+v*0.14}"></div>`).join("")}
+            </div>
+          </div>`:""}
+
+          ${topTrig||journal.length>0?`
+          <div style="display:flex;gap:10px;margin-top:8px;font-size:10px;color:#68788A">
+            ${topTrig?`<span>Top trigger: <strong style="color:#EDF1FF">${topTrig}</strong></span>`:""}
+            ${journal.length>0?`<span>${journal.length} craving logs</span>`:""}
+            ${(u.lessonsRead||[]).length>0?`<span>${u.lessonsRead.length}/6 lessons</span>`:""}
+          </div>`:""}
+        </div>`;
+      }).join("")}
+    </div>`;
+}
+
+function renderMessages(){
+  const withMsgs=convs.filter(c=>(c.messages||[]).length>0).sort((a,b)=>(b.lastActivity||0)-(a.lastActivity||0));
+  document.getElementById("content").innerHTML=`
+    <div class="live-section">
+      <div class="live-title">${withMsgs.length} conversations</div>
+      ${withMsgs.length===0?'<div class="empty">No conversations yet</div>':''}
+      ${withMsgs.map(c=>{
+        const u=users.find(u=>u.phone===c.userPhone)||{};
+        return `<div class="user-card" onclick="openChat('${c.userPhone}')">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div class="avatar">${u.photo?`<img src="${u.photo}"/>`:(c.userName||"?")[0].toUpperCase()}</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-weight:700;font-size:14px">${c.userName||c.userPhone}</div>
+              <div style="font-size:10px;color:#68788A;margin-top:2px">${(c.messages||[]).length} messages · ${ta(c.lastActivity)}</div>
+              <div style="font-size:11px;color:#C9A84C;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.lastMessage||""}</div>
+            </div>
+            ${(c.unread||0)>0?`<span class="tag unread" style="padding:4px 10px;font-size:11px">${c.unread}</span>`:'<span style="color:#2A3455;font-size:18px">›</span>'}
+          </div>
+        </div>`;
+      }).join("")}
+    </div>`;
+}
+
+function showDetail(phone){
+  currentDetailPhone=phone;
+  const u=users.find(u=>u.phone===phone)||{};
+  const hs=healthScore(u);
+  const d=days(u.quitTS);
+  const journal=u.journal||[];
+  const resisted=journal.filter(e=>e.resisted).length;
+  const moneySaved=money(u);
+  const cigsAvoided=Math.floor(d*(u.cpd||20));
+  const moods=Object.values(u.moods||{}).slice(-7);
+  const topTrig=getTopTrigger(journal);
+  const risk=riskLevel(u);
+  const conv=convs.find(c=>c.userPhone===phone)||{};
+
+  document.getElementById("detailName").textContent=u.name||"Unknown";
+  document.getElementById("detailSub").textContent=phone+" · "+days(u.quitTS)+"d smoke-free";
+
+  document.getElementById("detailContent").innerHTML=`
+    <div class="detail-section">
+      <div class="section-title">Performance Score</div>
+      <div class="big-grid">
+        <div class="big-stat"><div class="bv" style="color:${perfColor(hs)}">${hs}</div><div class="bl">Health score</div></div>
+        <div class="big-stat"><div class="bv">${d}</div><div class="bl">Days quit</div></div>
+        <div class="big-stat"><div class="bv" style="color:${risk==="high"?"#E85D75":risk==="medium"?"#C9A84C":"#10C9A0"}">${risk==="high"?"At risk":risk==="medium"?"Watch":"Good"}</div><div class="bl">Status</div></div>
+      </div>
+      <div class="perf-bar"><div class="perf-fill" style="width:${hs}%;background:${perfColor(hs)}"></div></div>
+      <div style="font-size:10px;color:#68788A;margin-top:6px;text-align:right">${perfLabel(hs)}</div>
+    </div>
+
+    <div class="detail-section">
+      <div class="section-title">Quit Stats</div>
+      <div class="info-row"><span class="info-key">Cigarettes avoided</span><span class="info-val" style="color:#10C9A0">${cigsAvoided.toLocaleString("en-IN")}</span></div>
+      <div class="info-row"><span class="info-key">Money saved</span><span class="info-val" style="color:#C9A84C">Rs ${moneySaved.toLocaleString("en-IN")}</span></div>
+      <div class="info-row"><span class="info-key">Life recovered</span><span class="info-val">${Math.floor((cigsAvoided*11)/60)}h</span></div>
+      <div class="info-row"><span class="info-key">Cravings logged</span><span class="info-val">${journal.length}</span></div>
+      <div class="info-row"><span class="info-key">Cravings resisted</span><span class="info-val" style="color:${resisted/Math.max(1,journal.length)>0.7?"#10C9A0":"#C9A84C"}">${resisted}/${journal.length} (${journal.length>0?Math.round(resisted/journal.length*100):0}%)</span></div>
+      <div class="info-row"><span class="info-key">Top trigger</span><span class="info-val">${topTrig||"—"}</span></div>
+      <div class="info-row"><span class="info-key">Lessons read</span><span class="info-val">${(u.lessonsRead||[]).length}/6</span></div>
+    </div>
+
+    <div class="detail-section">
+      <div class="section-title">Profile</div>
+      <div class="info-row"><span class="info-key">Phone</span><span class="info-val">+91 ${phone}</span></div>
+      <div class="info-row"><span class="info-key">Joined</span><span class="info-val">${u.createdAt?new Date(u.createdAt).toLocaleDateString("en-IN"):"—"}</span></div>
+      <div class="info-row"><span class="info-key">Cigs per day (was)</span><span class="info-val">${u.cpd||"—"}</span></div>
+      <div class="info-row"><span class="info-key">Cost per pack</span><span class="info-val">Rs ${u.pp||"—"}</span></div>
+      <div class="info-row"><span class="info-key">Premium</span><span class="info-val" style="color:${u.premium?"#C9A84C":"#68788A"}">${u.premium?"Active":"No"}</span></div>
+      <div class="info-row"><span class="info-key">Last message</span><span class="info-val">${conv.lastActivity?ta(conv.lastActivity):"Never"}</span></div>
+    </div>
+
+    ${moods.length>0?`
+    <div class="detail-section">
+      <div class="section-title">Mood trend (last ${moods.length} days)</div>
+      <div class="mood-row" style="height:50px;align-items:flex-end">
+        ${moods.map((v,i)=>`<div class="mood-bar" style="height:${Math.max(3,(v/5)*44)}px;opacity:${0.3+v*0.14};position:relative">
+          <div style="position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);font-size:8px;color:#68788A">${["S","M","T","W","T","F","S"][i]||""}</div>
+        </div>`).join("")}
+      </div>
+    </div>`:""}
+
+    <div class="detail-section">
+      <div class="section-title">Actions</div>
+      <button class="action-btn gold" onclick="openChat('${phone}')">💬 Message ${u.name||"User"}</button>
+      <button class="action-btn teal" onclick="window.location.href='tel:+91${phone}'">📞 Call +91 ${phone}</button>
+    </div>`;
+
+  document.getElementById("detailOverlay").classList.add("open");
+}
+function closeDetail(){document.getElementById("detailOverlay").classList.remove("open");currentDetailPhone=null;}
+
+function openChat(phone){
+  currentChatPhone=phone;
+  const u=users.find(u=>u.phone===phone)||{};
+  const conv=convs.find(c=>c.userPhone===phone)||{};
+  document.getElementById("chatName").textContent=u.name||phone;
+  document.getElementById("chatSub").textContent=days(u.quitTS)+"d smoke-free · +91 "+phone;
+  document.getElementById("chatOverlay").classList.add("open");
+  document.getElementById("replyInput").value="";
+  loadChatMsgs();
+  if((conv.unread||0)>0){fbSet("conversations/"+phone,{...conv,unread:0});conv.unread=0;loadAll();}
+}
+async function loadChatMsgs(){
+  if(!currentChatPhone)return;
+  const conv=await fbGet("conversations/"+currentChatPhone);
+  const msgs=(conv?.messages||[]).sort((a,b)=>a.ts-b.ts);
+  const c=document.getElementById("chatMsgs");
+  if(!msgs.length){c.innerHTML='<div class="empty">No messages yet</div>';return;}
+  c.innerHTML=msgs.map(m=>`
+    <div class="msg-row ${m.role}">
+      <div>
+        <div class="bubble ${m.role}">${m.text}</div>
+        <div class="msg-time" style="text-align:${m.role==="saksham"?"right":"left"}">${ttime(m.ts)}</div>
+      </div>
+    </div>`).join("");
+  c.scrollTop=c.scrollHeight;
+}
 async function sendReply(){
-  const input = document.getElementById("reply-input");
-  if(!input||!input.value.trim()||!currentUser) return;
-  const text = input.value.trim();
-  input.value = "";
-  
-  const conv = await fbGet("conversations/"+currentUser.phone) || {};
-  const existing = conv.messages || [];
-  const msg = {id:String(Date.now()), role:"saksham", text, ts:Date.now()};
-  await fbSet("conversations/"+currentUser.phone, {
-    ...conv,
-    messages:[...existing, msg],
-    lastMessage:"Saksham: "+text,
-    lastActivity:Date.now(),
-    unread:0
-  });
-  
-  loadChat(currentUser.phone);
+  const input=document.getElementById("replyInput");
+  const text=input.value.trim();
+  if(!text||!currentChatPhone)return;
+  input.value="";
+  const conv=await fbGet("conversations/"+currentChatPhone)||{};
+  const existing=conv.messages||[];
+  const msg={id:String(Date.now()),role:"saksham",text,ts:Date.now()};
+  await fbSet("conversations/"+currentChatPhone,{...conv,messages:[...existing,msg],lastMessage:"Saksham: "+text,lastActivity:Date.now(),unread:0});
+  loadChatMsgs();loadAll();
 }
-
-document.addEventListener("keydown", e=>{
-  if(e.key==="Enter"&&document.activeElement===document.getElementById("pin")) checkPin();
-});
+function closeChat(){document.getElementById("chatOverlay").classList.remove("open");currentChatPhone=null;}
+setInterval(()=>{if(currentChatPhone)loadChatMsgs();},5000);
 </script>
 </body>
 </html>
