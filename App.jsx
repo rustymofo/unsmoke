@@ -1,25 +1,5 @@
 // Unsmoke v3.1 - {"t": 1783017382.753017}
 import { useState, useEffect, useRef } from "react";
-import React from "react";
-
-class ErrorBoundary extends React.Component {
-  constructor(props){super(props);this.state={error:null};}
-  static getDerivedStateFromError(e){return{error:e};}
-  render(){
-    if(this.state.error){
-      return (
-        <div style={{padding:24,background:"#F5F0E8",minHeight:"100svh",fontFamily:"sans-serif"}}>
-          <div style={{fontSize:16,fontWeight:700,color:"#C03050",marginBottom:12}}>App Error (send this to Saksham):</div>
-          <pre style={{fontSize:12,background:"#fff",padding:12,borderRadius:8,overflow:"auto",color:"#1A1208",whiteSpace:"pre-wrap"}}>
-            {this.state.error.toString()}
-            {this.state.error.stack}
-          </pre>
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
 
 
 const C = {
@@ -37,6 +17,7 @@ const C = {
 };
 
 const pad=n=>String(n).padStart(2,"0");
+const sanitize=s=>String(s||"").replace(/<[^>]*>/g,"").replace(/[<>&"']/g,"").trim().slice(0,500);
 const glassCard=(accent,extra={})=>({
   background:"#FFFFFF",border:"1px solid "+(accent||"#E8DDD0"),
   borderRadius:18,padding:"18px 16px",
@@ -599,7 +580,7 @@ const NONVEG_FOODS=[
 
 const todayExercise=EXERCISES[new Date().getDay()===0?6:new Date().getDay()-1];
 
-function AppInner(){
+function App(){
   const [ready,setReady]=useState(false);
   const [authStep,setAuthStep]=useState(null);
   const [authUser,setAuthUser]=useState(null);
@@ -610,6 +591,8 @@ function AppInner(){
   const [authOtpInput,setAuthOtpInput]=useState(["","","","","",""]);
   const [authError,setAuthError]=useState("");
   const [authLoading,setAuthLoading]=useState(false);
+  const [otpTries,setOtpTries]=useState(0);
+  const [otpLocked,setOtpLocked]=useState(false);
   const [isSignIn,setIsSignIn]=useState(false);
   const [fbStatus,setFbStatus]=useState(null); // null | testing | ok | fail
   const [showProfile,setShowProfile]=useState(false);
@@ -796,7 +779,7 @@ function AppInner(){
   async function sendMsg(){
     const phone=authUser?authUser.phone:authPhone;
     if(!msgInput.trim()||msgSending||!phone)return;
-    const text=msgInput.trim();
+    const text=sanitize(msgInput);
     setMsgInput("");setMsgSending(true);
     const msg={id:String(Date.now()),role:"user",text,ts:Date.now(),senderName:userName,read:false,seenByUser:true};
     const updated=[...msgThread,msg];
@@ -831,8 +814,14 @@ function AppInner(){
     if(val&&idx<5)setTimeout(()=>otpRefs[idx+1]&&otpRefs[idx+1].current&&otpRefs[idx+1].current.focus(),30);
   }
   async function verifyOTP(){
+    if(otpLocked){setAuthError("Too many wrong attempts. Request a new code.");return;}
     const entered=authOtpInput.join("");
-    if(entered!==authOtpCode){setAuthError("Wrong code. Check and try again.");return;}
+    if(entered!==authOtpCode){
+      const tries=otpTries+1;setOtpTries(tries);
+      if(tries>=5){setOtpLocked(true);setAuthError("Too many wrong attempts. Request a new code.");}
+      else{setAuthError("Wrong code. "+( 5-tries)+" attempts left.");}
+      return;
+    }
     setAuthError("");
     if(isSignIn){
       setAuthLoading(true);
@@ -874,10 +863,11 @@ function AppInner(){
     setProfileCam(false);
   }
   async function saveAuthProfile(){
-    if(!authName.trim()){setAuthError("Please enter your name.");return;}
+    const cleanName=sanitize(authName);
+    if(!cleanName){setAuthError("Please enter your name.");return;}
     setAuthLoading(true);
     const uid=genId(8);
-    const sessionData={userId:uid,phone:authPhone,name:authName.trim(),loggedIn:true};
+    const sessionData={userId:uid,phone:authPhone,name:cleanName,loggedIn:true};
     await session.set("uns9-session",sessionData);
     let userData=await FB.get("users/"+authPhone);
     if(!userData){
@@ -914,7 +904,7 @@ function AppInner(){
     saveUD({quitTS:ts,cpd:+cpd,pp:+pp,cpp:+cpp});
   }
   async function saveEntry(){
-    const e={id:Date.now(),ts:Date.now(),tags:lTags,intensity:lInt,resisted:lRes,note:lNote};
+    const e={id:Date.now(),ts:Date.now(),tags:lTags.map(t=>sanitize(t)),intensity:Math.max(1,Math.min(10,lInt)),resisted:lRes,note:sanitize(lNote)};
     const u=[e,...entries];setEntries(u);setLTags([]);setLInt(5);setLNote("");setLRes(true);setShowForm(false);
     saveUD({journal:u});
   }
@@ -1991,4 +1981,4 @@ function AppInner(){
   );
 }
 
-export default function App(){return <ErrorBoundary><AppInner/></ErrorBoundary>;}
+export default App;
