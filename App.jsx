@@ -578,6 +578,16 @@ const NONVEG_FOODS=[
   {name:"Tuna with Crackers",reason:"Protein and complex carbs together prevent the blood sugar dips that trigger craving episodes.",emoji:"🐠"},
 ];
 
+const PREP_DAYS=[
+  {day:1,title:"Why You Really Smoke",duration:"15 min",type:"read",content:"Nicotine is not what keeps you smoking. The physical withdrawal from nicotine lasts 3 days and feels like mild flu. What keeps you coming back is the psychological association — the belief that cigarettes give you something. Pleasure, relief, focus, a break. None of that is real. The cigarette does not create those feelings. It briefly relieves the withdrawal it caused. This is the trap. Today, just observe when you smoke. Notice what you tell yourself it is giving you.",exercise:"Each time you smoke today, pause before lighting and write down one word: what do you think this cigarette is about to give you?",key:"The cigarette gives you nothing. It relieves the craving it created."},
+  {day:2,title:"The Nicotine Trap Explained",duration:"15 min",type:"read",content:"When you smoke, nicotine floods your brain within 10 seconds. Dopamine releases. You feel good. But your brain adapts — it reduces its own dopamine production to compensate. Now you need nicotine just to feel normal. Without it, you feel anxious, irritable, unable to focus. You smoke and feel relief. But that relief is just the restoration of the state every non-smoker lives in permanently, without effort. Non-smokers are not deprived. They simply have no trap.",exercise:"Write down 3 moments today where you felt a craving. What was happening just before it? This is your trigger map.",key:"You are not giving up a pleasure. You are escaping a trap."},
+  {day:3,title:"The Identity Shift",duration:"15 min",type:"read",content:"Most people say: I am trying to quit smoking. The word trying assumes failure is likely. The word quit implies loss. Try instead: I am a non-smoker. Not will be. Am. This is not a trick. Your brain responds to identity differently from goals. A goal is something you chase. An identity is something you live. From today, when someone offers you a cigarette, you do not say no thank you I am quitting. You say no thank you I do not smoke.",exercise:"Say the phrase I do not smoke out loud 10 times. Notice how it feels different from I am trying to quit.",key:"You are not a smoker who quit. You are a non-smoker who used to smoke."},
+  {day:4,title:"What Cravings Actually Are",duration:"10 min",type:"read",content:"A craving is not a need. It is a signal. Specifically, it is your brain recognising a pattern — coffee, stress, meals, driving — and firing a learned response: light a cigarette. The pattern was trained. It can be untrained. The important thing to know: every craving peaks within 3 minutes and passes completely within 5, whether you smoke or not. You do not fight cravings. You simply wait. The craving is not a sign you need to smoke. It is a sign your brain is rewiring.",exercise:"The next time a craving hits, start a timer. Breathe slowly. Watch the minutes pass. Note: did it pass?",key:"Every craving is a wave. It builds, peaks, and breaks. You only need to stay standing."},
+  {day:5,title:"The Ritual Replacement",duration:"15 min",type:"read",content:"Smoking is not just chemical — it is behavioural. The act of stepping outside. Holding something. The pause from work. The hand-to-mouth motion. These are habits layered on top of the addiction. When you stop smoking, these rituals do not automatically disappear. You need to replace them consciously, not with willpower, but with better rituals. A walk. A glass of cold water. A minute of breathing. Something that gives you the pause without the poison.",exercise:"Identify your 2 most consistent smoking rituals and write a replacement for each. Be specific. Not I will go for a walk. I will walk to the water cooler and back.",key:"Replace the ritual, not just the cigarette."},
+  {day:6,title:"Social Pressure and How to Handle It",duration:"10 min",type:"read",content:"The hardest moments after quitting are not cravings. They are social situations. A drink with friends who smoke. Office culture. A family member who offers. The people around you are not trying to make you fail. They are in the trap themselves and may feel uncomfortable that you escaped. You do not owe anyone an explanation. I do not smoke is a complete sentence. You do not need to justify a decision that is saving your life.",exercise:"Prepare your response to three scenarios: friend offering a cigarette, colleague smoking break, stress moment at work. Rehearse them in your head.",key:"I do not smoke is a complete sentence."},
+  {day:7,title:"Your Quit Day",duration:"20 min",type:"ceremony",content:"Today is the day. You have spent 6 days understanding exactly why you smoked and exactly why none of it was real. You are not giving up anything. You are removing a trap that cost you money, health, and control over your own mind. Saksham smoked his last cigarette on October 31, 2024. He did not feel deprived. He felt free. That feeling is available to you right now. Not tomorrow. Now. Smoke your last cigarette with full awareness. Notice it has no special power. Then put it down and do not pick another one up.",exercise:"Write down the exact time of your last cigarette. This is your quit timestamp. Enter it in the app.",key:"Freedom is not what happens after you quit. It is the moment you decide."},
+];
+
 const todayExercise=EXERCISES[new Date().getDay()===0?6:new Date().getDay()-1];
 
 function App(){
@@ -645,6 +655,9 @@ function App(){
   const [lInt,setLInt]=useState(5);
   const [lRes,setLRes]=useState(true);
   const [lNote,setLNote]=useState("");
+  const [journalText,setJournalText]=useState("");
+  const [journalEntries,setJournalEntries]=useState([]);
+  const [showJournal,setShowJournal]=useState(false);
   const [snapPhoto,setSnapPhoto]=useState(null);
   const [showCamera,setShowCamera]=useState(false);
   const [cameraFacing,setCameraFacing]=useState("user");
@@ -669,6 +682,10 @@ function App(){
   const [nrtCigs,setNrtCigs]=useState("20");
   const [exDone,setExDone]=useState([]);
   const [exStarted,setExStarted]=useState(false);
+  const [prepDay,setPrepDay]=useState(0);
+  const [prepOpen,setPrepOpen]=useState(null);
+  const [prepRead,setPrepRead]=useState(()=>{try{return JSON.parse(localStorage.getItem("prep_read")||"[]");}catch{return [];}});
+  const [showPrepCeremony,setShowPrepCeremony]=useState(false);
   const [dietTab,setDietTab]=useState("veg");
   const [exTab,setExTab]=useState("today");
   const [bannerIdx,setBannerIdx]=useState(0);
@@ -1383,6 +1400,73 @@ function App(){
             </div>
             <button onClick={()=>{setShowHomePrompt(false);localStorage.setItem('prompted','1');}} style={{width:"100%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:14,padding:14,color:"#fff",fontWeight:800,fontSize:15,cursor:"pointer",marginBottom:8}}>Got it!</button>
             <button onClick={()=>setShowHomePrompt(false)} style={{width:"100%",background:"none",border:"none",color:C.muted,fontSize:13,cursor:"pointer"}}>Continue in browser</button>
+          </div>
+        </div>
+      )}
+
+
+      {/* 7-Day Preparation Program Overlay */}
+      {prepOpen!==null&&(
+        <div style={{position:"fixed",inset:0,zIndex:997,background:C.bg,display:"flex",flexDirection:"column",overflow:"hidden"}}>
+          <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid "+C.border,display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0,background:C.surfaceHi}}>
+            <div>
+              <div style={{fontSize:9,color:C.emerald,fontWeight:800,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:3}}>Day {(prepOpen||0)+1} of 7</div>
+              <div style={{fontWeight:900,fontSize:16,color:C.text}}>{PREP_DAYS[prepOpen||0].title}</div>
+            </div>
+            <button onClick={()=>setPrepOpen(null)} style={{background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:20,padding:"6px 14px",color:C.sub,fontSize:12,fontWeight:600,cursor:"pointer"}}>Close</button>
+          </div>
+          <div style={{flex:1,overflowY:"auto",padding:"20px 18px"}}>
+            <div style={{display:"flex",gap:8,marginBottom:16}}>
+              <div style={{background:C.emeraldFade,border:"1px solid "+C.emerald+"44",borderRadius:20,padding:"4px 12px",fontSize:11,color:C.emerald,fontWeight:700}}>{PREP_DAYS[prepOpen||0].duration}</div>
+              <div style={{background:C.goldFade,border:"1px solid "+C.gold+"44",borderRadius:20,padding:"4px 12px",fontSize:11,color:C.gold,fontWeight:700}}>{PREP_DAYS[prepOpen||0].type==="ceremony"?"Quit Day Ritual":"Reading"}</div>
+            </div>
+            <div style={{fontSize:14,color:C.text,lineHeight:1.85,marginBottom:20}}>{PREP_DAYS[prepOpen||0].content}</div>
+            <div style={{background:C.goldFade,border:"1px solid "+C.gold+"33",borderRadius:14,padding:"16px",marginBottom:16}}>
+              <div style={{fontSize:10,color:C.gold,fontWeight:800,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:8}}>Today Exercise</div>
+              <div style={{fontSize:13,color:C.text,lineHeight:1.75}}>{PREP_DAYS[prepOpen||0].exercise}</div>
+            </div>
+            <div style={{background:C.emeraldFade,border:"1px solid "+C.emerald+"33",borderRadius:14,padding:"14px",marginBottom:24,borderLeft:"3px solid "+C.emerald}}>
+              <div style={{fontSize:10,color:C.emerald,fontWeight:800,textTransform:"uppercase",marginBottom:6}}>Key Insight</div>
+              <div style={{fontSize:14,color:C.text,fontWeight:700,lineHeight:1.5}}>{PREP_DAYS[prepOpen||0].key}</div>
+            </div>
+            {!prepRead.includes(prepOpen||0)&&(
+              <button onClick={()=>{const u=[...prepRead,prepOpen||0];setPrepRead(u);localStorage.setItem("prep_read",JSON.stringify(u));if((prepOpen||0)<6)setPrepOpen((prepOpen||0)+1);else setPrepOpen(null);}} style={{width:"100%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:14,padding:14,color:"#fff",fontWeight:800,fontSize:15,cursor:"pointer",boxShadow:"0 4px 16px rgba(160,114,10,0.25)"}}>
+                {(prepOpen||0)<6?"Mark complete and continue":"Complete the program"}
+              </button>
+            )}
+            {prepRead.includes(prepOpen||0)&&(
+              <div style={{textAlign:"center",padding:"12px",color:C.emerald,fontWeight:700,fontSize:14}}>Day {(prepOpen||0)+1} completed ✓</div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Journal Overlay */}
+      {showJournal&&(
+        <div style={{position:"fixed",inset:0,zIndex:997,background:C.bg,display:"flex",flexDirection:"column",overflow:"hidden"}}>
+          <div style={{paddingTop:"max(48px, env(safe-area-inset-top, 48px))",paddingBottom:14,paddingLeft:16,paddingRight:16,borderBottom:"1px solid "+C.border,display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0,background:C.surfaceHi}}>
+            <div><div style={{fontWeight:900,fontSize:16,color:C.text}}>Quit Journal</div><div style={{fontSize:11,color:C.sub,marginTop:2}}>Your private space</div></div>
+            <button onClick={()=>setShowJournal(false)} style={{background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:20,padding:"6px 14px",color:C.sub,fontSize:12,fontWeight:600,cursor:"pointer"}}>Close</button>
+          </div>
+          <div style={{flex:1,overflowY:"auto",padding:"16px 18px"}}>
+            <div style={{marginBottom:16}}>
+              <textarea value={journalText} onChange={e=>setJournalText(e.target.value)} placeholder={"How are you feeling today? What was hard? What surprised you? This is private."+String.fromCharCode(10)+String.fromCharCode(10)+"Write anything."} style={{width:"100%",minHeight:140,background:C.surface,border:"1px solid "+C.border,borderRadius:14,padding:"14px",color:C.text,fontSize:14,outline:"none",resize:"vertical",lineHeight:1.7,boxSizing:"border-box"}}/>
+              <button onClick={async()=>{
+                if(!journalText.trim())return;
+                const entry={id:Date.now(),text:sanitize(journalText.trim()),ts:Date.now(),day:d};
+                const updated=[entry,...journalEntries];
+                setJournalEntries(updated);setJournalText("");
+                const phone=authUser?authUser.phone:authPhone;
+                if(phone)await FB.merge("users/"+phone,{journalFull:updated});
+              }} style={{width:"100%",marginTop:10,background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:12,padding:13,color:"#fff",fontWeight:700,fontSize:14,cursor:"pointer"}}>Save Entry</button>
+            </div>
+            {journalEntries.length===0&&<div style={{textAlign:"center",padding:"32px 20px",color:C.muted,fontSize:13}}>No entries yet. Start writing.</div>}
+            {journalEntries.map(e=>(
+              <div key={e.id} style={{background:C.surface,border:"1px solid "+C.border,borderRadius:14,padding:"14px 16px",marginBottom:10}}>
+                <div style={{fontSize:10,color:C.sub,marginBottom:8}}>{new Date(e.ts).toLocaleDateString("en-IN",{weekday:"short",day:"numeric",month:"short"})} · Day {e.day} smoke-free</div>
+                <div style={{fontSize:13,color:C.text,lineHeight:1.7,whiteSpace:"pre-line"}}>{e.text}</div>
+              </div>
+            ))}
           </div>
         </div>
       )}
