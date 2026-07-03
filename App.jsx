@@ -672,7 +672,7 @@ function App(){
   const [sessionToken,setSessionToken]=useState("");
   const [forcedOut,setForcedOut]=useState(false);
   const [copied,setCopied]=useState(false);
-  const [fontScale,setFontScale]=useState(()=>parseFloat(localStorage.getItem("fontScale")||"0.82"));
+  const [fontScale,setFontScale]=useState(()=>parseFloat(localStorage.getItem("fontScale")||"0.95"));
   const [showSizeSlider,setShowSizeSlider]=useState(false);
   const [snapPhoto,setSnapPhoto]=useState(null);
   const [showCamera,setShowCamera]=useState(false);
