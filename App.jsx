@@ -672,6 +672,8 @@ function App(){
   const [sessionToken,setSessionToken]=useState("");
   const [forcedOut,setForcedOut]=useState(false);
   const [copied,setCopied]=useState(false);
+  const [fontScale,setFontScale]=useState(()=>parseFloat(localStorage.getItem("fontScale")||"0.82"));
+  const [showSizeSlider,setShowSizeSlider]=useState(false);
   const [snapPhoto,setSnapPhoto]=useState(null);
   const [showCamera,setShowCamera]=useState(false);
   const [cameraFacing,setCameraFacing]=useState("user");
@@ -1180,6 +1182,7 @@ function App(){
   const outerWrap={background:C.bg,minHeight:"100dvh",display:"flex",justifyContent:"center"};
 
 
+  const zoom={zoom:fontScale,WebkitTextSizeAdjust:"none"};
   const wrap={fontFamily:"-apple-system,BlinkMacSystemFont,sans-serif",background:C.bg,color:C.text,height:"100svh",display:"flex",flexDirection:"column",overflow:"hidden",width:"100%",position:"fixed",top:0,left:0,right:0,bottom:0};
   const inputStyle={background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:9,padding:"12px 13px",color:C.text,fontSize:19,width:"100%",boxSizing:"border-box",outline:"none"};
   const lblStyle={color:C.sub,fontSize:30,fontWeight:700,letterSpacing:"0.09em",textTransform:"uppercase",marginBottom:5,display:"block"};
@@ -1641,6 +1644,30 @@ function App(){
         </div>
       )}
 
+
+      {showSizeSlider&&(
+        <div style={{position:"fixed",inset:0,zIndex:2000,background:"rgba(0,0,0,0.3)"}} onClick={()=>setShowSizeSlider(false)}>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,background:C.surface,borderRadius:"20px 20px 0 0",padding:"20px 24px 40px",border:"1px solid "+C.border}} onClick={e=>e.stopPropagation()}>
+            <div style={{width:36,height:4,background:C.muted,borderRadius:2,margin:"0 auto 20px"}}/>
+            <div style={{fontWeight:800,fontSize:17,color:C.text,marginBottom:6}}>Text Size</div>
+            <div style={{fontSize:14,color:C.sub,marginBottom:20}}>Drag to adjust how big the text appears</div>
+            <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:20}}>
+              <span style={{fontSize:13,color:C.sub}}>A</span>
+              <input type="range" min="0.7" max="1.2" step="0.05" value={fontScale}
+                onChange={e=>{const v=parseFloat(e.target.value);setFontScale(v);localStorage.setItem("fontScale",v);}}
+                style={{flex:1,accentColor:C.gold,height:6,cursor:"pointer"}}/>
+              <span style={{fontSize:20,color:C.sub}}>A</span>
+            </div>
+            <div style={{display:"flex",gap:8,justifyContent:"center",marginBottom:16}}>
+              {[0.75,0.85,0.95,1.05,1.15].map(v=>(
+                <button key={v} onClick={()=>{setFontScale(v);localStorage.setItem("fontScale",v);}} style={{padding:"8px 14px",borderRadius:20,border:"1px solid "+(Math.abs(fontScale-v)<0.03?C.gold:C.border),background:Math.abs(fontScale-v)<0.03?C.goldFade:"transparent",color:Math.abs(fontScale-v)<0.03?C.gold:C.sub,fontSize:13,fontWeight:700,cursor:"pointer"}}>{v===0.75?"S":v===0.85?"M":v===0.95?"L":v===1.05?"XL":"XXL"}</button>
+              ))}
+            </div>
+            <button onClick={()=>setShowSizeSlider(false)} style={{width:"100%",background:"linear-gradient(135deg,"+C.gold+","+C.amber+")",border:"none",borderRadius:14,padding:14,color:"#fff",fontWeight:700,fontSize:16,cursor:"pointer"}}>Done</button>
+          </div>
+        </div>
+      )}
+
       {/* Profile overlay */}
       {showProfile&&(
         <div style={{position:"fixed",inset:0,zIndex:1005,background:"rgba(0,0,0,0.85)",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
@@ -1722,7 +1749,8 @@ function App(){
       {/* Header */}
       <div style={{padding:"12px 16px 10px",display:"flex",justifyContent:"space-between",alignItems:"center",borderBottom:"1px solid "+C.border,flexShrink:0}}>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
-          <button onClick={()=>setShowProfile(true)} style={{width:32,height:32,borderRadius:"50%",background:"linear-gradient(135deg,"+C.accent+","+C.purple+")",border:"2px solid "+C.teal+"44",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",cursor:"pointer",padding:0,flexShrink:0}}>
+          <button onClick={()=>setShowSizeSlider(true)} style={{background:C.surfaceHi,border:"1px solid "+C.border,borderRadius:20,padding:"5px 12px",color:C.sub,fontSize:13,fontWeight:700,cursor:"pointer",marginRight:8}}>Aa</button>
+              <button onClick={()=>setShowProfile(true)} style={{width:32,height:32,borderRadius:"50%",background:"linear-gradient(135deg,"+C.accent+","+C.purple+")",border:"2px solid "+C.teal+"44",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",cursor:"pointer",padding:0,flexShrink:0}}>
             {authUser&&authUser.photo?<img src={authUser.photo} alt="p" style={{width:"100%",height:"100%",objectFit:"cover"}}/>:<span style={{fontSize:19}}>🧑</span>}
           </button>
           <div>
