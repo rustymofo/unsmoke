@@ -669,6 +669,8 @@ function App(){
   const [peerInput,setPeerInput]=useState("");
   const [peerSending,setPeerSending]=useState(false);
   const [myPublicId,setMyPublicId]=useState("");
+  const [sessionToken,setSessionToken]=useState("");
+  const [forcedOut,setForcedOut]=useState(false);
   const [copied,setCopied]=useState(false);
   const [snapPhoto,setSnapPhoto]=useState(null);
   const [showCamera,setShowCamera]=useState(false);
@@ -967,8 +969,28 @@ function App(){
       if(ud.lessonsRead)setRead(ud.lessonsRead);
       if(ud.moods)setMoods(ud.moods);
       if(ud.premium)setIsPremium(ud.premium);
+      const newToken=Math.random().toString(36).substring(2)+Date.now().toString(36);
+      setSessionToken(newToken);
+      // Save token to Firebase - invalidates any other active session
+      await FB.merge("users/"+authPhone,{sessionToken:newToken});
+      // Save token locally too
+      const sData=await session.get("uns9-session")||{};
+      await session.set("uns9-session",{...sData,sessionToken:newToken});
       setAuthStep("done");setReady(true);setAuthLoading(false);
       startMsgPoll(authPhone);
+      // Poll for session invalidation (another device logged in)
+      const myTok=newToken;
+      const pollSes=setInterval(async()=>{
+        try{
+          const live=await FB.get("users/"+authPhone);
+          if(live&&live.sessionToken&&live.sessionToken!==myTok){
+            clearInterval(pollSes);
+            await session.del("uns9-session");
+            setForcedOut(true);setTab("home");
+            setAuthStep("welcome");setReady(true);
+          }
+        }catch{}
+      },20000);
     } else {
       setAuthStep("profile");
     }
