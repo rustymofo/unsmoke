@@ -1,55 +1,43 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="X-Frame-Options" content="DENY" />
-    <meta name="robots" content="index, follow" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
-    <title>Unsmoke with Saksham</title>
-    <meta name="description" content="Quit smoking with Saksham. Track every second. Every rupee saved.">
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#F5F0E8">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Unsmoke">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <link rel="icon" href="/favicon.ico">
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      html, body, #root { height: 100%; }
-      html { height: -webkit-fill-available; }
-      body {
-        background: #F5F0E8;
-        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        overscroll-behavior: none;
-        display: flex;
-        justify-content: center;
-        min-height: 100vh;
-        min-height: -webkit-fill-available;
-      }
-      #root { width: 100%; max-width: 480px; position: relative; }
-      input, button { -webkit-tap-highlight-color: transparent; }
-    </style>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/main.jsx"></script>
-    <script>
-      // Unregister any existing service workers and clear caches
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(regs => {
-          regs.forEach(r => r.unregister());
-        });
-        caches.keys().then(keys => {
-          keys.forEach(k => caches.delete(k));
-        });
-      }
-    </script>
-  </body>
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,viewport-fit=cover"/>
+<title>Unsmoke with Saksham</title>
+<meta name="theme-color" content="#F5F0E8"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="Unsmoke"/>
+<link rel="manifest" href="/manifest.json"/>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body,#root{height:100%;background:#F5F0E8;}
+html{height:-webkit-fill-available;}
+body{display:flex;justify-content:center;min-height:100vh;min-height:-webkit-fill-available;overscroll-behavior:none;}
+#root{width:100%;max-width:480px;}
+</style>
+<script>
+// IMMEDIATELY unregister ALL service workers and clear ALL caches
+// This runs synchronously before any other JS
+(function(){
+  if(!('serviceWorker' in navigator)) return;
+  // Unregister all
+  navigator.serviceWorker.getRegistrations().then(function(regs){
+    regs.forEach(function(r){ r.unregister(); });
+  });
+  // Clear all caches
+  if('caches' in window){
+    caches.keys().then(function(keys){
+      keys.forEach(function(k){ caches.delete(k); });
+    });
+  }
+})();
+</script>
+</head>
+<body>
+<div id="root"></div>
+<script type="module" src="/main.jsx?v=21"></script>
+</body>
 </html>
